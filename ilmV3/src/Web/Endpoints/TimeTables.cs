@@ -15,6 +15,7 @@ public class TimeTables : EndpointGroupBase
         app.MapGroup(this)
            .MapGet(GetTimeTables)
            .MapGet(GetTimeTable, "{timeTableId}")
+           .MapGet(GetTimeTableByDate, "date/{date}")
            .MapPost(CreateTimeTable)
            .MapPut(UpdateTimeTable, "{timeTableId}")
            .MapDelete(DeleteTimeTable, "{timeTableId}");
@@ -43,6 +44,11 @@ public class TimeTables : EndpointGroupBase
     public async Task<IResult> DeleteTimeTable(ISender _sender, int timeTableId)
     {
         var result = await _sender.Send(new DeleteTimeTableCommand(timeTableId));
+        return TypedResults.Ok(result);
+    }  
+    public async Task<IResult> GetTimeTableByDate(ISender _sender, DateOnly date)
+    {
+        var result = await _sender.Send(new GetTimeTableByDateQuery(date));
         return TypedResults.Ok(result);
     }
 }

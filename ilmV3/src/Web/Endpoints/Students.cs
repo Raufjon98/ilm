@@ -13,6 +13,7 @@ public class Students : EndpointGroupBase
     {
         app.MapGroup(this)
            .MapGet(GetStudents)
+           .MapGet(GetExcellentStudents, "/excellents")
            .MapGet(GetStudent, "{studentId}")
            .MapPost(CreateStudent)
            .MapDelete(DeleteStudent, "{studentId}")
@@ -42,6 +43,11 @@ public class Students : EndpointGroupBase
     public async Task<IResult> DeleteStudent(ISender _sender, int studentId)
     {
         var result = await _sender.Send(new DeleteStudentCommand(studentId));
+        return TypedResults.Ok(result);
+    }  
+    public async Task<IResult> GetExcellentStudents(ISender _sender)
+    {
+        var result = await _sender.Send(new GetExcellentStudentsQuery());
         return TypedResults.Ok(result);
     }
 }

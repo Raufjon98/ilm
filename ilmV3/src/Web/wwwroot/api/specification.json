@@ -244,6 +244,204 @@
         }
       }
     },
+    "/api/StudentGroups": {
+      "get": {
+        "tags": [
+          "StudentGroups"
+        ],
+        "operationId": "GetStudentGroups",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "StudentGroups"
+        ],
+        "operationId": "CreateStudenGroup",
+        "requestBody": {
+          "x-name": "studentGroup",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudentGroupDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/StudentGroups/{studentGroupid}": {
+      "get": {
+        "tags": [
+          "StudentGroups"
+        ],
+        "operationId": "GetStudentGroup",
+        "parameters": [
+          {
+            "name": "studentGroupid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/StudentGroups/members/{studentGroupid}": {
+      "get": {
+        "tags": [
+          "StudentGroups"
+        ],
+        "operationId": "GetStudentGroupMembers",
+        "parameters": [
+          {
+            "name": "studentGroupid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/StudentGroups/{studentGroupid}/teacher": {
+      "get": {
+        "tags": [
+          "StudentGroups"
+        ],
+        "operationId": "GetTeacherByStudentGroup",
+        "parameters": [
+          {
+            "name": "studentGroupid",
+            "x-originalName": "studentGroupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/StudentGroups/groups{studentId}": {
+      "get": {
+        "tags": [
+          "StudentGroups"
+        ],
+        "operationId": "GetStudentGroupByStudent",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/StudentGroups/{studentGroupId}": {
+      "put": {
+        "tags": [
+          "StudentGroups"
+        ],
+        "operationId": "UpdateStudentGroup",
+        "parameters": [
+          {
+            "name": "studentGroupId",
+            "x-originalName": "studentGroupid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          }
+        ],
+        "requestBody": {
+          "x-name": "studentGroup",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudentGroupDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "StudentGroups"
+        ],
+        "operationId": "DeleteStudentGroup",
+        "parameters": [
+          {
+            "name": "studentGroupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/Students": {
       "get": {
         "tags": [
@@ -293,6 +491,19 @@
           "required": true,
           "x-position": 1
         },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Students/excellents": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "operationId": "GetExcellentStudents",
         "responses": {
           "200": {
             "description": ""
@@ -376,128 +587,6 @@
           "required": true,
           "x-position": 1
         },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/api/StudetnGroups": {
-      "get": {
-        "tags": [
-          "StudetnGroups"
-        ],
-        "operationId": "GetStudentGroups",
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "StudetnGroups"
-        ],
-        "operationId": "CreateStudenGroup",
-        "requestBody": {
-          "x-name": "studentGroup",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StudentGroupDto"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/api/StudetnGroups/{studentGroupid}": {
-      "get": {
-        "tags": [
-          "StudetnGroups"
-        ],
-        "operationId": "GetStudentGroup",
-        "parameters": [
-          {
-            "name": "studentGroupid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/api/StudetnGroups/{studentGroupId}": {
-      "put": {
-        "tags": [
-          "StudetnGroups"
-        ],
-        "operationId": "UpdateStudentGroup",
-        "parameters": [
-          {
-            "name": "studentGroupId",
-            "x-originalName": "studentGroupid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 2
-          }
-        ],
-        "requestBody": {
-          "x-name": "studentGroup",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StudentGroupDto"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "StudetnGroups"
-        ],
-        "operationId": "DeleteStudentGroup",
-        "parameters": [
-          {
-            "name": "studentGroupId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
         "responses": {
           "200": {
             "description": ""
@@ -619,6 +708,106 @@
         ],
         "responses": {
           "204": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Subjects/students/{subjectId}": {
+      "get": {
+        "tags": [
+          "Subjects"
+        ],
+        "operationId": "GetStudentsBySubjectId",
+        "parameters": [
+          {
+            "name": "subjectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Subjects/group/{subjectId}": {
+      "get": {
+        "tags": [
+          "Subjects"
+        ],
+        "operationId": "GetGroupBySubject",
+        "parameters": [
+          {
+            "name": "subjectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Subjects/{subjectId}/teacher": {
+      "get": {
+        "tags": [
+          "Subjects"
+        ],
+        "operationId": "GetTeacherBySubject",
+        "parameters": [
+          {
+            "name": "subjectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Subjects/{teacherId}/subject": {
+      "get": {
+        "tags": [
+          "Subjects"
+        ],
+        "operationId": "GetSubjectByTeacher",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
             "description": ""
           }
         }
@@ -871,6 +1060,31 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/TimeTables/date/{date}": {
+      "get": {
+        "tags": [
+          "TimeTables"
+        ],
+        "operationId": "GetTimeTableByDate",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
             },
             "x-position": 1
           }
@@ -1265,15 +1479,6 @@
           }
         }
       },
-      "StudentDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "name": {
-            "type": "string"
-          }
-        }
-      },
       "StudentGroupDto": {
         "type": "object",
         "additionalProperties": false,
@@ -1288,6 +1493,15 @@
           "subjectId": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "StudentDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
           }
         }
       },
@@ -1329,6 +1543,17 @@
             "type": "integer",
             "format": "int32"
           },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "time": {
+            "type": "string",
+            "format": "time"
+          },
+          "weekDay": {
+            "$ref": "#/components/schemas/DayOfWeek"
+          },
           "name": {
             "type": "string"
           },
@@ -1336,6 +1561,28 @@
             "type": "string"
           }
         }
+      },
+      "DayOfWeek": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
       },
       "PaginatedListOfTodoItemBriefDto": {
         "type": "object",

@@ -53,6 +53,14 @@ public class StudentRepository : IStudentRepository
         return await _context.SaveChangesAsync(cancellationToken) > 0;
     }
 
+    public async Task<List<StudentEntity>> GetExcellentStudentsAsync()
+    {
+       var excellents = await _context.Students
+            .Include(s=>s.Grades)
+            .ToListAsync();
+            return excellents;
+    }
+
     public async Task<StudentEntity?> GetStudentByIdAsync(int id)
     {
         return await _context.Students.FirstOrDefaultAsync(x => x.Id == id);

@@ -11,6 +11,7 @@ public interface IStudentRepository
 {
     Task<List<StudentEntity>> GetStudentsAsync();
     Task<StudentEntity?> GetStudentByIdAsync(int id);
+    Task<List<StudentEntity>> GetExcellentStudentsAsync();
     Task<bool> CreateStudentAsync(StudentEntity student, string email, string password, CancellationToken cancellationToken);
     Task<bool> UpdateStudentAsync(StudentEntity student, CancellationToken cancellationToken);
     Task<bool> DeleteStudentAsync(StudentEntity student, CancellationToken cancellationToken);

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Azure.Core;
 using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Subject.Queries;
 using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -34,12 +36,20 @@ public class StudentGroupRepository : IStudentGroupRepository
         return await _context.StudentGroups.FirstOrDefaultAsync(sg => sg.Id == id);
     }
 
+    public async Task<List<StudentGroupEntity>> GetStudentGroupByStudentAsync(int studentId)
+    {
+       return await _context.StudentGroups
+            .Include(s=>s.Students)
+            .Where(s=>s.Students!.Any(s=>s.Id == studentId))
+            .ToListAsync();
+    }
+
     public async Task<List<StudentEntity>> GetStudentGroupMembersAsync(int studentGroupId)
     {
         return await _context.Students
-      .Include(s => s.Groups) 
-      .Where(s => s.Groups!.Any(sm => sm.Id == studentGroupId))
-      .ToListAsync();
+              .Include(s => s.Groups)
+              .Where(s => s.Groups!.Any(sm => sm.Id == studentGroupId))
+              .ToListAsync();
     }
 
     public async Task<List<StudentGroupEntity>> GetStudentGroupsAsync()
@@ -47,9 +57,19 @@ public class StudentGroupRepository : IStudentGroupRepository
         return await _context.StudentGroups.ToListAsync();
     }
 
+    public async Task<TeacherEntity?> GetTeacherByStudentGroupAsync(int studentGroupId)
+    {
+        return await _context.Teachers
+         .Include(t => t.Subject)
+         .ThenInclude(subject => subject!.StudentGroup)
+         .Where(s=>s.Id == studentGroupId)
+         //.Where(s => s.StudentGroups!.Any(sg => sg.Id == studentGroupId))
+         .FirstAsync();
+    }
+
     public async Task<bool> UpdateStudentGroupAsync(StudentGroupEntity studentGroup, CancellationToken cancellationToken)
     {
         _context.StudentGroups.Update(studentGroup);
-        return  await _context.SaveChangesAsync(cancellationToken) > 0;
+        return await _context.SaveChangesAsync(cancellationToken) > 0;
     }
 }

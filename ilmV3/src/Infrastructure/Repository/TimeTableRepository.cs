@@ -44,4 +44,8 @@ public class TimeTableRepository : ITimeTableRepository
         _context.TimeTables.Update(timeTable);
         return await _context.SaveChangesAsync(cancellationToken) > 0; 
     }
+    public async Task<TimeTableEntity?> GetTimeTableByDateAsync(DateOnly date)
+    {
+        return await _context.TimeTables.FirstOrDefaultAsync(time => time.Date == date);
+    }
 }

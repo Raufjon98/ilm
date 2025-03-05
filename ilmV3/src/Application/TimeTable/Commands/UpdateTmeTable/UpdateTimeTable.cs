@@ -29,6 +29,9 @@ public class UpdateTimeTableCommandHandler : IRequestHandler<UpdateTimeTableComm
         timeTable.StudentGroupId = request.timeTable.StudentGroupId;
         timeTable.SubjectId = request.timeTable.SubjectId;
         timeTable.TeacherId = request.timeTable.TeacherId;
+        timeTable.WeekDay = request.timeTable.WeekDay;
+        timeTable.Date = request.timeTable.Date;
+        timeTable.Time = request.timeTable.Time;
 
         return await _timeTableRepository.UpdateTimeTableAsync(timeTable, cancellationToken);    
     }

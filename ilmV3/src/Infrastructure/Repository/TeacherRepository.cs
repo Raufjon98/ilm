@@ -15,7 +15,7 @@ public class TeacherRepository : ITeacherRepository
 {
     private readonly IApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
-    public TeacherRepository(IApplicationDbContext context , UserManager<ApplicationUser> userManager)
+    public TeacherRepository(IApplicationDbContext context, UserManager<ApplicationUser> userManager)
     {
         _context = context;
         _userManager = userManager;

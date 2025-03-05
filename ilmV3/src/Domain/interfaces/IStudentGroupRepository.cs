@@ -10,6 +10,8 @@ public interface IStudentGroupRepository
     Task<List<StudentGroupEntity>> GetStudentGroupsAsync();
     Task<StudentGroupEntity?> GetStudentGroupByIdAsync(int studenGroupId);
     Task<List<StudentEntity>> GetStudentGroupMembersAsync(int studentGroupId);
+    Task<TeacherEntity?> GetTeacherByStudentGroupAsync(int studentGroupId);
+    Task<List<StudentGroupEntity>> GetStudentGroupByStudentAsync(int studentId);
     Task<bool> CreateStudentGroupAsync(StudentGroupEntity studentGroup, CancellationToken cancellationToken);
     Task<bool> UpdateStudentGroupAsync(StudentGroupEntity studentGroup, CancellationToken cancellationToken);
     Task<bool> DeleteStudentGroupAsync(StudentGroupEntity studentGroup, CancellationToken cancellationToken);

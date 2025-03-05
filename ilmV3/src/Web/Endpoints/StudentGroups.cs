@@ -6,7 +6,7 @@ using ilmV3.Domain.Entities;
 
 namespace ilmV3.Web.Endpoints;
 
-public class StudetnGroups : EndpointGroupBase
+public class StudentGroups : EndpointGroupBase
 {
 
     public override void Map(WebApplication app)
@@ -14,7 +14,9 @@ public class StudetnGroups : EndpointGroupBase
         app.MapGroup(this)
            .MapGet(GetStudentGroups)
            .MapGet(GetStudentGroup, "{studentGroupid}")
-           .MapGet(GetStudentGroupMembers, "{studentGroupid}")
+           .MapGet(GetStudentGroupMembers, "members/{studentGroupid}")
+           .MapGet(GetTeacherByStudentGroup, "{studentGroupid}/teacher")
+           .MapGet(GetStudentGroupByStudent, "/groups{studentId}")
            .MapPost(CreateStudenGroup)
            .MapPut(UpdateStudentGroup, "{studentGroupId}")
            .MapDelete(DeleteStudentGroup, "{studentGroupId}");
@@ -48,6 +50,16 @@ public class StudetnGroups : EndpointGroupBase
     public async Task<IResult> GetStudentGroupMembers(ISender _sender, int studentGroupid)
     {
         var result = await _sender.Send(new GetStudentGroupMembersQuery(studentGroupid));
+        return TypedResults.Ok(result);
+    }
+    public async Task<IResult> GetTeacherByStudentGroup(ISender _sender, int studentGroupId)
+    {
+        var result = await _sender.Send(new GetTeacherByStudentGroupQuery(studentGroupId));
+        return TypedResults.Ok(result);
+    }   
+    public async Task<IResult> GetStudentGroupByStudent(ISender _sender, int studentId)
+    {
+        var result = await _sender.Send(new GetStudentGroupByStudentQuery(studentId));
         return TypedResults.Ok(result);
     }
 }
