@@ -37,6 +37,8 @@ app.MapFallbackToFile("index.html");
 
 app.UseExceptionHandler(options => { });
 
+app.UseDeveloperExceptionPage();
+
 app.MapEndpoints();
 
 app.Run();

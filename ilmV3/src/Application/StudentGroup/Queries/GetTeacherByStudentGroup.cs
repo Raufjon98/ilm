@@ -11,20 +11,16 @@ public record GetTeacherByStudentGroupQuery(int studentGroupId) : IRequest<Teach
 
 public class GetTeacherByStudentGroupQueryHandler : IRequestHandler<GetTeacherByStudentGroupQuery, TeacherVM>
 {
-    private readonly IStudentGroupRepository _studentGroupRepository;
     private readonly IMapper _mapper;
-    public GetTeacherByStudentGroupQueryHandler(IStudentGroupRepository studentGroupRepository, IMapper mapper)
+    private readonly IStudentGroupRepository _studentGroupRepository;
+    public GetTeacherByStudentGroupQueryHandler(IMapper mapper, IStudentGroupRepository studentGroupRepository)
     {
-        _studentGroupRepository = studentGroupRepository;
         _mapper = mapper;
+        _studentGroupRepository = studentGroupRepository;
     }
     public async Task<TeacherVM> Handle(GetTeacherByStudentGroupQuery request, CancellationToken cancellationToken)
     {
         var result = await _studentGroupRepository.GetTeacherByStudentGroupAsync(request.studentGroupId);
-        if (result == null)
-        {
-            throw new ArgumentNullException(nameof(result), $"Somthing went wrong!");
-        }
         return _mapper.Map<TeacherVM>(result);
     }
 }

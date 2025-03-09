@@ -539,8 +539,8 @@ export interface IStudentGroupsClient {
     createStudenGroup(studentGroup: StudentGroupDto): Observable<void>;
     getStudentGroup(studentGroupid: number): Observable<void>;
     getStudentGroupMembers(studentGroupid: number): Observable<void>;
-    getTeacherByStudentGroup(studentGroupId: number): Observable<void>;
     getStudentGroupByStudent(studentId: number): Observable<void>;
+    getTeacherByStudentGroup(studentGroupId: number): Observable<void>;
     updateStudentGroup(studentGroupid: number, studentGroup: StudentGroupDto): Observable<void>;
     deleteStudentGroup(studentGroupId: number): Observable<void>;
 }
@@ -744,53 +744,6 @@ export class StudentGroupsClient implements IStudentGroupsClient {
         return _observableOf(null as any);
     }
 
-    getTeacherByStudentGroup(studentGroupId: number): Observable<void> {
-        let url_ = this.baseUrl + "/api/StudentGroups/{studentGroupid}/teacher";
-        if (studentGroupId === undefined || studentGroupId === null)
-            throw new Error("The parameter 'studentGroupId' must be defined.");
-        url_ = url_.replace("{studentGroupid}", encodeURIComponent("" + studentGroupId));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetTeacherByStudentGroup(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetTeacherByStudentGroup(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processGetTeacherByStudentGroup(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
     getStudentGroupByStudent(studentId: number): Observable<void> {
         let url_ = this.baseUrl + "/api/StudentGroups/groups{studentId}";
         if (studentId === undefined || studentId === null)
@@ -820,6 +773,53 @@ export class StudentGroupsClient implements IStudentGroupsClient {
     }
 
     protected processGetStudentGroupByStudent(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getTeacherByStudentGroup(studentGroupId: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/StudentGroups/{studentGroupId}/teacher";
+        if (studentGroupId === undefined || studentGroupId === null)
+            throw new Error("The parameter 'studentGroupId' must be defined.");
+        url_ = url_.replace("{studentGroupId}", encodeURIComponent("" + studentGroupId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTeacherByStudentGroup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTeacherByStudentGroup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processGetTeacherByStudentGroup(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -944,6 +944,7 @@ export interface IStudentsClient {
     getStudent(studentId: number): Observable<void>;
     deleteStudent(studentId: number): Observable<void>;
     updateStudent(studentId: number, student: StudentDto): Observable<void>;
+    updateStudentGroupForStudent(studentId: number, studentGroupId: number): Observable<void>;
 }
 
 @Injectable({
@@ -1230,6 +1231,56 @@ export class StudentsClient implements IStudentsClient {
     }
 
     protected processUpdateStudent(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    updateStudentGroupForStudent(studentId: number, studentGroupId: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Students/groupEdit/{studentId}/{studentGroupId}";
+        if (studentId === undefined || studentId === null)
+            throw new Error("The parameter 'studentId' must be defined.");
+        url_ = url_.replace("{studentId}", encodeURIComponent("" + studentId));
+        if (studentGroupId === undefined || studentGroupId === null)
+            throw new Error("The parameter 'studentGroupId' must be defined.");
+        url_ = url_.replace("{studentGroupId}", encodeURIComponent("" + studentGroupId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateStudentGroupForStudent(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateStudentGroupForStudent(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpdateStudentGroupForStudent(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :

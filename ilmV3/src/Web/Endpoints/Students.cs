@@ -1,6 +1,7 @@
 ﻿using ilmV3.Application.Student.Commands.CreateStudent;
 using ilmV3.Application.Student.Commands.DeleteStudent;
 using ilmV3.Application.Student.Commands.UpdateStudent;
+using ilmV3.Application.Student.Commands.UpdateStudentGroup;
 using ilmV3.Application.Student.Queries;
 using ilmV3.Domain.Entities;
 
@@ -17,6 +18,7 @@ public class Students : EndpointGroupBase
            .MapGet(GetStudent, "{studentId}")
            .MapPost(CreateStudent)
            .MapDelete(DeleteStudent, "{studentId}")
+           .MapPut(UpdateStudentGroupForStudent, "groupEdit/{studentId}/{studentGroupId}")
            .MapPut(UpdateStudent, "{studentId}");
     }
 
@@ -48,6 +50,11 @@ public class Students : EndpointGroupBase
     public async Task<IResult> GetExcellentStudents(ISender _sender)
     {
         var result = await _sender.Send(new GetExcellentStudentsQuery());
+        return TypedResults.Ok(result);
+    }
+    public async Task<IResult> UpdateStudentGroupForStudent(ISender _sender, int studentId, int StudentGroupId)
+    {
+        var result = await _sender.Send(new UpdateStudentGroupCommand(studentId, StudentGroupId));
         return TypedResults.Ok(result);
     }
 }

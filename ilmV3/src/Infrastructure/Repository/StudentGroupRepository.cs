@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using ilmV3.Application.Subject.Queries;
 using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
 namespace ilmV3.Infrastructure.Repository;
 public class StudentGroupRepository : IStudentGroupRepository
@@ -38,10 +40,10 @@ public class StudentGroupRepository : IStudentGroupRepository
 
     public async Task<List<StudentGroupEntity>> GetStudentGroupByStudentAsync(int studentId)
     {
-       return await _context.StudentGroups
-            .Include(s=>s.Students)
-            .Where(s=>s.Students!.Any(s=>s.Id == studentId))
-            .ToListAsync();
+        return await _context.StudentGroups
+             .Include(s => s.Students)
+             .Where(s => s.Students!.Any(s => s.Id == studentId))
+             .ToListAsync();
     }
 
     public async Task<List<StudentEntity>> GetStudentGroupMembersAsync(int studentGroupId)
@@ -57,19 +59,34 @@ public class StudentGroupRepository : IStudentGroupRepository
         return await _context.StudentGroups.ToListAsync();
     }
 
-    public async Task<TeacherEntity?> GetTeacherByStudentGroupAsync(int studentGroupId)
-    {
-        return await _context.Teachers
-         .Include(t => t.Subject)
-         .ThenInclude(subject => subject!.StudentGroup)
-         .Where(s=>s.Id == studentGroupId)
-         //.Where(s => s.StudentGroups!.Any(sg => sg.Id == studentGroupId))
-         .FirstAsync();
-    }
-
     public async Task<bool> UpdateStudentGroupAsync(StudentGroupEntity studentGroup, CancellationToken cancellationToken)
     {
         _context.StudentGroups.Update(studentGroup);
         return await _context.SaveChangesAsync(cancellationToken) > 0;
+    }
+    public async Task<TeacherEntity?> GetTeacherByStudentGroupAsync(int studentGroupId)
+    {
+      var group = await _context.StudentGroups
+            .Include(s=>s.Subject)
+            .FirstOrDefaultAsync(sg=>sg.Id == studentGroupId);
+        if (group == null)
+        {
+            throw new Exception("The group does not found!");
+        }
+
+        var teacher = _context.Teachers.
+            Include(t => t.Subject)
+            .FirstOrDefault(t=> t.Subject !=null && t.Subject.Id == group.SubjectId);
+        if ( teacher == null)
+        {
+            throw new Exception("Teacher not found!");
+        }
+        var result = new TeacherEntity
+        {
+            Id = teacher.Id,
+            Subject = teacher.Subject,
+            Name = teacher.Name,
+        };
+        return result;
     }
 }

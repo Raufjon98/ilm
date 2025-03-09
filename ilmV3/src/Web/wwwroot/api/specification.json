@@ -330,16 +330,15 @@
         }
       }
     },
-    "/api/StudentGroups/{studentGroupid}/teacher": {
+    "/api/StudentGroups/groups{studentId}": {
       "get": {
         "tags": [
           "StudentGroups"
         ],
-        "operationId": "GetTeacherByStudentGroup",
+        "operationId": "GetStudentGroupByStudent",
         "parameters": [
           {
-            "name": "studentGroupid",
-            "x-originalName": "studentGroupId",
+            "name": "studentId",
             "in": "path",
             "required": true,
             "schema": {
@@ -356,15 +355,15 @@
         }
       }
     },
-    "/api/StudentGroups/groups{studentId}": {
+    "/api/StudentGroups/{studentGroupId}/teacher": {
       "get": {
         "tags": [
           "StudentGroups"
         ],
-        "operationId": "GetStudentGroupByStudent",
+        "operationId": "GetTeacherByStudentGroup",
         "parameters": [
           {
-            "name": "studentId",
+            "name": "studentGroupId",
             "in": "path",
             "required": true,
             "schema": {
@@ -587,6 +586,42 @@
           "required": true,
           "x-position": 1
         },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Students/groupEdit/{studentId}/{studentGroupId}": {
+      "put": {
+        "tags": [
+          "Students"
+        ],
+        "operationId": "UpdateStudentGroupForStudent",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "studentGroupId",
+            "x-originalName": "StudentGroupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          }
+        ],
         "responses": {
           "200": {
             "description": ""

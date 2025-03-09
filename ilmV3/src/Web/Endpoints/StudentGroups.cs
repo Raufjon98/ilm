@@ -15,8 +15,8 @@ public class StudentGroups : EndpointGroupBase
            .MapGet(GetStudentGroups)
            .MapGet(GetStudentGroup, "{studentGroupid}")
            .MapGet(GetStudentGroupMembers, "members/{studentGroupid}")
-           .MapGet(GetTeacherByStudentGroup, "{studentGroupid}/teacher")
            .MapGet(GetStudentGroupByStudent, "/groups{studentId}")
+           .MapGet(GetTeacherByStudentGroup, "{studentGroupId}/teacher")
            .MapPost(CreateStudenGroup)
            .MapPut(UpdateStudentGroup, "{studentGroupId}")
            .MapDelete(DeleteStudentGroup, "{studentGroupId}");
@@ -52,14 +52,15 @@ public class StudentGroups : EndpointGroupBase
         var result = await _sender.Send(new GetStudentGroupMembersQuery(studentGroupid));
         return TypedResults.Ok(result);
     }
-    public async Task<IResult> GetTeacherByStudentGroup(ISender _sender, int studentGroupId)
-    {
-        var result = await _sender.Send(new GetTeacherByStudentGroupQuery(studentGroupId));
-        return TypedResults.Ok(result);
-    }   
     public async Task<IResult> GetStudentGroupByStudent(ISender _sender, int studentId)
     {
         var result = await _sender.Send(new GetStudentGroupByStudentQuery(studentId));
+        return TypedResults.Ok(result);
+    }
+
+    public async Task<IResult> GetTeacherByStudentGroup(ISender _sender, int studentGroupId)
+    {
+        var result = await _sender.Send(new GetTeacherByStudentGroupQuery(studentGroupId));
         return TypedResults.Ok(result);
     }
 }
