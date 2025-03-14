@@ -1,14 +1,7 @@
-﻿
-using AutoMapper;
-using ilmV3.Application.Absent.Commands.CreateAbsent;
+﻿using ilmV3.Application.Absent.Commands.CreateAbsent;
 using ilmV3.Application.Absent.Commands.DeleteAbsent;
 using ilmV3.Application.Absent.Commands.UpdateAbsent;
-using ilmV3.Application.Absent.Queries;
 using ilmV3.Application.Absent.Queries.GetAbsent;
-using ilmV3.Domain.Entities;
-using ilmV3.Domain.interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ilmV3.Web.Endpoints;
 

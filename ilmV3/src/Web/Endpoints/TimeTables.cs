@@ -1,9 +1,7 @@
-﻿using System.Runtime.CompilerServices;
-using ilmV3.Application.TimeTable.Commands.CreateTimeTable;
+﻿using ilmV3.Application.TimeTable.Commands.CreateTimeTable;
 using ilmV3.Application.TimeTable.Commands.DeleteTimeTable;
 using ilmV3.Application.TimeTable.Commands.UpdateTmeTable;
 using ilmV3.Application.TimeTable.Queries;
-using ilmV3.Domain.Entities;
 
 namespace ilmV3.Web.Endpoints;
 

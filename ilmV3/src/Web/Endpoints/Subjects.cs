@@ -1,11 +1,8 @@
-﻿using ilmV3.Application.Student.Queries;
-using ilmV3.Application.Subject.Commands.CreateSubject;
+﻿using ilmV3.Application.Subject.Commands.CreateSubject;
 using ilmV3.Application.Subject.Commands.DeleteSubject;
 using ilmV3.Application.Subject.Commands.UpdateSubject;
 using ilmV3.Application.Subject.Queries;
-using ilmV3.Domain.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Rewrite;
 
 namespace ilmV3.Web.Endpoints;
 

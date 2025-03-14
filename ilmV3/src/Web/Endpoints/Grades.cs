@@ -4,8 +4,6 @@ using ilmV3.Application.Grade.Commands.CreateGrade;
 using ilmV3.Application.Grade.Commands.DeleteGrade;
 using ilmV3.Application.Grade.Commands.UpdateGrade;
 using ilmV3.Application.Grade.Queries;
-using ilmV3.Domain.Entities;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ilmV3.Web.Endpoints;
 
