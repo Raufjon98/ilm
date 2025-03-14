@@ -4,8 +4,6 @@ namespace ilmV3.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
-    DbSet<TodoList> TodoLists { get; }
-    DbSet<TodoItem> TodoItems { get; }
     DbSet<AbsentEntity> Absents { get; }
     DbSet<GradeEntity> Grades { get; }
     DbSet<StudentEntity> Students { get; }

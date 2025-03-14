@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ilmV3.Application.Common.Interfaces;
+﻿using ilmV3.Application.Common.Interfaces;
 using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -14,13 +9,14 @@ public class TimeTableRepository : ITimeTableRepository
     private readonly IApplicationDbContext _context;
     public TimeTableRepository(IApplicationDbContext context)
     {
-         _context = context;
+        _context = context;
     }
 
-    public async Task<bool> CreateTimeTableAsync(TimeTableEntity timeTable, CancellationToken cancellationToken)
+    public async Task<TimeTableEntity> CreateTimeTableAsync(TimeTableEntity timeTable, CancellationToken cancellationToken)
     {
         await _context.TimeTables.AddAsync(timeTable);
-        return await _context.SaveChangesAsync(cancellationToken) > 0;
+        await _context.SaveChangesAsync(cancellationToken);
+        return timeTable;
     }
 
     public async Task<bool> DeleteTimeTableAsync(TimeTableEntity timeTable, CancellationToken cancellationToken)
@@ -39,13 +35,10 @@ public class TimeTableRepository : ITimeTableRepository
         return await _context.TimeTables.ToListAsync();
     }
 
-    public async Task<bool> UpdateTimeTableAsync(TimeTableEntity timeTable, CancellationToken cancellationToken)
+    public async Task<TimeTableEntity> UpdateTimeTableAsync(TimeTableEntity timeTable, CancellationToken cancellationToken)
     {
         _context.TimeTables.Update(timeTable);
-        return await _context.SaveChangesAsync(cancellationToken) > 0; 
-    }
-    public async Task<TimeTableEntity?> GetTimeTableByDateAsync(DateOnly date)
-    {
-        return await _context.TimeTables.FirstOrDefaultAsync(time => time.Date == date);
+        await _context.SaveChangesAsync(cancellationToken);
+        return timeTable;
     }
 }

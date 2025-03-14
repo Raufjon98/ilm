@@ -1,29 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ilmV3.Application.Absent.Queries.GetAbsent;
-using ilmV3.Domain.Entities;
+﻿using ilmV3.Application.Absent.Queries.GetAbsent;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Absent.Commands.UpdateAbsent;
-public record UpdateAbsentCommand(int absentId, AbsentDto absent) : IRequest<bool>;
+public record UpdateAbsentCommand(int absentId, AbsentDto absent) : IRequest<AbsentVM>;
 
-public class UpdateAbsentCommandHandler : IRequestHandler<UpdateAbsentCommand, bool>
+public class UpdateAbsentCommandHandler : IRequestHandler<UpdateAbsentCommand, AbsentVM>
 {
     private readonly IAbsentRepository _absentRepository;
     public UpdateAbsentCommandHandler(IAbsentRepository absentRepository)
     {
         _absentRepository = absentRepository;
     }
-    public async Task<bool> Handle(UpdateAbsentCommand request, CancellationToken cancellationToken)
+    public async Task<AbsentVM> Handle(UpdateAbsentCommand request, CancellationToken cancellationToken)
     {
         var absent = await _absentRepository.GetAbsentByIdAsync(request.absentId);
-        if (absent == null) 
-            {
-                throw new KeyNotFoundException($"Absent record with ID {request.absentId} not found.");
-            }
+        if (absent == null)
+        {
+            throw new KeyNotFoundException($"Absent record with ID {request.absentId} not found.");
+        }
 
         absent.ClassDay = request.absent.ClassDay;
         absent.StudentId = request.absent.StudentId;
@@ -31,9 +25,21 @@ public class UpdateAbsentCommandHandler : IRequestHandler<UpdateAbsentCommand, b
         absent.SubjectId = request.absent.SubjectId;
         absent.Absent = request.absent.Absent;
         absent.Date = DateOnly.FromDateTime(DateTime.UtcNow);
-       
 
-        return await _absentRepository.UpdateAbsentAsync(absent, cancellationToken);
-        
+
+        var result = await _absentRepository.UpdateAbsentAsync(absent, cancellationToken);
+
+        AbsentVM absentVM = new AbsentVM
+        {
+            Id = absent.Id,
+            ClassDay = absent.ClassDay,
+            StudentId = absent.StudentId,
+            TeacherId = absent.TeacherId,
+            SubjectId = absent.SubjectId,
+            Date = absent.Date,
+            Absent = absent.Absent,
+        };
+        return absentVM;
+
     }
 }

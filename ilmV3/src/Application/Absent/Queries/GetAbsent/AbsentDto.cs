@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ilmV3.Domain.Entities;
-
-namespace ilmV3.Application.Absent.Queries.GetAbsent;
+﻿namespace ilmV3.Application.Absent.Queries.GetAbsent;
 public class AbsentDto
 {
     public int StudentId { get; set; }
@@ -14,12 +7,4 @@ public class AbsentDto
     public string ClassDay { get; set; } = string.Empty;
     public DateOnly Date { get; set; }
     public bool Absent { get; set; }
-
-    private class Mapping : Profile
-    {
-        public Mapping()
-        {
-            CreateMap<AbsentDto, AbsentEntity>();
-        }
-    }
 }

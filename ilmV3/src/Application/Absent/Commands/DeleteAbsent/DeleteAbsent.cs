@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ilmV3.Domain.Entities;
-using ilmV3.Domain.interfaces;
+﻿using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Absent.Commands.DeleteAbsent;
 public record DeleteAbsentCommand(int absentId) :IRequest<bool>;

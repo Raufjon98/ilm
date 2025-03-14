@@ -1,22 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ilmV3.Domain.interfaces;
+﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.StudentGroup.Queries;
 
 namespace ilmV3.Application.Student.Commands.UpdateStudentGroup;
-public record UpdateStudentGroupCommand(int studentId, int StudentGroupId) : IRequest<bool>;
+public record UpdateStudentGroupCommand(int studentId, int studentGroupId) : IRequest<StudentGroupVM>;
 
-public class UpdateStudentGroupCommandHandler : IRequestHandler<UpdateStudentGroupCommand, bool>
+public class UpdateStudentGroupCommandHandler : IRequestHandler<UpdateStudentGroupCommand, StudentGroupVM>
 {
-    private readonly IStudentRepository _studentRepository;
-    public UpdateStudentGroupCommandHandler(IStudentRepository studentRepository)
+    private readonly IApplicationDbContext _context;
+    public UpdateStudentGroupCommandHandler(IApplicationDbContext context)
     {
-        _studentRepository = studentRepository;
+        _context = context;
     }
-    public async Task<bool> Handle(UpdateStudentGroupCommand request, CancellationToken cancellationToken)
+    public async Task<StudentGroupVM> Handle(UpdateStudentGroupCommand request, CancellationToken cancellationToken)
     {
-      return await _studentRepository.UpdateStudentGroupAsync(request.studentId, request.StudentGroupId, cancellationToken);
+        var student = await _context.Students
+         .Include(s => s.Groups)
+         .Where(s => s.Id == request.studentId)
+         .FirstOrDefaultAsync();
+        if (student == null)
+        {
+            throw new Exception("Student not forund!");
+        }
+        student.Groups?.Clear();
+        var group = await _context.StudentGroups.FindAsync(request.studentGroupId);
+        if (group == null)
+            throw new Exception("Group does not found!");
+
+        student.Groups?.Add(group);
+        var result = await _context.SaveChangesAsync(cancellationToken);
+        StudentGroupVM studentGroupVM = new StudentGroupVM
+        {
+            Id = group.Id,
+            Name = group.Name,
+            CodeName = group.CodeName,
+            SubjectId = group.SubjectId,
+        };
+        return studentGroupVM;
     }
 }

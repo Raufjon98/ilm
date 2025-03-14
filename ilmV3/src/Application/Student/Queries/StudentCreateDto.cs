@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ilmV3.Application.Student.Queries;
+﻿namespace ilmV3.Application.Student.Queries;
 public class StudentCreateDto
 {
     public string Name { get; set; } = string.Empty;

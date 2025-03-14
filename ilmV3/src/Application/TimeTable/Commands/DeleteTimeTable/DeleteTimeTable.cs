@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ilmV3.Domain.interfaces;
+﻿using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.TimeTable.Commands.DeleteTimeTable;
 public record DeleteTimeTableCommand(int timeTableId) : IRequest<bool>;
@@ -13,7 +8,7 @@ public class DeleteTimeTableCommandHandler : IRequestHandler<DeleteTimeTableComm
     private readonly ITimeTableRepository _timeTableRepository;
     public DeleteTimeTableCommandHandler(ITimeTableRepository timeTableRepository)
     {
-         _timeTableRepository = timeTableRepository;
+        _timeTableRepository = timeTableRepository;
     }
     public async Task<bool> Handle(DeleteTimeTableCommand request, CancellationToken cancellationToken)
     {

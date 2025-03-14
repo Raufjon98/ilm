@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ilmV3.Domain.interfaces;
+﻿using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Subject.Commands.DeleteSubject;
 public record DeleteSubjectCommand(int SubjectId) : IRequest<bool>;

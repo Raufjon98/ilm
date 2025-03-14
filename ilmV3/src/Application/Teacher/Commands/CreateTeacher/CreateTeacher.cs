@@ -1,27 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ilmV3.Application.Teacher.Queries;
+﻿using ilmV3.Application.Teacher.Queries;
 using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Teacher.Commands.CreateTeacher;
-public record CreateTeacherCommand(TeacherDto teacher, string email, string password) : IRequest<bool>;
+public record CreateTeacherCommand(TeacherDto teacher, string email, string password) : IRequest<TeacherVM>;
 
-public class CreateTeacherCommandHandler : IRequestHandler<CreateTeacherCommand, bool>
+public class CreateTeacherCommandHandler : IRequestHandler<CreateTeacherCommand, TeacherVM>
 {
     private readonly ITeacherRepository _teacherRepository;
-    private readonly IMapper _mapper;
-    public CreateTeacherCommandHandler(IMapper mapper, ITeacherRepository teacherRepository)
+    private readonly IApplicationUserRepository _userRepository;
+    public CreateTeacherCommandHandler(ITeacherRepository teacherRepository, IApplicationUserRepository userRepository)
     {
-        _mapper = mapper;
         _teacherRepository = teacherRepository;
+        _userRepository = userRepository;
     }
-    public async Task<bool> Handle(CreateTeacherCommand request, CancellationToken cancellationToken)
+    public async Task<TeacherVM> Handle(CreateTeacherCommand request, CancellationToken cancellationToken)
     {
-        var teacher = _mapper.Map<TeacherEntity>(request.teacher);
-        return await _teacherRepository.CreateTeacherAsync(teacher, request.email, request.password, cancellationToken);
+        TeacherEntity teacher = new TeacherEntity
+        {
+            Name = request.teacher.Name,
+        };
+        var teacherNew = await _teacherRepository.CreateTeacherAsync(teacher, cancellationToken);
+
+        if (teacherNew == null)
+        {
+            throw new Exception("Teacher does not created!");
+        }
+        var userNew = await _userRepository.CreateUserAsync(teacherNew.Id, teacherNew.Name, request.email, request.password);
+        if (userNew == null)
+        {
+            throw new Exception("User does not created!");
+        }
+        await _userRepository.AddRoleAsync(userNew, "Teacher");
+
+        TeacherVM teacherVM = new TeacherVM
+        {
+            Id = teacherNew.Id,
+            Name = teacherNew.Name
+
+        };
+        return teacherVM;
     }
 }

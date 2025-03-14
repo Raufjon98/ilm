@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ilmV3.Application.Common.Interfaces;
 using ilmV3.Application.Student.Queries;
-using ilmV3.Application.StudentGroup.Queries;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.StudentGroup.Queries;
@@ -13,15 +8,28 @@ public record GetStudentGroupMembersQuery(int studentGroupId) : IRequest<IEnumer
 public class GetStudentGroupMembersQueryHandler : IRequestHandler<GetStudentGroupMembersQuery, IEnumerable<StudentVM>>
 {
     private readonly IStudentGroupRepository _studentGroupRepository;
-    private readonly IMapper _mapper;
-    public GetStudentGroupMembersQueryHandler(IMapper mapper, IStudentGroupRepository studentGroupRepository)
+    private readonly IApplicationDbContext _context;
+    public GetStudentGroupMembersQueryHandler(IApplicationDbContext context, IMapper mapper, IStudentGroupRepository studentGroupRepository)
     {
-        _mapper = mapper;
+        _context = context;
         _studentGroupRepository = studentGroupRepository;
     }
     public async Task<IEnumerable<StudentVM>> Handle(GetStudentGroupMembersQuery request, CancellationToken cancellationToken)
     {
-        var result = await _studentGroupRepository.GetStudentGroupMembersAsync(request.studentGroupId);
-        return _mapper.Map<IEnumerable<StudentVM>>(result);
+        var studentGroupMembers = await _context.Students
+            .Include(s => s.Groups)
+            .Where(s => s.Groups!.Any(sm => sm.Id == request.studentGroupId))
+            .ToListAsync();
+        List<StudentVM> result = new List<StudentVM>();
+        foreach (var student in studentGroupMembers)
+        {
+            StudentVM studentVM = new StudentVM()
+            {
+                Id = student.Id,
+                Name = student.Name,
+            };
+            result.Add(studentVM);
+        }
+        return result;
     }
 }

@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Azure.Core;
-using ilmV3.Application.Common.Interfaces;
-using ilmV3.Application.StudentGroup.Queries;
-using ilmV3.Domain.Constants;
+﻿using ilmV3.Application.Common.Interfaces;
 using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 using ilmV3.Infrastructure.Identity;
@@ -27,40 +16,17 @@ public class StudentRepository : IStudentRepository
         _userManager = userManager;
     }
 
-    public async Task<bool> CreateStudentAsync(StudentEntity student, string email, string password, CancellationToken cancellationToken)
+    public async Task<StudentEntity> CreateStudentAsync(StudentEntity student, CancellationToken cancellationToken)
     {
-        var studentNew = new StudentEntity { Name = student.Name };
-        await _context.Students.AddAsync(studentNew);
+        await _context.Students.AddAsync(student);
         await _context.SaveChangesAsync(cancellationToken);
-        var user = new ApplicationUser
-        {
-            ExternalUserId = studentNew.Id,
-            Email = email,
-            UserName = student.Name
-
-        };
-        var result = await _userManager.CreateAsync(user, password);
-        if (!result.Succeeded)
-        {
-            throw new Exception($"User creation failed: {string.Join(", ", result.Errors.Select(e => e.Description))}");
-        }
-        await _userManager.AddToRoleAsync(user, "Student");
-        return result.Succeeded;
+        return student;
     }
 
     public async Task<bool> DeleteStudentAsync(StudentEntity student, CancellationToken cancellationToken)
     {
         _context.Students.Remove(student);
         return await _context.SaveChangesAsync(cancellationToken) > 0;
-    }
-
-    public async Task<List<StudentEntity>> GetExcellentStudentsAsync()
-    {
-        var excellents = await _context.Students
-             .Include(s => s.Grades)
-             .Where(s=>s.Grades != null && s.Grades.Any(g=>g.Grade>=8))
-             .ToListAsync();
-        return excellents;
     }
 
     public async Task<StudentEntity?> GetStudentByIdAsync(int id)
@@ -73,29 +39,10 @@ public class StudentRepository : IStudentRepository
         return await _context.Students.ToListAsync();
     }
 
-    public async Task<bool> UpdateStudentAsync(StudentEntity student, CancellationToken cancellationToken)
+    public async Task<StudentEntity> UpdateStudentAsync(StudentEntity student, CancellationToken cancellationToken)
     {
         _context.Students.Update(student);
-        return await _context.SaveChangesAsync(cancellationToken) > 0;
-    }
-
-    public async Task<bool> UpdateStudentGroupAsync(int studentId, int studentGroupId, CancellationToken cancellationToken)
-    {
-        var student = await _context.Students
-           .Include(s => s.Groups)
-           .Where(s=>s.Id == studentId)
-           .FirstOrDefaultAsync();
-        if (student == null)
-        {
-            throw new Exception("Student not forund!");
-        }
-        student.Groups?.Clear();
-        var group = await _context.StudentGroups.FindAsync(studentGroupId);
-        if (group == null)
-            throw new Exception("Group does not found!");
-        
-        student.Groups?.Add(group);
-        return await _context.SaveChangesAsync(cancellationToken) > 0;
-
+        await _context.SaveChangesAsync(cancellationToken);
+        return student;
     }
 }

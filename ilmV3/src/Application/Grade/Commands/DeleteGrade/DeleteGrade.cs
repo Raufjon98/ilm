@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ilmV3.Domain.Entities;
-using ilmV3.Domain.interfaces;
+﻿using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Grade.Commands.DeleteGrade  ;
 public record DeleteGradeCommand(int  gradeId) : IRequest<bool>;

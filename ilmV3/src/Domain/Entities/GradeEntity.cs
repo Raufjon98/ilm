@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ilmV3.Domain.Entities;
+﻿namespace ilmV3.Domain.Entities;
 public class GradeEntity 
 {
     public int Id { get; set; }

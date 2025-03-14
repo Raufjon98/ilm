@@ -1,29 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ilmV3.Application.Common.Interfaces;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.StudentGroup.Queries;
-public record GetStudentGroupByStudentQuery(int  studentId) : IRequest<IEnumerable<StudentGroupVM>>;
+public record GetStudentGroupByStudentQuery(int studentId) : IRequest<IEnumerable<StudentGroupVM>>;
 
 public class GetStudentGroupByStudentQueryHandler : IRequestHandler<GetStudentGroupByStudentQuery, IEnumerable<StudentGroupVM>>
 {
     private readonly IStudentGroupRepository _studentGroupRepository;
-    private readonly IMapper _mapper;
-    public GetStudentGroupByStudentQueryHandler(IStudentGroupRepository studentGroupRepository, IMapper mapper)
+    private readonly IApplicationDbContext _context;
+    public GetStudentGroupByStudentQueryHandler(IStudentGroupRepository studentGroupRepository, IMapper mapper, IApplicationDbContext context)
     {
         _studentGroupRepository = studentGroupRepository;
-        _mapper = mapper;
+        _context = context;
     }
     public async Task<IEnumerable<StudentGroupVM>> Handle(GetStudentGroupByStudentQuery request, CancellationToken cancellationToken)
     {
-        var result = await _studentGroupRepository.GetStudentGroupByStudentAsync(request.studentId);
-        if (result == null)
+        var studentGroups = await _context.StudentGroups
+             .Include(s => s.Students)
+             .Where(s => s.Students!.Any(s => s.Id == request.studentId))
+             .ToListAsync();
+        if (studentGroups == null)
         {
             throw new Exception("The null error!");
         }
-        return _mapper.Map<IEnumerable<StudentGroupVM>>(result);
+
+        List<StudentGroupVM> result = new List<StudentGroupVM>();
+
+        foreach (var studentGroup in studentGroups)
+        {
+            StudentGroupVM studentGroupVM = new StudentGroupVM()
+            {
+                Id = studentGroup.Id,
+                Name = studentGroup.Name,
+                CodeName = studentGroup.CodeName,
+                SubjectId = studentGroup.SubjectId
+            };
+            result.Add(studentGroupVM);
+        }
+        return result;
     }
 }

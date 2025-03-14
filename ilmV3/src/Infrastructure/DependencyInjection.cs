@@ -30,6 +30,7 @@ public static class DependencyInjection
         builder.Services.AddScoped<ITimeTableRepository, TimeTableRepository>();
         builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
         builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+        builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
 
         builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {

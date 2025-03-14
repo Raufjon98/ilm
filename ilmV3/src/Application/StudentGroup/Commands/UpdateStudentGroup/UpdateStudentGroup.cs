@@ -1,33 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ilmV3.Application.StudentGroup.Queries;
-using ilmV3.Domain.Entities;
+﻿using ilmV3.Application.StudentGroup.Queries;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.StudentGroup.Commands.UpdateStudentGroup;
-public record UpdateStudentGroupCommand(int studentGroupId, StudentGroupDto studentGroup) : IRequest<bool>;
+public record UpdateStudentGroupCommand(int studentGroupId, StudentGroupDto studentGroup) : IRequest<StudentGroupVM?>;
 
-public class UpdateStudentGroupCommandHandler : IRequestHandler<UpdateStudentGroupCommand, bool>
+public class UpdateStudentGroupCommandHandler : IRequestHandler<UpdateStudentGroupCommand, StudentGroupVM?>
 {
     private readonly IStudentGroupRepository _studentGroupRepository;
     public UpdateStudentGroupCommandHandler(IStudentGroupRepository studentGroupRepository)
     {
         _studentGroupRepository = studentGroupRepository;
     }
-    public async Task<bool> Handle(UpdateStudentGroupCommand request, CancellationToken cancellationToken)
+    public async Task<StudentGroupVM?> Handle(UpdateStudentGroupCommand request, CancellationToken cancellationToken)
     {
         var studentGroup = await _studentGroupRepository.GetStudentGroupByIdAsync(request.studentGroupId);
         if (studentGroup == null)
         {
-            throw new KeyNotFoundException($"Record with ID {request.studentGroupId} not found.");
+            return null;
         }
         studentGroup.SubjectId = request.studentGroup.SubjectId;
         studentGroup.Name = request.studentGroup.Name;
         studentGroup.CodeName = request.studentGroup.CodeName;
-        
-        return await _studentGroupRepository.UpdateStudentGroupAsync(studentGroup, cancellationToken);
+
+        var result = await _studentGroupRepository.UpdateStudentGroupAsync(studentGroup, cancellationToken);
+
+        StudentGroupVM studentGroupVM = new StudentGroupVM
+        {
+            Id = result.Id,
+            SubjectId = result.SubjectId,
+            Name = result.Name,
+            CodeName = result.CodeName,
+        };
+        return studentGroupVM;
     }
 }

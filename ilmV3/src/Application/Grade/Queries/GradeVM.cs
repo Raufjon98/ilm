@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ilmV3.Domain.Entities;
-
-namespace ilmV3.Application.Grade.Queries;
+﻿namespace ilmV3.Application.Grade.Queries;
 public class GradeVM
 {
     public int Id { get; set; }
@@ -15,13 +8,4 @@ public class GradeVM
     public int Grade { get; set; }
     public string ClassDay { get; set; } = string.Empty;
     public DateOnly Date { get; set; }
-
-    private class Mapping : Profile
-    {
-        public Mapping()
-        {
-            CreateMap<GradeEntity, GradeVM>();
-        }
-    }
-
 }

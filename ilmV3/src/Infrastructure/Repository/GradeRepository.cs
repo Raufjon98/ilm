@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ilmV3.Application.Common.Interfaces;
+﻿using ilmV3.Application.Common.Interfaces;
 using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -17,10 +12,11 @@ public class GradeRepository : IGradeRepository
         _context = context;
     }
 
-    public async Task<bool> CreateGradeAsync(GradeEntity grade, CancellationToken cancellationToken)
+    public async Task<GradeEntity> CreateGradeAsync(GradeEntity grade, CancellationToken cancellationToken)
     {
         await _context.Grades.AddAsync(grade);
-        return await _context.SaveChangesAsync(cancellationToken) > 0;
+        await _context.SaveChangesAsync(cancellationToken);
+        return grade;
     }
 
     public async Task<bool> DeleteGradeAsync(GradeEntity grade, CancellationToken cancellationToken)
@@ -39,9 +35,10 @@ public class GradeRepository : IGradeRepository
         return await _context.Grades.ToListAsync();
     }
 
-    public async Task<bool> UpdateGradeAsync(GradeEntity grade, CancellationToken cancellationToken)
+    public async Task<GradeEntity> UpdateGradeAsync(GradeEntity grade, CancellationToken cancellationToken)
     {
-       _context.Grades.Update(grade);
-        return await _context.SaveChangesAsync(cancellationToken) > 0;
+        _context.Grades.Update(grade);
+        await _context.SaveChangesAsync(cancellationToken);
+        return grade;
     }
 }

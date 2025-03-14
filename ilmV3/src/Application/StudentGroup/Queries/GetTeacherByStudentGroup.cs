@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ilmV3.Application.Common.Interfaces;
 using ilmV3.Application.Teacher.Queries;
 using ilmV3.Domain.interfaces;
 
@@ -11,16 +7,37 @@ public record GetTeacherByStudentGroupQuery(int studentGroupId) : IRequest<Teach
 
 public class GetTeacherByStudentGroupQueryHandler : IRequestHandler<GetTeacherByStudentGroupQuery, TeacherVM>
 {
-    private readonly IMapper _mapper;
     private readonly IStudentGroupRepository _studentGroupRepository;
-    public GetTeacherByStudentGroupQueryHandler(IMapper mapper, IStudentGroupRepository studentGroupRepository)
+    private readonly IApplicationDbContext _context;
+    public GetTeacherByStudentGroupQueryHandler(IMapper mapper,
+        IStudentGroupRepository studentGroupRepository, IApplicationDbContext context)
     {
-        _mapper = mapper;
         _studentGroupRepository = studentGroupRepository;
+        _context = context;
     }
     public async Task<TeacherVM> Handle(GetTeacherByStudentGroupQuery request, CancellationToken cancellationToken)
     {
-        var result = await _studentGroupRepository.GetTeacherByStudentGroupAsync(request.studentGroupId);
-        return _mapper.Map<TeacherVM>(result);
+        var group = await _context.StudentGroups
+             .Include(s => s.Subject)
+             .FirstOrDefaultAsync(sg => sg.Id == request.studentGroupId);
+        if (group == null)
+        {
+            throw new Exception("The group does not found!");
+        }
+
+        var teacher = await _context.Teachers.
+            Include(t => t.Subject)
+            .FirstOrDefaultAsync(t => t.Subject != null && t.Subject.Id == group.SubjectId);
+        if (teacher == null)
+        {
+            throw new Exception("Teacher not found!");
+        }
+        TeacherVM teacherVM = new TeacherVM()
+        {
+            Id = teacher.Id,
+            Name = teacher.Name,
+        };
+
+        return teacherVM;
     }
 }

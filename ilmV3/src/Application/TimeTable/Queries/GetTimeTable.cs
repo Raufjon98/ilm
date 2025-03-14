@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ilmV3.Domain.Entities;
-using ilmV3.Domain.interfaces;
+﻿using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.TimeTable.Queries;
 public record GetTimeTableQuery(int timeTableId) : IRequest<TimeTableVM>;
@@ -12,11 +6,9 @@ public record GetTimeTableQuery(int timeTableId) : IRequest<TimeTableVM>;
 public class GetTimeTableQueryHandler : IRequestHandler<GetTimeTableQuery, TimeTableVM>
 {
     private readonly ITimeTableRepository _timeTableRepository;
-    private readonly IMapper _mapper;
     public GetTimeTableQueryHandler(ITimeTableRepository timeTableRepository, IMapper mapper)
     {
         _timeTableRepository = timeTableRepository;
-        _mapper = mapper;
     }
     public async Task<TimeTableVM> Handle(GetTimeTableQuery request, CancellationToken cancellationToken)
     {
@@ -25,6 +17,19 @@ public class GetTimeTableQueryHandler : IRequestHandler<GetTimeTableQuery, TimeT
         {
             throw new KeyNotFoundException($"Record with Id {request.timeTableId} not found!");
         }
-        return _mapper.Map<TimeTableVM>(timeTable);
+
+        TimeTableVM timeTableVM = new TimeTableVM()
+        {
+            Id = timeTable.Id,
+            Name = timeTable.Name,
+            StudentGroupId = timeTable.StudentGroupId,
+            SubjectId = timeTable.SubjectId,
+            TeacherId = timeTable.TeacherId,
+            Audience = timeTable.Audience,
+            Date = timeTable.Date,
+            WeekDay = timeTable.WeekDay,
+            Time = timeTable.Time,
+        };
+        return timeTableVM;
     }
 }

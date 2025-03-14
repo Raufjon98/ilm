@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ilmV3.Application.Common.Interfaces;
 using ilmV3.Application.Teacher.Queries;
-using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Subject.Queries;
@@ -13,19 +8,27 @@ public record GetTeacherBySubjectQuery(int subjectId) : IRequest<TeacherVM>;
 public class GetTecherBySubjectQueryHandler : IRequestHandler<GetTeacherBySubjectQuery, TeacherVM>
 {
     private readonly ISubjectRepository _subjectRepository;
-    private readonly IMapper _mapper;
-    public GetTecherBySubjectQueryHandler(IMapper mapper, ISubjectRepository subjectRepository)
+    private readonly IApplicationDbContext _context;
+    public GetTecherBySubjectQueryHandler(IMapper mapper,
+        ISubjectRepository subjectRepository, IApplicationDbContext context)
     {
         _subjectRepository = subjectRepository;
-        _mapper = mapper;
+        _context = context;
     }
     public async Task<TeacherVM> Handle(GetTeacherBySubjectQuery request, CancellationToken cancellationToken)
     {
-        var result = await _subjectRepository.GetTeacherBySubject(request.subjectId);
-        if (result == null)
+        var teacher = await _context.Teachers.Include(t => t.Subject)
+            .FirstOrDefaultAsync(s => s.Subject != null && s.Subject.Id == request.subjectId);
+        if (teacher == null)
         {
             throw new KeyNotFoundException($"Record with ID {request.subjectId} not found");
         }
-        return _mapper.Map<TeacherVM>(result);
+
+        TeacherVM teacherVM = new TeacherVM()
+        {
+            Id = teacher.Id,
+            Name = teacher.Name,
+        };
+        return teacherVM;
     }
 }

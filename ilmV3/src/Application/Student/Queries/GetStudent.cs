@@ -12,19 +12,22 @@ public record GetStudentQuery(int studentId) : IRequest<StudentVM>;
 public class GetStudentQueryHandler : IRequestHandler<GetStudentQuery, StudentVM>
 {
     private readonly IStudentRepository _studentRepository;
-    private readonly IMapper _mapper;
     public GetStudentQueryHandler(IStudentRepository studentRepository, IMapper mapper)
     {
         _studentRepository = studentRepository;
-        _mapper = mapper;
     }
     public async Task<StudentVM> Handle(GetStudentQuery request, CancellationToken cancellationToken)
     {
-        var result = await _studentRepository.GetStudentByIdAsync(request.studentId);
-        if (result == null)
+        var student = await _studentRepository.GetStudentByIdAsync(request.studentId);
+        if (student == null)
         {
             throw new KeyNotFoundException($"Record with ID {request.studentId} not found.");
         }
-        return _mapper.Map<StudentVM>(result);
+        var studentVM = new StudentVM()
+        {
+            Id = student.Id,
+            Name = student.Name,
+        };
+        return studentVM;
     }
 }

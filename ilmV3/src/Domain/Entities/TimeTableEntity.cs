@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ilmV3.Domain.Entities;
+﻿namespace ilmV3.Domain.Entities;
 public class TimeTableEntity
 {
     public int Id { get; set; }
@@ -18,5 +12,5 @@ public class TimeTableEntity
     public string Audience { get; set; } = string.Empty;
     public SubjectEntity? Subject { get; set; }  
     public TeacherEntity? Teacher { get; set; } 
-    public required StudentGroupEntity? StudentGroup { get; set; } 
+    public StudentGroupEntity? StudentGroup { get; set; } 
 }

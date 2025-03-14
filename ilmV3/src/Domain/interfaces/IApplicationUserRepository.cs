@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ilmV3.Domain.interfaces;
-public interface IApplicationUserRepository 
+﻿namespace ilmV3.Domain.interfaces;
+public interface IApplicationUserRepository
 {
-    Task<bool> SaveAsync();
+    Task<IApplicationUser> CreateUserAsync(int id, string name, string email, string password);
+    Task<bool> AddRoleAsync(IApplicationUser user, string role);
 }
