@@ -2,7 +2,6 @@
 using ilmV3.Application.Teacher.Commands.DeleteTeacher;
 using ilmV3.Application.Teacher.Commands.UpdateTeacher;
 using ilmV3.Application.Teacher.Queries;
-using ilmV3.Domain.Entities;
 
 namespace ilmV3.Web.Endpoints;
 

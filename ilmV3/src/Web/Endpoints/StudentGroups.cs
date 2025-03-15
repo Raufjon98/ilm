@@ -2,7 +2,6 @@
 using ilmV3.Application.StudentGroup.Commands.DeleteStudentGroup;
 using ilmV3.Application.StudentGroup.Commands.UpdateStudentGroup;
 using ilmV3.Application.StudentGroup.Queries;
-using ilmV3.Domain.Entities;
 
 namespace ilmV3.Web.Endpoints;
 
