@@ -275,6 +275,72 @@ export class AbsentsClient implements IAbsentsClient {
     }
 }
 
+export interface IAccountClient {
+    register(register: RegisterDto): Observable<void>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class AccountClient implements IAccountClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    register(register: RegisterDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/Account";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(register);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRegister(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRegister(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processRegister(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
 export interface IGradesClient {
     getGrades(): Observable<void>;
     createGrade(grade: GradeDto): Observable<void>;
@@ -939,11 +1005,11 @@ export class StudentGroupsClient implements IStudentGroupsClient {
 
 export interface IStudentsClient {
     getStudents(): Observable<void>;
-    createStudent(email: string, password: string, student: StudentDto): Observable<void>;
+    createStudent(register: RegisterDto): Observable<void>;
     getExcellentStudents(): Observable<void>;
     getStudent(studentId: number): Observable<void>;
     deleteStudent(studentId: number): Observable<void>;
-    updateStudent(studentId: number, student: StudentDto): Observable<void>;
+    updateStudent(studentId: string, student: StudentDto): Observable<void>;
     updateStudentGroupForStudent(studentId: number, studentGroupId: number): Observable<void>;
 }
 
@@ -1004,19 +1070,11 @@ export class StudentsClient implements IStudentsClient {
         return _observableOf(null as any);
     }
 
-    createStudent(email: string, password: string, student: StudentDto): Observable<void> {
-        let url_ = this.baseUrl + "/api/Students?";
-        if (email === undefined || email === null)
-            throw new Error("The parameter 'email' must be defined and cannot be null.");
-        else
-            url_ += "email=" + encodeURIComponent("" + email) + "&";
-        if (password === undefined || password === null)
-            throw new Error("The parameter 'password' must be defined and cannot be null.");
-        else
-            url_ += "password=" + encodeURIComponent("" + password) + "&";
+    createStudent(register: RegisterDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/Students";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(student);
+        const content_ = JSON.stringify(register);
 
         let options_ : any = {
             body: content_,
@@ -1198,7 +1256,7 @@ export class StudentsClient implements IStudentsClient {
         return _observableOf(null as any);
     }
 
-    updateStudent(studentId: number, student: StudentDto): Observable<void> {
+    updateStudent(studentId: string, student: StudentDto): Observable<void> {
         let url_ = this.baseUrl + "/api/Students/{studentId}";
         if (studentId === undefined || studentId === null)
             throw new Error("The parameter 'studentId' must be defined.");
@@ -1753,9 +1811,9 @@ export class SubjectsClient implements ISubjectsClient {
 
 export interface ITeachersClient {
     getTeachers(): Observable<void>;
-    createTeacher(email: string, password: string, teacher: TeacherDto): Observable<void>;
+    createTeacher(register: RegisterDto): Observable<void>;
     getTeacher(teacherId: number): Observable<void>;
-    updateTeacher(teacherId: number, teacher: TeacherDto): Observable<void>;
+    updateTeacher(teacherId: string, teacher: TeacherDto): Observable<void>;
     deleteTeacher(teacherId: number): Observable<void>;
 }
 
@@ -1816,19 +1874,11 @@ export class TeachersClient implements ITeachersClient {
         return _observableOf(null as any);
     }
 
-    createTeacher(email: string, password: string, teacher: TeacherDto): Observable<void> {
-        let url_ = this.baseUrl + "/api/Teachers?";
-        if (email === undefined || email === null)
-            throw new Error("The parameter 'email' must be defined and cannot be null.");
-        else
-            url_ += "email=" + encodeURIComponent("" + email) + "&";
-        if (password === undefined || password === null)
-            throw new Error("The parameter 'password' must be defined and cannot be null.");
-        else
-            url_ += "password=" + encodeURIComponent("" + password) + "&";
+    createTeacher(register: RegisterDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/Teachers";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(teacher);
+        const content_ = JSON.stringify(register);
 
         let options_ : any = {
             body: content_,
@@ -1919,7 +1969,7 @@ export class TeachersClient implements ITeachersClient {
         return _observableOf(null as any);
     }
 
-    updateTeacher(teacherId: number, teacher: TeacherDto): Observable<void> {
+    updateTeacher(teacherId: string, teacher: TeacherDto): Observable<void> {
         let url_ = this.baseUrl + "/api/Teachers/{teacherId}";
         if (teacherId === undefined || teacherId === null)
             throw new Error("The parameter 'teacherId' must be defined.");
@@ -2379,6 +2429,54 @@ export interface IAbsentDto {
     classDay?: string;
     date?: Date;
     absent?: boolean;
+}
+
+export class RegisterDto implements IRegisterDto {
+    email?: string;
+    userName?: string;
+    password?: string;
+    role?: string;
+
+    constructor(data?: IRegisterDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"];
+            this.userName = _data["userName"];
+            this.password = _data["password"];
+            this.role = _data["role"];
+        }
+    }
+
+    static fromJS(data: any): RegisterDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RegisterDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email;
+        data["userName"] = this.userName;
+        data["password"] = this.password;
+        data["role"] = this.role;
+        return data;
+    }
+}
+
+export interface IRegisterDto {
+    email?: string;
+    userName?: string;
+    password?: string;
+    role?: string;
 }
 
 export class GradeDto implements IGradeDto {

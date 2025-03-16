@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddKeyVaultIfConfigured();
 builder.AddApplicationServices();
 builder.AddInfrastructureServices();
-builder.AddWebServices(); 
+builder.AddWebServices();
 
 var app = builder.Build();
 
@@ -36,6 +36,10 @@ app.MapRazorPages();
 app.MapFallbackToFile("index.html");
 
 app.UseExceptionHandler(options => { });
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.UseDeveloperExceptionPage();
 

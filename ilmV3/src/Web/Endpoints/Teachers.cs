@@ -1,4 +1,5 @@
-﻿using ilmV3.Application.Teacher.Commands.CreateTeacher;
+﻿using ilmV3.Application.Account.Register;
+using ilmV3.Application.Teacher.Commands.CreateTeacher;
 using ilmV3.Application.Teacher.Commands.DeleteTeacher;
 using ilmV3.Application.Teacher.Commands.UpdateTeacher;
 using ilmV3.Application.Teacher.Queries;
@@ -28,12 +29,12 @@ public class Teachers : EndpointGroupBase
         var result = await _sender.Send(new GetTeacherQuery(teacherId));
         return TypedResults.Ok(result);
     }
-    public async Task<IResult> CreateTeacher(ISender _sender, TeacherDto teacher , string email, string password)
+    public async Task<IResult> CreateTeacher(ISender _sender, RegisterDto register)
     {
-        var result = await _sender.Send(new CreateTeacherCommand(teacher, email, password));
+        var result = await _sender.Send(new CreateTeacherCommand(register));
         return TypedResults.Ok(result);
     }
-    public async Task<IResult> UpdateTeacher(ISender _sender, int teacherId,  TeacherDto teacher)
+    public async Task<IResult> UpdateTeacher(ISender _sender, string teacherId,  TeacherDto teacher)
     {
         var result = await _sender.Send(new UpdateTeacherCommand(teacherId, teacher));
         return TypedResults.Ok(result);

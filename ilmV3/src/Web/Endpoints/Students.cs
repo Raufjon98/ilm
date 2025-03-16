@@ -1,4 +1,5 @@
-﻿using ilmV3.Application.Student.Commands.CreateStudent;
+﻿using ilmV3.Application.Account.Register;
+using ilmV3.Application.Student.Commands.CreateStudent;
 using ilmV3.Application.Student.Commands.DeleteStudent;
 using ilmV3.Application.Student.Commands.UpdateStudent;
 using ilmV3.Application.Student.Commands.UpdateStudentGroup;
@@ -31,12 +32,12 @@ public class Students : EndpointGroupBase
         var result = await _sender.Send(new GetStudentQuery(studentId));
         return TypedResults.Ok(result);
     }
-    public async Task<IResult> CreateStudent(ISender _sender, StudentDto student, string email, string password)
+    public async Task<IResult> CreateStudent(ISender _sender, RegisterDto register)
     {
-        var result = await _sender.Send(new CreateStudentCommand(student, email, password));
+        var result = await _sender.Send(new CreateStudentCommand(register));
         return TypedResults.Ok(result);
     }
-    public async Task<IResult> UpdateStudent(ISender _sender, StudentDto student, int studentId)
+    public async Task<IResult> UpdateStudent(ISender _sender, StudentDto student, string studentId)
     {
         var result = await _sender.Send(new UpdateStudentCommand(studentId, student));
         return TypedResults.Ok(result);

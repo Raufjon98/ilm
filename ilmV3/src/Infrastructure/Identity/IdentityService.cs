@@ -1,8 +1,12 @@
+using System.Globalization;
+using ilmV3.Application.Account.Register;
 using ilmV3.Application.Common.Interfaces;
 using ilmV3.Application.Common.Models;
+using ilmV3.Domain.interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace ilmV3.Infrastructure.Identity;
 
@@ -29,17 +33,27 @@ public class IdentityService : IIdentityService
         return user?.UserName;
     }
 
-    public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password)
+    public async Task<IApplicationUser?> CreateUserAsync(int externalUserId, RegisterDto register)
     {
-        var user = new ApplicationUser
+        if (register == null) return null;
+
+        ApplicationUser user = new ApplicationUser
         {
-            UserName = userName,
-            Email = userName,
+            UserName = register.UserName,
+            Email = register.Email,
+            ExternalUserId = externalUserId,
         };
 
-        var result = await _userManager.CreateAsync(user, password);
+        var createdUser = await _userManager.CreateAsync(user, register.Password);
+        Console.WriteLine(createdUser.Errors); // Log errors
+        if (!createdUser.Succeeded)
+        {
+            return null;
+        }
 
-        return (result.ToApplicationResult(), user.Id);
+        var resul = await _userManager.AddToRoleAsync(user, register.Role);
+        if (!resul.Succeeded) return null;
+        return user;
     }
 
     public async Task<bool> IsInRoleAsync(string userId, string role)
@@ -78,4 +92,21 @@ public class IdentityService : IIdentityService
 
         return result.ToApplicationResult();
     }
+
+
+    public async Task<IApplicationUser?> GetUserByIdAsync(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (user == null)
+        {
+            throw new Exception("User not found!");
+        }
+
+        IApplicationUser result = new ApplicationUser();
+
+        return result;
+
+    }
+
 }

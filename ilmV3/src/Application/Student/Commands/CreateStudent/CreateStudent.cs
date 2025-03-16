@@ -1,34 +1,34 @@
-﻿using ilmV3.Application.Student.Queries;
+﻿using System.Security.Principal;
+using ilmV3.Application.Account.Register;
+using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Student.Queries;
 using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Student.Commands.CreateStudent;
-public record CreateStudentCommand(StudentDto student, string email, string password) : IRequest<StudentVM>;
-public class CreateStudentCommandHandler : IRequestHandler<CreateStudentCommand, StudentVM>
+public record CreateStudentCommand(RegisterDto register) : IRequest<StudentVM?>;
+public class CreateStudentCommandHandler : IRequestHandler<CreateStudentCommand, StudentVM?>
 {
     private readonly IStudentRepository _studentRepository;
-    private readonly IApplicationUserRepository _userRepository;
-    public CreateStudentCommandHandler(IStudentRepository studentRepository,
-        IApplicationUserRepository userRepository)
+    private readonly IIdentityService _identityService;
+    public CreateStudentCommandHandler(IIdentityService identityService, IStudentRepository studentRepository)
     {
+        _identityService = identityService;
         _studentRepository = studentRepository;
-        _userRepository = userRepository;
     }
-    public async Task<StudentVM> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
+    public async Task<StudentVM?> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
     {
         var student = new StudentEntity()
         {
-            Name = request.student.Name,
+            Name = request.register.UserName,
         };
 
         StudentEntity studentNew = await _studentRepository.CreateStudentAsync(student, cancellationToken);
 
-        var userNew = await _userRepository.CreateUserAsync(studentNew.Id, studentNew.Name, request.email, request.password);
-        if (userNew == null)
-        {
-            throw new Exception("User does not created!");
-        }
-        await _userRepository.AddRoleAsync(userNew, "Student");
+        var result = await _identityService.CreateUserAsync(studentNew.Id, request.register);
+        if (result == null)
+            return null;
+
 
         StudentVM studentVM = new StudentVM
         {

@@ -1,37 +1,37 @@
-﻿using ilmV3.Application.Teacher.Queries;
+﻿using ilmV3.Application.Account.Register;
+using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Teacher.Queries;
 using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Teacher.Commands.CreateTeacher;
-public record CreateTeacherCommand(TeacherDto teacher, string email, string password) : IRequest<TeacherVM>;
+public record CreateTeacherCommand(RegisterDto register) : IRequest<TeacherVM?>;
 
-public class CreateTeacherCommandHandler : IRequestHandler<CreateTeacherCommand, TeacherVM>
+public class CreateTeacherCommandHandler : IRequestHandler<CreateTeacherCommand, TeacherVM?>
 {
     private readonly ITeacherRepository _teacherRepository;
-    private readonly IApplicationUserRepository _userRepository;
-    public CreateTeacherCommandHandler(ITeacherRepository teacherRepository, IApplicationUserRepository userRepository)
+    private readonly IIdentityService _identityService;
+    public CreateTeacherCommandHandler(ITeacherRepository teacherRepository, IIdentityService identityService)
     {
+        _identityService = identityService;
         _teacherRepository = teacherRepository;
-        _userRepository = userRepository;
     }
-    public async Task<TeacherVM> Handle(CreateTeacherCommand request, CancellationToken cancellationToken)
+    public async Task<TeacherVM?> Handle(CreateTeacherCommand request, CancellationToken cancellationToken)
     {
         TeacherEntity teacher = new TeacherEntity
         {
-            Name = request.teacher.Name,
+            Name = request.register.UserName,
         };
         var teacherNew = await _teacherRepository.CreateTeacherAsync(teacher, cancellationToken);
 
         if (teacherNew == null)
-        {
-            throw new Exception("Teacher does not created!");
-        }
-        var userNew = await _userRepository.CreateUserAsync(teacherNew.Id, teacherNew.Name, request.email, request.password);
-        if (userNew == null)
-        {
-            throw new Exception("User does not created!");
-        }
-        await _userRepository.AddRoleAsync(userNew, "Teacher");
+            return null;
+
+        var result = await _identityService.CreateUserAsync(teacherNew.Id, request.register);
+
+        if (result == null)
+            return null;
+
 
         TeacherVM teacherVM = new TeacherVM
         {

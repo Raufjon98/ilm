@@ -1,4 +1,6 @@
-﻿using ilmV3.Application.Common.Models;
+﻿using ilmV3.Application.Account.Register;
+using ilmV3.Application.Common.Models;
+using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Common.Interfaces;
 
@@ -10,7 +12,9 @@ public interface IIdentityService
 
     Task<bool> AuthorizeAsync(string userId, string policyName);
 
-    Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password);
+    Task<IApplicationUser?> CreateUserAsync(int externalUserId, RegisterDto register);
+
+    Task<IApplicationUser?> GetUserByIdAsync(string userId);
 
     Task<Result> DeleteUserAsync(string userId);
 }

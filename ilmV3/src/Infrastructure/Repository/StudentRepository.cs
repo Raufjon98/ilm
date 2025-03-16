@@ -9,11 +9,9 @@ namespace ilmV3.Infrastructure.Repository;
 public class StudentRepository : IStudentRepository
 {
     private readonly IApplicationDbContext _context;
-    private readonly UserManager<ApplicationUser> _userManager;
-    public StudentRepository(IApplicationDbContext context, UserManager<ApplicationUser> userManager)
+    public StudentRepository(IApplicationDbContext context)
     {
         _context = context;
-        _userManager = userManager;
     }
 
     public async Task<StudentEntity> CreateStudentAsync(StudentEntity student, CancellationToken cancellationToken)

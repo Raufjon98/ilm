@@ -125,6 +125,31 @@
         }
       }
     },
+    "/api/Account": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "Register",
+        "requestBody": {
+          "x-name": "register",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/Grades": {
       "get": {
         "tags": [
@@ -458,32 +483,12 @@
           "Students"
         ],
         "operationId": "CreateStudent",
-        "parameters": [
-          {
-            "name": "email",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          },
-          {
-            "name": "password",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 3
-          }
-        ],
         "requestBody": {
-          "x-name": "student",
+          "x-name": "register",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/StudentDto"
+                "$ref": "#/components/schemas/RegisterDto"
               }
             }
           },
@@ -568,8 +573,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string"
             },
             "x-position": 2
           }
@@ -865,32 +869,12 @@
           "Teachers"
         ],
         "operationId": "CreateTeacher",
-        "parameters": [
-          {
-            "name": "email",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          },
-          {
-            "name": "password",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 3
-          }
-        ],
         "requestBody": {
-          "x-name": "teacher",
+          "x-name": "register",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TeacherDto"
+                "$ref": "#/components/schemas/RegisterDto"
               }
             }
           },
@@ -939,8 +923,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string"
             },
             "x-position": 1
           }
@@ -1159,6 +1142,24 @@
           },
           "absent": {
             "type": "boolean"
+          }
+        }
+      },
+      "RegisterDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
           }
         }
       },
