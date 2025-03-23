@@ -1,4 +1,4 @@
-﻿using ilmV3.Application.Account.Register;
+﻿using ilmV3.Application.Account.Commands.Register;
 using ilmV3.Application.Common.Interfaces;
 using ilmV3.Application.Teacher.Queries;
 using ilmV3.Domain.Entities;

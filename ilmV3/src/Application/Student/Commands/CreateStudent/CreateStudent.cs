@@ -1,5 +1,5 @@
 ﻿using System.Security.Principal;
-using ilmV3.Application.Account.Register;
+using ilmV3.Application.Account.Commands.Register;
 using ilmV3.Application.Common.Interfaces;
 using ilmV3.Application.Student.Queries;
 using ilmV3.Domain.Entities;

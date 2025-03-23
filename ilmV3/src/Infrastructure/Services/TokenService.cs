@@ -15,17 +15,18 @@ public class TokenService : ITokenService
     public TokenService(IConfiguration configuration)
     {
         _configuration = configuration;
-        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SignInKey"] ?? "MySecretKeyHommie-RememberHuh!"));
+        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SignInKey"] ?? "MySecretKeyHommie-RememberHuh8QdRmtN87p+z6TzlhWrQn58hxE2R5bkt4f3kA9ZJrMNE3q!"));
     }
     public string CreateToken(ApplicationUserDto user)
     {
         var claims = new List<Claim>
         {
+            new Claim(JwtRegisteredClaimNames.NameId, user.Id), 
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.GivenName, user.UserName)
         };
 
-        var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+        var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),

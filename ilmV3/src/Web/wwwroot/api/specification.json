@@ -125,7 +125,7 @@
         }
       }
     },
-    "/api/Account": {
+    "/api/Account/register": {
       "post": {
         "tags": [
           "Account"
@@ -143,6 +143,44 @@
           "required": true,
           "x-position": 1
         },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Account/login": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "Login",
+        "requestBody": {
+          "x-name": "login",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Account/teacher": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "GetApiAccountTeacher",
         "responses": {
           "200": {
             "description": ""
@@ -1160,6 +1198,25 @@
           },
           "role": {
             "type": "string"
+          }
+        }
+      },
+      "LoginDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1
           }
         }
       },

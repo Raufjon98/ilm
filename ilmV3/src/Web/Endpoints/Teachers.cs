@@ -1,4 +1,4 @@
-﻿using ilmV3.Application.Account.Register;
+﻿using ilmV3.Application.Account.Commands.Register;
 using ilmV3.Application.Teacher.Commands.CreateTeacher;
 using ilmV3.Application.Teacher.Commands.DeleteTeacher;
 using ilmV3.Application.Teacher.Commands.UpdateTeacher;

@@ -1,12 +1,9 @@
-using System.Globalization;
-using ilmV3.Application.Account.Register;
+using ilmV3.Application.Account.Commands.Register;
 using ilmV3.Application.Common.Interfaces;
 using ilmV3.Application.Common.Models;
 using ilmV3.Domain.interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
 
 namespace ilmV3.Infrastructure.Identity;
 
@@ -15,15 +12,18 @@ public class IdentityService : IIdentityService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUserClaimsPrincipalFactory<ApplicationUser> _userClaimsPrincipalFactory;
     private readonly IAuthorizationService _authorizationService;
+    private readonly SignInManager<ApplicationUser> _signInManager;
 
     public IdentityService(
         UserManager<ApplicationUser> userManager,
         IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory,
-        IAuthorizationService authorizationService)
+        IAuthorizationService authorizationService,
+        SignInManager<ApplicationUser> signInManager)
     {
         _userManager = userManager;
         _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
         _authorizationService = authorizationService;
+        _signInManager = signInManager;
     }
 
     public async Task<string?> GetUserNameAsync(string userId)
@@ -35,7 +35,10 @@ public class IdentityService : IIdentityService
 
     public async Task<IApplicationUser?> CreateUserAsync(int externalUserId, RegisterDto register)
     {
-        if (register == null) return null;
+        if (register == null)
+        {
+            throw new Exception("Send data for register!");
+        }
 
         ApplicationUser user = new ApplicationUser
         {
@@ -45,14 +48,16 @@ public class IdentityService : IIdentityService
         };
 
         var createdUser = await _userManager.CreateAsync(user, register.Password);
-        Console.WriteLine(createdUser.Errors); // Log errors
         if (!createdUser.Succeeded)
         {
-            return null;
+            throw new Exception($"User creation failed: {string.Join(", ", createdUser.Errors.Select(e => $"{e.Code} - {e.Description}"))}");
         }
 
-        var resul = await _userManager.AddToRoleAsync(user, register.Role);
-        if (!resul.Succeeded) return null;
+        var result = await _userManager.AddToRoleAsync(user, register.Role);
+        if (!result.Succeeded)
+        {
+            throw new Exception($"Role Addition failed: {string.Join(",", result.Errors.Select(e => $"{e.Code} - {e.Description}"))}");
+        }
         return user;
     }
 
@@ -103,10 +108,22 @@ public class IdentityService : IIdentityService
             throw new Exception("User not found!");
         }
 
-        IApplicationUser result = new ApplicationUser();
-
-        return result;
-
+        return user;
     }
 
+    public async Task<IApplicationUser?> GetUserByUsernameAsync(string username)
+    {
+        var user = await _userManager.FindByEmailAsync(username);
+        if (user == null)
+        {
+            throw new Exception($"User by username: {username} not found!");
+        }
+        return user;
+    }
+
+    public async Task<bool> CheckPasswordAsync(IApplicationUser user, string password)
+    {
+        var resul = await _signInManager.CheckPasswordSignInAsync((ApplicationUser)user, password, false);
+        return resul.Succeeded;
+    }
 }

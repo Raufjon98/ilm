@@ -1,4 +1,4 @@
-﻿using ilmV3.Application.Account.Register;
+﻿using ilmV3.Application.Account.Commands.Register;
 using ilmV3.Application.Student.Commands.CreateStudent;
 using ilmV3.Application.Student.Commands.DeleteStudent;
 using ilmV3.Application.Student.Commands.UpdateStudent;
