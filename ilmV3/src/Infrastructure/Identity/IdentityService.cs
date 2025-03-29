@@ -1,3 +1,4 @@
+using System.Globalization;
 using ilmV3.Application.Account.Commands.Register;
 using ilmV3.Application.Common.Interfaces;
 using ilmV3.Application.Common.Models;
@@ -33,12 +34,9 @@ public class IdentityService : IIdentityService
         return user?.UserName;
     }
 
-    public async Task<IApplicationUser?> CreateUserAsync(int externalUserId, RegisterDto register)
+    public async Task<IApplicationUser?> CreateUserAsync(int externalUserId, RegisterDto register, string role)
     {
-        if (register == null)
-        {
-            throw new Exception("Send data for register!");
-        }
+       ArgumentNullException.ThrowIfNull(register);
 
         ApplicationUser user = new ApplicationUser
         {
@@ -53,7 +51,7 @@ public class IdentityService : IIdentityService
             throw new Exception($"User creation failed: {string.Join(", ", createdUser.Errors.Select(e => $"{e.Code} - {e.Description}"))}");
         }
 
-        var result = await _userManager.AddToRoleAsync(user, register.Role);
+        var result = await _userManager.AddToRoleAsync(user, role);
         if (!result.Succeeded)
         {
             throw new Exception($"Role Addition failed: {string.Join(",", result.Errors.Select(e => $"{e.Code} - {e.Description}"))}");

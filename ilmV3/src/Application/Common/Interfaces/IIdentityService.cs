@@ -13,7 +13,7 @@ public interface IIdentityService
 
     Task<bool> AuthorizeAsync(string userId, string policyName);
 
-    Task<IApplicationUser?> CreateUserAsync(int externalUserId, RegisterDto register);
+    Task<IApplicationUser?> CreateUserAsync(int externalUserId, RegisterDto register, string role);
 
     Task<IApplicationUser?> GetUserByIdAsync(string userId);
 

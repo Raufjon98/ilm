@@ -1,14 +1,9 @@
-﻿using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using ilmV3.Application.Account.Queries;
+﻿using System.Reflection;
 using ilmV3.Application.Common.Exceptions;
 using ilmV3.Application.Common.Interfaces;
 using ilmV3.Application.Common.Security;
-using ilmV3.Domain.Constants;
 
 namespace ilmV3.Application.Common.Behaviours;
-
 public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
     private readonly IUser _user;
@@ -27,8 +22,6 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
         var authorizeAttributes = request.GetType().GetCustomAttributes<AuthorizeAttribute>()
             .Where(x => x.Roles != null);
 
-
-
         if (authorizeAttributes.Any())
         {
             // Must be authenticated user
@@ -38,7 +31,7 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
             }
 
             var userRoles = _user.Roles;
-                  
+
             // Role-based authorization
             var authorizeAttributesWithRoles = authorizeAttributes.Where(a => !string.IsNullOrWhiteSpace(a.Roles));
 
@@ -65,7 +58,6 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
                     throw new ForbiddenAccessException();
                 }
             }
-
 
             // Policy-based authorization
             var authorizeAttributesWithPolicies = authorizeAttributes.Where(a => !string.IsNullOrWhiteSpace(a.Policy));

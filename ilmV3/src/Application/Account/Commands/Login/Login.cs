@@ -17,10 +17,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, CreatedUserDto?
 
     public async Task<CreatedUserDto?> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        if (request.login == null)
-        {
-            throw new Exception("Invalid Login data!");
-        }
+        ArgumentNullException.ThrowIfNull(request.login);
 
         var user = await _identityService.GetUserByUsernameAsync(request.login.Email);
         if (user == null)

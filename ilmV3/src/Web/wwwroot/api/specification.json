@@ -125,12 +125,62 @@
         }
       }
     },
-    "/api/Account/register": {
+    "/api/Account/student-register": {
       "post": {
         "tags": [
           "Account"
         ],
-        "operationId": "Register",
+        "operationId": "StudentRegister",
+        "requestBody": {
+          "x-name": "register",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Account/admin-register": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "AdminRegister",
+        "requestBody": {
+          "x-name": "register",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Account/teacher-register": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "TeacherRegister",
         "requestBody": {
           "x-name": "register",
           "content": {
@@ -168,45 +218,6 @@
           "required": true,
           "x-position": 1
         },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/api/Account/policy/teacher": {
-      "get": {
-        "tags": [
-          "Account"
-        ],
-        "operationId": "Teacher",
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/api/Account/policy/Admin": {
-      "get": {
-        "tags": [
-          "Account"
-        ],
-        "operationId": "Admin",
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/api/Account/policy/student": {
-      "get": {
-        "tags": [
-          "Account"
-        ],
-        "operationId": "Student",
         "responses": {
           "200": {
             "description": ""
@@ -536,29 +547,6 @@
           "Students"
         ],
         "operationId": "GetStudents",
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Students"
-        ],
-        "operationId": "CreateStudent",
-        "requestBody": {
-          "x-name": "register",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterDto"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
         "responses": {
           "200": {
             "description": ""
@@ -927,29 +915,6 @@
             "description": ""
           }
         }
-      },
-      "post": {
-        "tags": [
-          "Teachers"
-        ],
-        "operationId": "CreateTeacher",
-        "requestBody": {
-          "x-name": "register",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterDto"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
       }
     },
     "/api/Teachers/{teacherId}": {
@@ -1220,9 +1185,6 @@
             "type": "string"
           },
           "password": {
-            "type": "string"
-          },
-          "role": {
             "type": "string"
           }
         }
