@@ -175,12 +175,38 @@
         }
       }
     },
-    "/api/Account/teacher": {
+    "/api/Account/policy/teacher": {
       "get": {
         "tags": [
           "Account"
         ],
-        "operationId": "GetApiAccountTeacher",
+        "operationId": "Teacher",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Account/policy/Admin": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "Admin",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Account/policy/student": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "Student",
         "responses": {
           "200": {
             "description": ""
