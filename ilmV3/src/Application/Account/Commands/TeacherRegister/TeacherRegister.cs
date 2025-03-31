@@ -40,6 +40,7 @@ public class TeacherRegisterCommandHandler : IRequestHandler<TeacherRegisterComm
 
         ApplicationUserDto userDto = new ApplicationUserDto
         {
+            Id = createdUser.Id,
             UserName = request.register.UserName,
             Email = request.register.Email,
             Password = request.register.Password,
