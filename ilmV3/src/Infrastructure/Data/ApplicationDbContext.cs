@@ -18,6 +18,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     public DbSet<SubjectEntity> Subjects => Set<SubjectEntity>();
     public DbSet<TeacherEntity> Teachers => Set<TeacherEntity>();
     public DbSet<TimeTableEntity> TimeTables => Set<TimeTableEntity>();
+    public DbSet<AdminEntity> Admins => Set<AdminEntity>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

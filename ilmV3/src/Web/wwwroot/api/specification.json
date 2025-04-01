@@ -225,6 +225,99 @@
         }
       }
     },
+    "/api/Admins/{adminId}": {
+      "delete": {
+        "tags": [
+          "Admins"
+        ],
+        "operationId": "DeleteAdmin",
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Admins"
+        ],
+        "operationId": "UpdateAdmin",
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "adminDto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Admins"
+        ],
+        "operationId": "GetAdmin",
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Admins": {
+      "get": {
+        "tags": [
+          "Admins"
+        ],
+        "operationId": "GetAdmins",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/Grades": {
       "get": {
         "tags": [
@@ -1205,6 +1298,15 @@
           "password": {
             "type": "string",
             "minLength": 1
+          }
+        }
+      },
+      "AdminDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
           }
         }
       },
