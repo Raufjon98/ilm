@@ -1,5 +1,6 @@
 ﻿using ilmV3.Application.Common.Interfaces;
 using ilmV3.Application.Common.Models;
+using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Account.Commands.Register;
@@ -8,19 +9,28 @@ public record AdminRegisterCommand(RegisterDto register) : IRequest<CreatedUserD
 public class AdminRegisterCommandHandler : IRequestHandler<AdminRegisterCommand, CreatedUserDto?>
 {
     private readonly IIdentityService _identityService;
-    private readonly IStudentRepository _studentRepository;
+    private readonly IAdminRepository _adminRepository;
     private readonly ITokenService _tokenService;
     public AdminRegisterCommandHandler(IIdentityService identityService,
-        IStudentRepository studentRepository, ITokenService tokenService)
+       IAdminRepository adminRepository, ITokenService tokenService)
     {
+        _adminRepository = adminRepository;
         _tokenService = tokenService;
         _identityService = identityService;
-        _studentRepository = studentRepository;
     }
     public async Task<CreatedUserDto?> Handle(AdminRegisterCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request.register);
-        var createdUser = await _identityService.CreateUserAsync(12, request.register, "Administrator");
+
+        AdminEntity admin = new AdminEntity
+        {
+            Name = request.register.UserName,
+        };
+
+        var createdAdmin = await _adminRepository.CreateAdminAsync(admin, cancellationToken);
+        ArgumentNullException.ThrowIfNull(createdAdmin);
+
+        var createdUser = await _identityService.CreateUserAsync(createdAdmin.Id, request.register, "Administrator");
         if (createdUser == null)
         {
             throw new Exception("Register: User does not create!");

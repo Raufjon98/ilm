@@ -124,4 +124,11 @@ public class IdentityService : IIdentityService
         var resul = await _signInManager.CheckPasswordSignInAsync((ApplicationUser)user, password, false);
         return resul.Succeeded;
     }
+
+    public async Task<IApplicationUser> UpdateUserAsync(IApplicationUser user)
+    {
+      var result =  await _userManager.UpdateAsync((ApplicationUser)user);
+        ArgumentNullException.ThrowIfNull(result);
+        return user;
+    }
 }
