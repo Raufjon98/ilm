@@ -28,12 +28,6 @@ public static class DependencyInjection
             options.SuppressModelStateInvalidFilter = true);
 
         builder.Services.AddEndpointsApiExplorer();
-
-        builder.Services.AddOpenApiDocument((configure, sp) =>
-        {
-            configure.Title = "ilmV3 API";
-
-        });
     }
 
     public static void AddKeyVaultIfConfigured(this IHostApplicationBuilder builder)
