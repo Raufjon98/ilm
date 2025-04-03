@@ -1,6 +1,7 @@
 ﻿using ilmV3.Application.Common.Interfaces;
 using ilmV3.Application.Common.Models;
 using ilmV3.Domain.Constants;
+using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Account.Commands.Login;
 public record LoginCommand(LoginDto login) : IRequest<CreatedUserDto?>;
@@ -20,18 +21,23 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, CreatedUserDto?
         ArgumentNullException.ThrowIfNull(request.login);
 
         var user = await _identityService.GetUserByUsernameAsync(request.login.Email);
-        if (user == null)
-        {
-            throw new UnauthorizedAccessException("Invalid username or password!");
-        }
-
+        ArgumentNullException.ThrowIfNull(user);
 
         var result = await _identityService.CheckPasswordAsync(user, request.login.Password);
 
+        if (!result)
+        {
+            throw new UnauthorizedAccessException();
+        }
+
+        IApplicationUser? userFromDb = await _identityService.GetUserByUsernameAsync(request.login.Email);
+        ArgumentNullException.ThrowIfNull(userFromDb);
         ApplicationUserDto applicationUserDto = new ApplicationUserDto
         {
             Email = request.login.Email,
-            Password = request.login.Password
+            Id = userFromDb.Id,
+            Role = "RoleIsHardCoded!"
+
         };
 
         CreatedUserDto createdUserDto = new CreatedUserDto
