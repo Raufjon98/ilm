@@ -37,7 +37,7 @@ public class IdentityService : IIdentityService
 
     public async Task<IApplicationUser?> CreateUserAsync(int externalUserId, RegisterDto register, string role)
     {
-       ArgumentNullException.ThrowIfNull(register);
+        ArgumentNullException.ThrowIfNull(register);
 
         ApplicationUser user = new ApplicationUser
         {
@@ -126,6 +126,13 @@ public class IdentityService : IIdentityService
         return resul.Succeeded;
     }
 
+    public async Task<IApplicationUser> UpdateUserAsync(IApplicationUser user)
+    {
+        var result = await _userManager.UpdateAsync((ApplicationUser)user);
+        ArgumentNullException.ThrowIfNull(result);
+        return user;
+    }
+    
     public async Task<IEnumerable<string>> GetUserRolesAsync(IApplicationUser user)
     {
         return await _userManager.GetRolesAsync((ApplicationUser)user);

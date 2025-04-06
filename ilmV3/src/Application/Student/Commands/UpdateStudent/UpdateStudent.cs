@@ -16,17 +16,14 @@ public class UpdateStudentCommandHandler : IRequestHandler<UpdateStudentCommand,
     public async Task<StudentVM?> Handle(UpdateStudentCommand request, CancellationToken cancellationToken)
     {
         var user = await _identityService.GetUserByIdAsync(request.studentId);
-        if (user == null)
-        {
-            return null;
-        }
-       
-        var student = await _studentRepository.GetStudentByIdAsync(user.ExternalUserId);
+        ArgumentNullException.ThrowIfNull(user);
+        
+        user.UserName = request.student.Name;
 
-        if (student == null)
-        {
-            return null;
-        }
+        await _identityService.UpdateUserAsync(user);
+
+        var student = await _studentRepository.GetStudentByIdAsync(user.ExternalUserId);
+        ArgumentNullException.ThrowIfNull(student);
 
         student.Name = request.student.Name;
 
