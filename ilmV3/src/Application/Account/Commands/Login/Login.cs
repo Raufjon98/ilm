@@ -23,6 +23,9 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, CreatedUserDto?
         var user = await _identityService.GetUserByUsernameAsync(request.login.Email);
         ArgumentNullException.ThrowIfNull(user);
 
+        var roles = await _identityService.GetUserRolesAsync(user);
+        ArgumentNullException.ThrowIfNull(roles);
+
         var result = await _identityService.CheckPasswordAsync(user, request.login.Password);
 
         if (!result)
@@ -35,14 +38,14 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, CreatedUserDto?
         ApplicationUserDto applicationUserDto = new ApplicationUserDto
         {
             Email = request.login.Email,
+            UserName = user?.UserName ?? "",
             Id = userFromDb.Id,
-            Role = "RoleIsHardCoded!"
-
+            Role = string.Join(",", roles.ToArray())
         };
 
         CreatedUserDto createdUserDto = new CreatedUserDto
         {
-            UserName = user?.UserName ?? "UnknownUser",
+            UserName = user?.UserName ?? "",
             Email = request.login.Email,
             Token = _tokenService.CreateToken(applicationUserDto)
 

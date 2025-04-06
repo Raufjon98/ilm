@@ -2,6 +2,7 @@ using System.Globalization;
 using ilmV3.Application.Account.Commands.Register;
 using ilmV3.Application.Common.Interfaces;
 using ilmV3.Application.Common.Models;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -123,5 +124,10 @@ public class IdentityService : IIdentityService
     {
         var resul = await _signInManager.CheckPasswordSignInAsync((ApplicationUser)user, password, false);
         return resul.Succeeded;
+    }
+
+    public async Task<IEnumerable<string>> GetUserRolesAsync(IApplicationUser user)
+    {
+        return await _userManager.GetRolesAsync((ApplicationUser)user);
     }
 }
