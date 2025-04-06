@@ -63,6 +63,7 @@ app.MapFallbackToFile("index.html");
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Demo API V1");
         c.RoutePrefix = "api"; 
     });
 
@@ -73,8 +74,13 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseDeveloperExceptionPage();
+app.MapGet("/test", () => "Hello world!")
+   .WithName("Test")
+   .WithOpenApi()
+   .Produces<string>(200);
 
 app.MapEndpoints();
+
 
 app.Run();
 

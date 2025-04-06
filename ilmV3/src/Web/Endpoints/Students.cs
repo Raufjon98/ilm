@@ -1,5 +1,4 @@
-﻿using ilmV3.Application.Account.Commands.Register;
-using ilmV3.Application.Student.Commands.DeleteStudent;
+﻿using ilmV3.Application.Student.Commands.DeleteStudent;
 using ilmV3.Application.Student.Commands.UpdateStudent;
 using ilmV3.Application.Student.Commands.UpdateStudentGroup;
 using ilmV3.Application.Student.Queries;
