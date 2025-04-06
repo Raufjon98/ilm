@@ -39,6 +39,7 @@ public class StudentRegisterCommandHandler : IRequestHandler<StudentRegisterComm
 
         ApplicationUserDto userDto = new ApplicationUserDto
         {
+            Id = createdUser.Id,
             UserName = request.register.UserName,
             Email = request.register.Email,
             Password = request.register.Password,

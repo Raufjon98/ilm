@@ -2,6 +2,7 @@ using System.Globalization;
 using ilmV3.Application.Account.Commands.Register;
 using ilmV3.Application.Common.Interfaces;
 using ilmV3.Application.Common.Models;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -130,5 +131,10 @@ public class IdentityService : IIdentityService
         var result = await _userManager.UpdateAsync((ApplicationUser)user);
         ArgumentNullException.ThrowIfNull(result);
         return user;
+    }
+    
+    public async Task<IEnumerable<string>> GetUserRolesAsync(IApplicationUser user)
+    {
+        return await _userManager.GetRolesAsync((ApplicationUser)user);
     }
 }

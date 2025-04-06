@@ -16,4 +16,5 @@ public interface IIdentityService
     Task<bool> CheckPasswordAsync(IApplicationUser user, string password);
     Task<Result> DeleteUserAsync(string userId);
     Task<IApplicationUser> UpdateUserAsync(IApplicationUser user);
+    Task<IEnumerable<string>> GetUserRolesAsync(IApplicationUser user);
 }

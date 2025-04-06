@@ -28,6 +28,7 @@ public class AdminRegisterCommandHandler : IRequestHandler<AdminRegisterCommand,
 
         ApplicationUserDto userDto = new ApplicationUserDto
         {
+            Id = createdUser.Id,
             UserName = request.register.UserName,
             Email = request.register.Email,
             Password = request.register.Password,
