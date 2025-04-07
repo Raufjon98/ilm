@@ -20,15 +20,9 @@ public class AdminRepository : IAdminRepository
         return admin;
     }
 
-    public async Task<bool> DeleteAdminAsync(AdminEntity admin, CancellationToken cancellationToken)
-    {
-        _context.Admins.Remove(admin);
-        return await _context.SaveChangesAsync(cancellationToken) > 0;
-    }
-
     public async Task<AdminEntity?> GetAdminAsync(int adminId)
     {
-        return await _context.Admins.FindAsync(adminId);
+        return await _context.Admins.FirstOrDefaultAsync(a => a.Id == adminId);
     }
 
     public async Task<AdminEntity?> GetAdminByIdAsync(int adminId)

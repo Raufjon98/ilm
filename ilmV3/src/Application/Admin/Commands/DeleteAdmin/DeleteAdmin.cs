@@ -2,21 +2,25 @@
 using ilmV3.Application.Common.Interfaces;
 using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace ilmV3.Application.Admin.Commands.DeleteAdmin;
-public record DeleteAdminCommand(string adminId) : IRequest<AdminEntity>;
+public record DeleteAdminCommand(string adminId) : IRequest<bool>;
 
-public class DeleteAdminCommandHandler : IRequestHandler<DeleteAdminCommand, AdminEntity>
+public class DeleteAdminCommandHandler : IRequestHandler<DeleteAdminCommand, bool>
 {
     private readonly IAdminRepository _adminRepository;
     private readonly IIdentityService _identityService;
+    private readonly IApplicationDbContext _context;
 
-    public DeleteAdminCommandHandler(IIdentityService identityService, IAdminRepository adminRepository)
+    public DeleteAdminCommandHandler(IIdentityService identityService, IAdminRepository adminRepository,
+        IApplicationDbContext context)
     {
+        _context = context;
         _identityService = identityService;
         _adminRepository = adminRepository;
     }
-    public async Task<AdminEntity> Handle(DeleteAdminCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(DeleteAdminCommand request, CancellationToken cancellationToken)
     {
         var user = await _identityService.GetUserByIdAsync(request.adminId);
         ArgumentNullException.ThrowIfNull(user);
@@ -25,7 +29,8 @@ public class DeleteAdminCommandHandler : IRequestHandler<DeleteAdminCommand, Adm
         ArgumentNullException.ThrowIfNull(admin);
 
         await _identityService.DeleteUserAsync(user.Id);
-        var result = await _adminRepository.DeleteAdminAsync(admin, cancellationToken);
-        return admin;
+
+        _context.Admins.Remove(admin);
+        return await _context.SaveChangesAsync(cancellationToken) > 0;
     }
 }

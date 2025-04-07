@@ -3,9 +3,9 @@ using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Admin.Queries;
-public record GetAdminQuery(string adminId) : IRequest<AdminEntity>;
+public record GetAdminQuery(string adminId) : IRequest<AdminVM>;
 
-public class GetAdminQueryHandler : IRequestHandler<GetAdminQuery, AdminEntity>
+public class GetAdminQueryHandler : IRequestHandler<GetAdminQuery, AdminVM>
 {
     private readonly IIdentityService _identityService;
     private readonly IAdminRepository _adminRepository;
@@ -15,13 +15,19 @@ public class GetAdminQueryHandler : IRequestHandler<GetAdminQuery, AdminEntity>
         _identityService = identityService;
         _adminRepository = adminRepository;
     }
-    public async Task<AdminEntity> Handle(GetAdminQuery request, CancellationToken cancellationToken)
+    public async Task<AdminVM> Handle(GetAdminQuery request, CancellationToken cancellationToken)
     {
         var user = await _identityService.GetUserByIdAsync(request.adminId);
         ArgumentNullException.ThrowIfNull(user);
 
         var admin = await _adminRepository.GetAdminAsync(user.ExternalUserId);
         ArgumentNullException.ThrowIfNull(admin);
-        return admin;
+
+        AdminVM adminVM = new AdminVM
+        {
+            Id = admin.Id,
+            Name = admin.Name,
+        };
+        return adminVM;
     }
 }
