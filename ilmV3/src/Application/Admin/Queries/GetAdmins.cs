@@ -1,6 +1,4 @@
-﻿using ilmV3.Application.Student.Queries;
-using ilmV3.Domain.Entities;
-using ilmV3.Domain.interfaces;
+﻿using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Admin.Queries;
 public class GetAdminsQuery : IRequest<IEnumerable<AdminVM>>;

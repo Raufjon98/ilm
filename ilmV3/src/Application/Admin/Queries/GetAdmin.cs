@@ -1,5 +1,4 @@
 ﻿using ilmV3.Application.Common.Interfaces;
-using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Admin.Queries;

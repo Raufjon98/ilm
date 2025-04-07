@@ -1,8 +1,5 @@
-﻿using System.Security.Principal;
-using ilmV3.Application.Common.Interfaces;
-using ilmV3.Domain.Entities;
+﻿using ilmV3.Application.Common.Interfaces;
 using ilmV3.Domain.interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace ilmV3.Application.Admin.Commands.DeleteAdmin;
 public record DeleteAdminCommand(string adminId) : IRequest<bool>;
