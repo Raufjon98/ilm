@@ -1,8 +1,12 @@
 ﻿using ilmV3.Domain.interfaces;
 using ilmV3.Domain.Entities;
 using ilmV3.Application.Absent.Queries.GetAbsent;
+using ilmV3.Application.Common.Security;
+using ilmV3.Domain.Constants;
 
 namespace ilmV3.Application.Absent.Commands.CreateAbsent;
+
+[Authorize(Policy = Policies.CanAdd)]
 public record CreateAbsentCommand(AbsentDto absent) : IRequest<AbsentVM>;
 public class CreateAbsentCommandHandle : IRequestHandler<CreateAbsentCommand, AbsentVM>
 {

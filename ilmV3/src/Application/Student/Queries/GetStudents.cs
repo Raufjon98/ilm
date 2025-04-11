@@ -1,12 +1,16 @@
-﻿using ilmV3.Domain.interfaces;
+﻿using ilmV3.Application.Common.Security;
+using ilmV3.Domain.Constants;
+using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Student.Queries;
+
+[Authorize(Policy = Policies.CanRead)]
 public record GetStudentsQuery : IRequest<IEnumerable<StudentVM>>;
 
 public class GetStudentsQueryHandler : IRequestHandler<GetStudentsQuery, IEnumerable<StudentVM>>
 {
     private readonly IStudentRepository _studentRepository;
-    public GetStudentsQueryHandler(IStudentRepository studentRepository, IMapper mapper)
+    public GetStudentsQueryHandler(IStudentRepository studentRepository)
     {
         _studentRepository = studentRepository;
     }

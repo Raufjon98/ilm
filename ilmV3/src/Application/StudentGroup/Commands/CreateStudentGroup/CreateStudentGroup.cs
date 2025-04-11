@@ -1,8 +1,12 @@
-﻿using ilmV3.Application.StudentGroup.Queries;
+﻿using ilmV3.Application.Common.Security;
+using ilmV3.Application.StudentGroup.Queries;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.StudentGroup.Commands.CreateStudentGroup;
+
+[Authorize(Policy = Policies.CanAdd)]
 public record CreateStudentGroupCommand(StudentGroupDto studentGroup) : IRequest<StudentGroupVM>;
 
 public class CreateStudentGroupCommandHandler : IRequestHandler<CreateStudentGroupCommand, StudentGroupVM>

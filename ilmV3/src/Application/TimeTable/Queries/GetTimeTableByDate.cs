@@ -1,7 +1,11 @@
 ﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.TimeTable.Queries;
+
+[Authorize(Policy = Policies.CanRead)]
 public record GetTimeTableByDateQuery(DateOnly date) : IRequest<TimeTableVM>;
 
 public class GetTimeTableByDateQueryHandler : IRequestHandler<GetTimeTableByDateQuery, TimeTableVM>

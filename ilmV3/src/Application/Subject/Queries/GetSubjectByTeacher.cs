@@ -1,7 +1,11 @@
 ﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Subject.Queries;
+
+[Authorize(Policy = Policies.CanAdd)]
 public record GetSubjectByTeacherQuery(int teacherId) : IRequest<SubjectVM>;
 
 public class GetSubjectByTeacherQueryHandler : IRequestHandler<GetSubjectByTeacherQuery, SubjectVM>

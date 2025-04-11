@@ -12,6 +12,7 @@ public class Students : EndpointGroupBase
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
+           .RequireAuthorization()
            .MapGet(GetStudents)
            .MapGet(GetExcellentStudents, "/excellents")
            .MapGet(GetStudent, "{studentId}")
@@ -22,7 +23,7 @@ public class Students : EndpointGroupBase
 
     public async Task<IResult> GetStudents(ISender _sender)
     {
-        var result = await _sender.Send(new GetStudentsQuery()); 
+        var result = await _sender.Send(new GetStudentsQuery());
         return TypedResults.Ok(result);
     }
     public async Task<IResult> GetStudent(ISender _sender, int studentId)
@@ -40,7 +41,7 @@ public class Students : EndpointGroupBase
     {
         var result = await _sender.Send(new DeleteStudentCommand(studentId));
         return TypedResults.Ok(result);
-    }  
+    }
     public async Task<IResult> GetExcellentStudents(ISender _sender)
     {
         var result = await _sender.Send(new GetExcellentStudentsQuery());

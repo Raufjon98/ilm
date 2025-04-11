@@ -39,6 +39,7 @@ public class AdminRegisterCommandHandler : IRequestHandler<AdminRegisterCommand,
 
         ApplicationUserDto userDto = new ApplicationUserDto
         {
+            Id = createdUser.Id,
             UserName = request.Register.UserName,
             Email = request.Register.Email,
             Password = request.Register.Password,

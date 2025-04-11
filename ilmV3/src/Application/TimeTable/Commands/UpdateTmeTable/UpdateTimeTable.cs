@@ -1,7 +1,11 @@
-﻿using ilmV3.Application.TimeTable.Queries;
+﻿using ilmV3.Application.Common.Security;
+using ilmV3.Application.TimeTable.Queries;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.TimeTable.Commands.UpdateTmeTable;
+
+[Authorize(Policy = Policies.CanUpdateAndDelete)]
 public record UpdateTimeTableCommand(int timeTableId, TimeTableDto timeTable) : IRequest<TimeTableVM?>;
 
 public class UpdateTimeTableCommandHandler : IRequestHandler<UpdateTimeTableCommand, TimeTableVM?>

@@ -19,13 +19,18 @@ public class TokenService : ITokenService
     }
     public string CreateToken(ApplicationUserDto user)
     {
+         var roleClaims = user.Role
+          .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+          .Select(role => new Claim(ClaimTypes.Role, role));
+
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.NameId, user.Id), 
+            new Claim(JwtRegisteredClaimNames.NameId, user.Id),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
-            new Claim(ClaimTypes.Role, user.Role)
-        };
+        }
+        .Concat(roleClaims)
+        .ToList();
 
         var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
         var tokenDescriptor = new SecurityTokenDescriptor

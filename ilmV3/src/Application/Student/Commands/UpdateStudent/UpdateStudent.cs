@@ -1,8 +1,14 @@
 ﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Application.Student.Queries;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Student.Commands.UpdateStudent;
+
+[Authorize(Policy = Policies.CanUpdateAndDelete)]
+
+[Authorize(Roles = "Teacher, Administrator")]
 public record UpdateStudentCommand(string studentId, StudentDto student) : IRequest<StudentVM?>;
 public class UpdateStudentCommandHandler : IRequestHandler<UpdateStudentCommand, StudentVM?>
 {
@@ -16,17 +22,14 @@ public class UpdateStudentCommandHandler : IRequestHandler<UpdateStudentCommand,
     public async Task<StudentVM?> Handle(UpdateStudentCommand request, CancellationToken cancellationToken)
     {
         var user = await _identityService.GetUserByIdAsync(request.studentId);
-        if (user == null)
-        {
-            return null;
-        }
-       
-        var student = await _studentRepository.GetStudentByIdAsync(user.ExternalUserId);
+        ArgumentNullException.ThrowIfNull(user);
 
-        if (student == null)
-        {
-            return null;
-        }
+        user.UserName = request.student.Name;
+
+        await _identityService.UpdateUserAsync(user);
+
+        var student = await _studentRepository.GetStudentByIdAsync(user.ExternalUserId);
+        ArgumentNullException.ThrowIfNull(student);
 
         student.Name = request.student.Name;
 

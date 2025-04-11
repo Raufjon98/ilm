@@ -1,8 +1,12 @@
 ﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Application.Student.Queries;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.StudentGroup.Queries;
+
+[Authorize(Policy = Policies.CanAdd)]
 public record GetStudentGroupMembersQuery(int studentGroupId) : IRequest<IEnumerable<StudentVM>>;
 
 public class GetStudentGroupMembersQueryHandler : IRequestHandler<GetStudentGroupMembersQuery, IEnumerable<StudentVM>>

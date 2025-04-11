@@ -1,7 +1,11 @@
 ﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Application.StudentGroup.Queries;
+using ilmV3.Domain.Constants;
 
 namespace ilmV3.Application.Student.Commands.UpdateStudentGroup;
+
+[Authorize(Policy = Policies.CanUpdateAndDelete)]
 public record UpdateStudentGroupCommand(int studentId, int studentGroupId) : IRequest<StudentGroupVM>;
 
 public class UpdateStudentGroupCommandHandler : IRequestHandler<UpdateStudentGroupCommand, StudentGroupVM>

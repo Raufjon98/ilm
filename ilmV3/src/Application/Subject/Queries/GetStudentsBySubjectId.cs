@@ -1,8 +1,12 @@
 ﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Application.Student.Queries;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Subject.Queries;
+
+[Authorize(Policy = Policies.CanUpdateAndDelete)]
 public record GetStudentsBySubjectIdQuery(int subjectId) : IRequest<IEnumerable<StudentVM>>;
 
 public class GetStudentsBySubjectIdQueryHandler : IRequestHandler<GetStudentsBySubjectIdQuery, IEnumerable<StudentVM>>
