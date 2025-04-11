@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-using ilmV3.Domain.Entities;
+﻿using ilmV3.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,6 +12,11 @@ public class StudentGroupConfiguration : IEntityTypeConfiguration<StudentGroupEn
         builder.HasOne(sg => sg.Subject)
                   .WithOne(s => s.StudentGroup)
                   .HasForeignKey<StudentGroupEntity>(sg => sg.SubjectId)
-                  .  OnDelete(DeleteBehavior.NoAction); 
+                  .OnDelete(DeleteBehavior.NoAction);
+        builder
+             .HasOne(sg => sg.Teacher)
+             .WithMany(t => t.StudentGroups)
+             .HasForeignKey(sg => sg.TeacherId)
+             .OnDelete(DeleteBehavior.NoAction);
     }
 }
