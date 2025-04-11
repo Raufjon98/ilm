@@ -1,8 +1,12 @@
 ﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Application.StudentGroup.Queries;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Subject.Queries;
+
+[Authorize(Policy = Policies.CanAdd)]
 public record GetGroupBySubjectQuery(int subjectId) : IRequest<StudentGroupVM>;
 
 public class GetGroupBySubjectQueryHandler : IRequestHandler<GetGroupBySubjectQuery, StudentGroupVM>

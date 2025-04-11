@@ -1,16 +1,17 @@
 ﻿using ilmV3.Application.Common.Interfaces;
-using ilmV3.Domain.interfaces;
+using ilmV3.Application.Common.Security;
+using ilmV3.Domain.Constants;
 
 namespace ilmV3.Application.Student.Queries;
+
+[Authorize(Policy = Policies.CanRead)]
 public record GetExcellentStudentsQuery() : IRequest<IEnumerable<StudentWithGradeVM>>;
 
 public class GetExcellentStudentsQueryHandler : IRequestHandler<GetExcellentStudentsQuery, IEnumerable<StudentWithGradeVM>>
 {
-    private readonly IStudentRepository _studentRepository;
     private readonly IApplicationDbContext _context;
-    public GetExcellentStudentsQueryHandler(IStudentRepository studentRepository, IMapper mapper, IApplicationDbContext context)
+    public GetExcellentStudentsQueryHandler(IApplicationDbContext context)
     {
-        _studentRepository = studentRepository;
         _context = context;
     }
     public async Task<IEnumerable<StudentWithGradeVM>> Handle(GetExcellentStudentsQuery request, CancellationToken cancellationToken)

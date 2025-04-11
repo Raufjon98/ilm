@@ -1,7 +1,11 @@
-﻿using ilmV3.Domain.interfaces;
+﻿using ilmV3.Application.Common.Security;
+using ilmV3.Domain.Constants;
+using ilmV3.Domain.interfaces;
 
-namespace ilmV3.Application.Grade.Commands.DeleteGrade  ;
-public record DeleteGradeCommand(int  gradeId) : IRequest<bool>;
+namespace ilmV3.Application.Grade.Commands.DeleteGrade;
+
+[Authorize(Policy = Policies.CanUpdateAndDelete)]
+public record DeleteGradeCommand(int gradeId) : IRequest<bool>;
 
 public class DeleteGradeCommandhandler : IRequestHandler<DeleteGradeCommand, bool>
 {
@@ -17,6 +21,6 @@ public class DeleteGradeCommandhandler : IRequestHandler<DeleteGradeCommand, boo
         {
             throw new KeyNotFoundException($"Record with ID {request.gradeId} not found.");
         }
-        return await _gradeRepository.DeleteGradeAsync(grade, cancellationToken);  
+        return await _gradeRepository.DeleteGradeAsync(grade, cancellationToken);
     }
 }

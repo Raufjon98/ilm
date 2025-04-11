@@ -1,7 +1,11 @@
 ﻿using ilmV3.Application.Absent.Queries.GetAbsent;
+using ilmV3.Application.Common.Security;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Absent.Commands.UpdateAbsent;
+
+[Authorize(Policy = Policies.CanUpdateAndDelete)] 
 public record UpdateAbsentCommand(int absentId, AbsentDto absent) : IRequest<AbsentVM>;
 
 public class UpdateAbsentCommandHandler : IRequestHandler<UpdateAbsentCommand, AbsentVM>

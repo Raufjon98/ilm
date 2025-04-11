@@ -1,18 +1,18 @@
 ﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Application.Teacher.Queries;
-using ilmV3.Domain.interfaces;
+using ilmV3.Domain.Constants;
 
 namespace ilmV3.Application.Subject.Queries;
+
+[Authorize(Policy = Policies.CanUpdateAndDelete)]
 public record GetTeacherBySubjectQuery(int subjectId) : IRequest<TeacherVM>;
 
 public class GetTecherBySubjectQueryHandler : IRequestHandler<GetTeacherBySubjectQuery, TeacherVM>
 {
-    private readonly ISubjectRepository _subjectRepository;
     private readonly IApplicationDbContext _context;
-    public GetTecherBySubjectQueryHandler(IMapper mapper,
-        ISubjectRepository subjectRepository, IApplicationDbContext context)
+    public GetTecherBySubjectQueryHandler(IApplicationDbContext context)
     {
-        _subjectRepository = subjectRepository;
         _context = context;
     }
     public async Task<TeacherVM> Handle(GetTeacherBySubjectQuery request, CancellationToken cancellationToken)

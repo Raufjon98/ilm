@@ -1,8 +1,12 @@
-﻿using ilmV3.Application.Grade.Queries;
+﻿using ilmV3.Application.Common.Security;
+using ilmV3.Application.Grade.Queries;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Grade.Commands.CreateGrade;
+
+[Authorize(Policy = Policies.CanAdd)]
 public record CreateGradeCommand(GradeDto grade) : IRequest<GradeVM>;
 
 public class CreateGradeCommandHandler : IRequestHandler<CreateGradeCommand, GradeVM>

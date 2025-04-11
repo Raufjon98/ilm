@@ -1,7 +1,11 @@
-﻿using ilmV3.Application.Subject.Queries;
+﻿using ilmV3.Application.Common.Security;
+using ilmV3.Application.Subject.Queries;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Subject.Commands.UpdateSubject;
+
+[Authorize(Policy = Policies.CanUpdateAndDelete)]
 public record UpdateSubjectCommand(int subjectId, SubjectDto subject) : IRequest<SubjectVM?>;
 
 public class UpdateSubjectCommandHandler : IRequestHandler<UpdateSubjectCommand, SubjectVM?>
