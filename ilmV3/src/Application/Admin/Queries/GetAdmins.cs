@@ -1,6 +1,10 @@
-﻿using ilmV3.Domain.interfaces;
+﻿using ilmV3.Application.Common.Security;
+using ilmV3.Domain.Constants;
+using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Admin.Queries;
+
+[Authorize(Policy = Policies.CanUpdateAndDelete)]
 public class GetAdminsQuery : IRequest<IEnumerable<AdminVM>>;
 
 public class GetAdminsQueryHandler : IRequestHandler<GetAdminsQuery, IEnumerable<AdminVM>>

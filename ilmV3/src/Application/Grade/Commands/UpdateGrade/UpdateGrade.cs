@@ -6,7 +6,7 @@ using ilmV3.Domain.interfaces;
 namespace ilmV3.Application.Grade.Commands.UpdateGrade;
 
 [Authorize(Policy = Policies.CanUpdateAndDelete)]
-public record UpdateGradeCommand(GradeDto grade, int gradeId) : IRequest<GradeVM?>;
+public record UpdateGradeCommand(GradeDto Grade, int gradeId) : IRequest<GradeVM?>;
 
 public class UpdateGradeCommandHandler : IRequestHandler<UpdateGradeCommand, GradeVM?>
 {
@@ -22,11 +22,11 @@ public class UpdateGradeCommandHandler : IRequestHandler<UpdateGradeCommand, Gra
         {
             return null;
         }
-        grade.StudentId = request.grade.StudentId;
-        grade.SubjectId = request.grade.SubjectId;
-        grade.TeacherId = request.grade.TeacherId;
-        grade.ClassDay = request.grade.ClassDay;
-        grade.Grade = request.grade.Grade;
+        grade.StudentId = request.Grade.StudentId;
+        grade.SubjectId = request.Grade.SubjectId;
+        grade.TeacherId = request.Grade.TeacherId;
+        grade.ClassDay = request.Grade.ClassDay;
+        grade.Grade = request.Grade.Grade;
         grade.Date = DateOnly.FromDateTime(DateTime.UtcNow);
 
         var result = await _gradeRepository.UpdateGradeAsync(grade, cancellationToken);

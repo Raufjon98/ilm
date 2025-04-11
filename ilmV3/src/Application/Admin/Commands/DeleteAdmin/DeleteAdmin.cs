@@ -1,7 +1,11 @@
 ﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Admin.Commands.DeleteAdmin;
+
+[Authorize(Policy = Policies.CanUpdateAndDelete)]
 public record DeleteAdminCommand(string adminId) : IRequest<bool>;
 
 public class DeleteAdminCommandHandler : IRequestHandler<DeleteAdminCommand, bool>

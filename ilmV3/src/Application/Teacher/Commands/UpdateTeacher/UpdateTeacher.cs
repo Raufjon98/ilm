@@ -7,7 +7,7 @@ using ilmV3.Domain.interfaces;
 namespace ilmV3.Application.Teacher.Commands.UpdateTeacher;
 
 [Authorize(Policy = Policies.CanUpdateAndDelete)]
-public record UpdateTeacherCommand(string teacherId, TeacherDto teacher) : IRequest<TeacherVM?>;
+public record UpdateTeacherCommand(string teacherId, TeacherDto Teacher) : IRequest<TeacherVM?>;
 
 public class UpdateTeacherCommandHandler : IRequestHandler<UpdateTeacherCommand, TeacherVM?>
 {
@@ -23,14 +23,14 @@ public class UpdateTeacherCommandHandler : IRequestHandler<UpdateTeacherCommand,
         var user = await _identityService.GetUserByIdAsync(request.teacherId);
         ArgumentNullException.ThrowIfNull(user);
 
-        user.UserName = request.teacher.Name;
+        user.UserName = request.Teacher.Name;
 
         await _identityService.UpdateUserAsync(user);
 
         var teacher = await _teacherRepository.GetTeacherByIdAsync(user.ExternalUserId);
         ArgumentNullException.ThrowIfNull(teacher);
 
-        teacher.Name = request.teacher.Name;
+        teacher.Name = request.Teacher.Name;
 
         var result = await _teacherRepository.UpdateTeacherAsync(teacher, cancellationToken);
         if (result == null)

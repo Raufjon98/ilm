@@ -7,7 +7,7 @@ using ilmV3.Domain.interfaces;
 namespace ilmV3.Application.Grade.Commands.CreateGrade;
 
 [Authorize(Policy = Policies.CanAdd)]
-public record CreateGradeCommand(GradeDto grade) : IRequest<GradeVM>;
+public record CreateGradeCommand(GradeDto Grade) : IRequest<GradeVM>;
 
 public class CreateGradeCommandHandler : IRequestHandler<CreateGradeCommand, GradeVM>
 {
@@ -20,12 +20,12 @@ public class CreateGradeCommandHandler : IRequestHandler<CreateGradeCommand, Gra
     {
         var grade = new GradeEntity
         {
-            StudentId = request.grade.StudentId,
-            SubjectId = request.grade.SubjectId,
-            TeacherId = request.grade.TeacherId,
-            Grade = request.grade.Grade,
-            ClassDay = request.grade.ClassDay,
-            Date = request.grade.Date,
+            StudentId = request.Grade.StudentId,
+            SubjectId = request.Grade.SubjectId,
+            TeacherId = request.Grade.TeacherId,
+            Grade = request.Grade.Grade,
+            ClassDay = request.Grade.ClassDay,
+            Date = request.Grade.Date,
         };
         var result = await _gradeRepository.CreateGradeAsync(grade, cancellationToken);
         GradeVM gradeVM = new GradeVM
