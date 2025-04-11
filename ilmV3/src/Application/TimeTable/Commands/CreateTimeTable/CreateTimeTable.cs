@@ -1,8 +1,12 @@
-﻿using ilmV3.Application.TimeTable.Queries;
+﻿using ilmV3.Application.Common.Security;
+using ilmV3.Application.TimeTable.Queries;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.TimeTable.Commands.CreateTimeTable;
+
+[Authorize(Policy = Policies.CanUpdateAndDelete)]
 public record CreateTimeTableCommand(TimeTableDto timeTable) : IRequest<TimeTableVM>;
 
 public class CreateTimeTableCommandHandler : IRequestHandler<CreateTimeTableCommand, TimeTableVM>

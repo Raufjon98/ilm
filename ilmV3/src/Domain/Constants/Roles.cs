@@ -6,4 +6,5 @@ public abstract class Roles
     public const string Student = nameof(Student);
     public const string Teacher = nameof(Teacher);
     public const string User = nameof(User);
+    public const string HOD = nameof(HOD); //head of department
 }

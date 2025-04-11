@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ilmV3.Domain.Entities;
+﻿using ilmV3.Application.Common.Security;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Student.Queries;
+
+[Authorize(Policy = Policies.CanRead)]
 public record GetStudentQuery(int studentId) : IRequest<StudentVM>;
 
 public class GetStudentQueryHandler : IRequestHandler<GetStudentQuery, StudentVM>

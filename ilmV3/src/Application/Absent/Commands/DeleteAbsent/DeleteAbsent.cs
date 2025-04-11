@@ -1,7 +1,11 @@
-﻿using ilmV3.Domain.interfaces;
+﻿using ilmV3.Application.Common.Security;
+using ilmV3.Domain.Constants;
+using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Absent.Commands.DeleteAbsent;
-public record DeleteAbsentCommand(int absentId) :IRequest<bool>;
+
+[Authorize(Policy = Policies.CanUpdateAndDelete)]
+public record DeleteAbsentCommand(int absentId) : IRequest<bool>;
 
 public class DeleteAbsentCommandHandler : IRequestHandler<DeleteAbsentCommand, bool>
 {
@@ -16,9 +20,9 @@ public class DeleteAbsentCommandHandler : IRequestHandler<DeleteAbsentCommand, b
         if (absent == null)
         {
             throw new KeyNotFoundException($"Absent record with ID {request.absentId} not found.");
-}
+        }
         return await _absentRepository.DeleteAbsentAsync(absent, cancellationToken);
     }
 
- 
+
 }

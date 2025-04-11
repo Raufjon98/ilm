@@ -1,6 +1,10 @@
-﻿using ilmV3.Domain.interfaces;
+﻿using ilmV3.Application.Common.Security;
+using ilmV3.Domain.Constants;
+using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Student.Commands.DeleteStudent;
+
+[Authorize(Policy = Policies.CanUpdateAndDelete)]
 public record DeleteStudentCommand(int studentId) : IRequest<bool>;
 public class DeleteStudentCommandHandler : IRequestHandler<DeleteStudentCommand, bool>
 {

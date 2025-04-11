@@ -1,6 +1,10 @@
-﻿using ilmV3.Domain.interfaces;
+﻿using ilmV3.Application.Common.Security;
+using ilmV3.Domain.Constants;
+using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Subject.Queries;
+
+[Authorize(Policy = Policies.CanRead)]
 public record GetSubjectQuery(int subjectId) : IRequest<SubjectVM>;
 
 public class GetSubjectQueryHandler : IRequestHandler<GetSubjectQuery, SubjectVM>

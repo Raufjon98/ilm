@@ -1,6 +1,10 @@
-﻿using ilmV3.Domain.interfaces;
+﻿using ilmV3.Application.Common.Security;
+using ilmV3.Domain.Constants;
+using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.StudentGroup.Queries;
+
+[Authorize(Policy = Policies.CanRead)]
 public record GetStudentGroupQuery(int studentGroupId) : IRequest<StudentGroupVM>;
 
 public class StudentGroupQueryHandler : IRequestHandler<GetStudentGroupQuery, StudentGroupVM>

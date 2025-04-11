@@ -1,8 +1,12 @@
 ﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Application.Teacher.Queries;
+using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Teacher.Commands.UpdateTeacher;
+
+[Authorize(Policy = Policies.CanUpdateAndDelete)]
 public record UpdateTeacherCommand(string teacherId, TeacherDto teacher) : IRequest<TeacherVM?>;
 
 public class UpdateTeacherCommandHandler : IRequestHandler<UpdateTeacherCommand, TeacherVM?>

@@ -72,7 +72,8 @@ public class ApplicationDbContextInitialiser
             new IdentityRole(Roles.Administrator),
             new IdentityRole(Roles.Teacher),
             new IdentityRole(Roles.Student),
-            new IdentityRole(Roles.User)
+            new IdentityRole(Roles.User),
+            new IdentityRole(Roles.HOD)
         };
 
         foreach (var role in roles)

@@ -1,6 +1,9 @@
-﻿using ilmV3.Domain.interfaces;
+﻿using ilmV3.Application.Common.Security;
+using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Absent.Queries.GetAbsent;
+
+[Authorize]
 public record GetAbsentsQuery : IRequest<IEnumerable<AbsentVM>>;
 
 public class GetAbsentQueryHandler : IRequestHandler<GetAbsentsQuery, IEnumerable<AbsentVM>>

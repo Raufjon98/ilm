@@ -7,6 +7,7 @@ using ilmV3.Infrastructure.Data.Interceptors;
 using ilmV3.Infrastructure.Identity;
 using ilmV3.Infrastructure.Repository;
 using ilmV3.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -65,7 +66,16 @@ public static class DependencyInjection
         builder.Services.AddTransient<IIdentityService, IdentityService>();
 
         builder.Services.AddAuthorization(options =>
-            options.AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator)));
+        {
+            options.AddPolicy(Policies.CanUpdateAndDelete, policy =>
+                policy.RequireRole(Roles.HOD, Roles.Administrator));
+
+            options.AddPolicy(Policies.CanAdd, policy =>
+                policy.RequireRole(Roles.Teacher, Roles.HOD, Roles.Administrator));
+
+            options.AddPolicy(Policies.CanRead, policy =>
+                policy.RequireRole(Roles.Student, Roles.Teacher, Roles.HOD, Roles.Administrator));
+        });
 
         builder.Services.AddAuthentication(options =>
         {
@@ -77,6 +87,8 @@ public static class DependencyInjection
             options.DefaultScheme = AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(options =>
         {
+            options.RequireHttpsMetadata = false;
+            options.SaveToken = true;
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
@@ -84,7 +96,15 @@ public static class DependencyInjection
                 ValidateAudience = true,
                 ValidAudience = builder.Configuration["JWT:Audience"],
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SignInKey"] ?? "MySecretKeyHommie-RememberHuh!"))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SignInKey"] ?? "MySecretKeyHommie-RememberHuh8QdRmtN87p+z6TzlhWrQn58hxE2R5bkt4f3kA9ZJrMNE3q!"))
+            };
+            options.Events = new JwtBearerEvents
+            {
+                OnAuthenticationFailed = context =>
+                {
+                    Console.WriteLine("JWT ERROR: " + context.Exception.Message);
+                    return Task.CompletedTask;
+                }
             };
         });
     }
