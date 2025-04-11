@@ -4,7 +4,7 @@ using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Account.Commands.Register;
-public record StudentRegisterCommand(RegisterDto register) : IRequest<CreatedUserDto?>;
+public record StudentRegisterCommand(RegisterDto Register) : IRequest<CreatedUserDto?>;
 public class StudentRegisterCommandHandler : IRequestHandler<StudentRegisterCommand, CreatedUserDto?>
 {
     private readonly IIdentityService _identityService;
@@ -19,10 +19,10 @@ public class StudentRegisterCommandHandler : IRequestHandler<StudentRegisterComm
     }
     public async Task<CreatedUserDto?> Handle(StudentRegisterCommand request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request.register);
+        ArgumentNullException.ThrowIfNull(request.Register);
         StudentEntity student = new StudentEntity
         {
-            Name = request.register.UserName
+            Name = request.Register.UserName
         };
 
         StudentEntity createdStudent = await _studentRepository.CreateStudentAsync(student, cancellationToken);
@@ -31,7 +31,7 @@ public class StudentRegisterCommandHandler : IRequestHandler<StudentRegisterComm
             throw new Exception("Register: Student does not create!");
         }
 
-        var createdUser = await _identityService.CreateUserAsync(createdStudent.Id, request.register, "Student");
+        var createdUser = await _identityService.CreateUserAsync(createdStudent.Id, request.Register, "Student");
         if (createdUser == null)
         {
             throw new Exception("Register: User does not create!");
@@ -40,16 +40,16 @@ public class StudentRegisterCommandHandler : IRequestHandler<StudentRegisterComm
         ApplicationUserDto userDto = new ApplicationUserDto
         {
             Id = createdUser.Id,
-            UserName = request.register.UserName,
-            Email = request.register.Email,
-            Password = request.register.Password,
+            UserName = request.Register.UserName,
+            Email = request.Register.Email,
+            Password = request.Register.Password,
             Role = "Student",
         };
 
         CreatedUserDto createdUserDto = new CreatedUserDto
         {
-            Email = request.register.Email,
-            UserName = request.register.UserName,
+            Email = request.Register.Email,
+            UserName = request.Register.UserName,
             Token = _tokenService.CreateToken(userDto)
         };
         return createdUserDto;

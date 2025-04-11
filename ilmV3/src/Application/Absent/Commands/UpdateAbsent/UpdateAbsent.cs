@@ -6,7 +6,7 @@ using ilmV3.Domain.interfaces;
 namespace ilmV3.Application.Absent.Commands.UpdateAbsent;
 
 [Authorize(Policy = Policies.CanUpdateAndDelete)] 
-public record UpdateAbsentCommand(int absentId, AbsentDto absent) : IRequest<AbsentVM>;
+public record UpdateAbsentCommand(int absentId, AbsentDto Absent) : IRequest<AbsentVM>;
 
 public class UpdateAbsentCommandHandler : IRequestHandler<UpdateAbsentCommand, AbsentVM>
 {
@@ -23,11 +23,11 @@ public class UpdateAbsentCommandHandler : IRequestHandler<UpdateAbsentCommand, A
             throw new KeyNotFoundException($"Absent record with ID {request.absentId} not found.");
         }
 
-        absent.ClassDay = request.absent.ClassDay;
-        absent.StudentId = request.absent.StudentId;
-        absent.TeacherId = request.absent.TeacherId;
-        absent.SubjectId = request.absent.SubjectId;
-        absent.Absent = request.absent.Absent;
+        absent.ClassDay = request.Absent.ClassDay;
+        absent.StudentId = request.Absent.StudentId;
+        absent.TeacherId = request.Absent.TeacherId;
+        absent.SubjectId = request.Absent.SubjectId;
+        absent.Absent = request.Absent.Absent;
         absent.Date = DateOnly.FromDateTime(DateTime.UtcNow);
 
 

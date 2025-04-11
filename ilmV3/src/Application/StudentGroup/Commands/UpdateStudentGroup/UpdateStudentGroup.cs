@@ -6,7 +6,7 @@ using ilmV3.Domain.interfaces;
 namespace ilmV3.Application.StudentGroup.Commands.UpdateStudentGroup;
 
 [Authorize(Policy = Policies.CanUpdateAndDelete)]
-public record UpdateStudentGroupCommand(int studentGroupId, StudentGroupDto studentGroup) : IRequest<StudentGroupVM?>;
+public record UpdateStudentGroupCommand(int studentGroupId, StudentGroupDto StudentGroup) : IRequest<StudentGroupVM?>;
 
 public class UpdateStudentGroupCommandHandler : IRequestHandler<UpdateStudentGroupCommand, StudentGroupVM?>
 {
@@ -22,9 +22,9 @@ public class UpdateStudentGroupCommandHandler : IRequestHandler<UpdateStudentGro
         {
             return null;
         }
-        studentGroup.SubjectId = request.studentGroup.SubjectId;
-        studentGroup.Name = request.studentGroup.Name;
-        studentGroup.CodeName = request.studentGroup.CodeName;
+        studentGroup.SubjectId = request.StudentGroup.SubjectId;
+        studentGroup.Name = request.StudentGroup.Name;
+        studentGroup.CodeName = request.StudentGroup.CodeName;
 
         var result = await _studentGroupRepository.UpdateStudentGroupAsync(studentGroup, cancellationToken);
 

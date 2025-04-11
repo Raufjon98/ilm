@@ -7,7 +7,7 @@ using ilmV3.Domain.Constants;
 namespace ilmV3.Application.Absent.Commands.CreateAbsent;
 
 [Authorize(Policy = Policies.CanAdd)]
-public record CreateAbsentCommand(AbsentDto absent) : IRequest<AbsentVM>;
+public record CreateAbsentCommand(AbsentDto Absent) : IRequest<AbsentVM>;
 public class CreateAbsentCommandHandle : IRequestHandler<CreateAbsentCommand, AbsentVM>
 {
     private readonly IAbsentRepository _absentRepository;
@@ -20,12 +20,12 @@ public class CreateAbsentCommandHandle : IRequestHandler<CreateAbsentCommand, Ab
 
         var absentToCreate = new AbsentEntity
         {
-            SubjectId = request.absent.StudentId,
-            StudentId = request.absent.StudentId,
-            TeacherId = request.absent.TeacherId,
-            ClassDay = request.absent.ClassDay,
-            Date = request.absent.Date,
-            Absent = request.absent.Absent
+            SubjectId = request.Absent.StudentId,
+            StudentId = request.Absent.StudentId,
+            TeacherId = request.Absent.TeacherId,
+            ClassDay = request.Absent.ClassDay,
+            Date = request.Absent.Date,
+            Absent = request.Absent.Absent
         };
         var absent = await _absentRepository.CreateAbsentAsync(absentToCreate, cancellationToken);
         AbsentVM absentVM = new AbsentVM

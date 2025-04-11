@@ -4,7 +4,7 @@ using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Subject.Commands.DeleteSubject;
 
-[Authorize(Policy = Policies.CanUpdateAndDelete)]
+[Authorize(Policy = Policies.HOD)]
 public record DeleteSubjectCommand(int SubjectId) : IRequest<bool>;
 
 public class DeleteSubjectCommandHandler : IRequestHandler<DeleteSubjectCommand, bool>

@@ -5,8 +5,8 @@ using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Subject.Commands.UpdateSubject;
 
-[Authorize(Policy = Policies.CanUpdateAndDelete)]
-public record UpdateSubjectCommand(int subjectId, SubjectDto subject) : IRequest<SubjectVM?>;
+[Authorize(Policy = Policies.HOD)]
+public record UpdateSubjectCommand(int subjectId, SubjectDto Subject) : IRequest<SubjectVM?>;
 
 public class UpdateSubjectCommandHandler : IRequestHandler<UpdateSubjectCommand, SubjectVM?>
 {
@@ -22,8 +22,8 @@ public class UpdateSubjectCommandHandler : IRequestHandler<UpdateSubjectCommand,
         {
             return null;
         }
-        subject.Name = request.subject.Name;
-        subject.TeacherId = request.subject.TeacherId;
+        subject.Name = request.Subject.Name;
+        subject.TeacherId = request.Subject.TeacherId;
 
         var result = await _subjectRepository.UpdateSubjectAsync(subject, cancellationToken);
 
