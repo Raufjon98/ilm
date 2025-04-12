@@ -22,7 +22,7 @@ public class Teachers : EndpointGroupBase
         var result = await _sender.Send(new GetTeachersQuery());
         return TypedResults.Ok(result);
     }
-    public async Task<IResult> GetTeacher(ISender _sender, int teacherId)
+    public async Task<IResult> GetTeacher(ISender _sender, string teacherId)
     {
         var result = await _sender.Send(new GetTeacherQuery(teacherId));
         return TypedResults.Ok(result);
