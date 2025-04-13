@@ -26,6 +26,9 @@ public static class DependencyInjection
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
         Guard.Against.Null(connectionString, message: "Connection string 'ilmV3Db' not found.");
 
+        var jwtKey = builder.Configuration["JWT:SignInKey"];
+        ArgumentNullException.ThrowIfNull(jwtKey);
+
         builder.Services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
         builder.Services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
         builder.Services.AddScoped<IAbsentRepository, AbsentRepository>();
@@ -96,7 +99,7 @@ public static class DependencyInjection
                 ValidateAudience = true,
                 ValidAudience = builder.Configuration["JWT:Audience"],
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SignInKey"] ?? "MySecretKeyHommie-RememberHuh8QdRmtN87p+z6TzlhWrQn58hxE2R5bkt4f3kA9ZJrMNE3q!"))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
             };
             options.Events = new JwtBearerEvents
             {
