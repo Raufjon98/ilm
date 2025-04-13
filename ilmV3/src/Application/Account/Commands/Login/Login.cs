@@ -4,7 +4,7 @@ using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Account.Commands.Login;
-public record LoginCommand(LoginDto login) : IRequest<CreatedUserDto?>;
+public record LoginCommand(LoginDto Login) : IRequest<CreatedUserDto?>;
 
 public class LoginCommandHandler : IRequestHandler<LoginCommand, CreatedUserDto?>
 {
@@ -18,26 +18,26 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, CreatedUserDto?
 
     public async Task<CreatedUserDto?> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request.login);
+        ArgumentNullException.ThrowIfNull(request.Login);
 
-        var user = await _identityService.GetUserByUsernameAsync(request.login.Email);
+        var user = await _identityService.GetUserByUsernameAsync(request.Login.Email);
         ArgumentNullException.ThrowIfNull(user);
 
         var roles = await _identityService.GetUserRolesAsync(user);
         ArgumentNullException.ThrowIfNull(roles);
 
-        var result = await _identityService.CheckPasswordAsync(user, request.login.Password);
+        var result = await _identityService.CheckPasswordAsync(user, request.Login.Password);
 
         if (!result)
         {
             throw new UnauthorizedAccessException();
         }
 
-        IApplicationUser? userFromDb = await _identityService.GetUserByUsernameAsync(request.login.Email);
+        IApplicationUser? userFromDb = await _identityService.GetUserByUsernameAsync(request.Login.Email);
         ArgumentNullException.ThrowIfNull(userFromDb);
         ApplicationUserDto applicationUserDto = new ApplicationUserDto
         {
-            Email = request.login.Email,
+            Email = request.Login.Email,
             UserName = user?.UserName ?? "",
             Id = userFromDb.Id,
             Role = string.Join(",", roles.ToArray())
@@ -46,7 +46,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, CreatedUserDto?
         CreatedUserDto createdUserDto = new CreatedUserDto
         {
             UserName = user?.UserName ?? "",
-            Email = request.login.Email,
+            Email = request.Login.Email,
             Token = _tokenService.CreateToken(applicationUserDto)
 
         };

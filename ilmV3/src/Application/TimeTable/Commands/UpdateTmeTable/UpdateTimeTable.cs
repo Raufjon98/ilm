@@ -6,7 +6,7 @@ using ilmV3.Domain.interfaces;
 namespace ilmV3.Application.TimeTable.Commands.UpdateTmeTable;
 
 [Authorize(Policy = Policies.CanUpdateAndDelete)]
-public record UpdateTimeTableCommand(int timeTableId, TimeTableDto timeTable) : IRequest<TimeTableVM?>;
+public record UpdateTimeTableCommand(int timeTableId, TimeTableDto TimeTable) : IRequest<TimeTableVM?>;
 
 public class UpdateTimeTableCommandHandler : IRequestHandler<UpdateTimeTableCommand, TimeTableVM?>
 {
@@ -23,14 +23,14 @@ public class UpdateTimeTableCommandHandler : IRequestHandler<UpdateTimeTableComm
             return null;
         }
 
-        timeTable.Audience = request.timeTable.Audience;
-        timeTable.StudentGroupId = request.timeTable.StudentGroupId;
-        timeTable.SubjectId = request.timeTable.SubjectId;
-        timeTable.TeacherId = request.timeTable.TeacherId;
-        timeTable.WeekDay = request.timeTable.WeekDay;
-        timeTable.Date = request.timeTable.Date;
-        timeTable.Time = request.timeTable.Time;
-        timeTable.Name = request.timeTable.Name;
+        timeTable.Audience = request.TimeTable.Audience;
+        timeTable.StudentGroupId = request.TimeTable.StudentGroupId;
+        timeTable.SubjectId = request.TimeTable.SubjectId;
+        timeTable.TeacherId = request.TimeTable.TeacherId;
+        timeTable.WeekDay = request.TimeTable.WeekDay;
+        timeTable.Date = request.TimeTable.Date;
+        timeTable.Time = request.TimeTable.Time;
+        timeTable.Name = request.TimeTable.Name;
 
         var result = await _timeTableRepository.UpdateTimeTableAsync(timeTable, cancellationToken);
 

@@ -6,8 +6,8 @@ using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Subject.Commands.CreateSubject;
 
-[Authorize(Policy = Policies.CanAdd)]
-public record CreateSubjectCommand(SubjectDto subject) : IRequest<SubjectVM>;
+[Authorize(Policy = Policies.HOD)]
+public record CreateSubjectCommand(SubjectDto Subject) : IRequest<SubjectVM>;
 
 public class CreateSubjectCommandHandler : IRequestHandler<CreateSubjectCommand, SubjectVM>
 {
@@ -20,8 +20,8 @@ public class CreateSubjectCommandHandler : IRequestHandler<CreateSubjectCommand,
     {
         SubjectEntity subject = new SubjectEntity()
         {
-            Name = request.subject.Name,
-            TeacherId = request.subject.TeacherId,
+            Name = request.Subject.Name,
+            TeacherId = request.Subject.TeacherId,
         };
         var result = await _subjectRepository.CreateSubjectAsync(subject, cancellationToken);
 

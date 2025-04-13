@@ -4,7 +4,7 @@ using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Account.Commands.Register;
-public record TeacherRegisterCommand(RegisterDto register) : IRequest<CreatedUserDto?>;
+public record TeacherRegisterCommand(RegisterDto Register) : IRequest<CreatedUserDto?>;
 
 public class TeacherRegisterCommandHandler : IRequestHandler<TeacherRegisterCommand, CreatedUserDto?>
 {
@@ -20,10 +20,10 @@ public class TeacherRegisterCommandHandler : IRequestHandler<TeacherRegisterComm
     }
     public async Task<CreatedUserDto?> Handle(TeacherRegisterCommand request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request.register);
+        ArgumentNullException.ThrowIfNull(request.Register);
         TeacherEntity teacher = new TeacherEntity()
         {
-            Name = request.register.UserName
+            Name = request.Register.UserName
         };
 
         TeacherEntity createdTeacher = await _teacherRepository.CreateTeacherAsync(teacher, cancellationToken);
@@ -32,7 +32,7 @@ public class TeacherRegisterCommandHandler : IRequestHandler<TeacherRegisterComm
             throw new Exception("Register: Teacher does not create!");
         }
 
-        var createdUser = await _identityService.CreateUserAsync(createdTeacher.Id, request.register, "Teacher");
+        var createdUser = await _identityService.CreateUserAsync(createdTeacher.Id, request.Register, "Teacher");
         if (createdUser == null)
         {
             throw new Exception("Register: User does not create!");
@@ -41,16 +41,16 @@ public class TeacherRegisterCommandHandler : IRequestHandler<TeacherRegisterComm
         ApplicationUserDto userDto = new ApplicationUserDto
         {
             Id = createdUser.Id,
-            UserName = request.register.UserName,
-            Email = request.register.Email,
-            Password = request.register.Password,
+            UserName = request.Register.UserName,
+            Email = request.Register.Email,
+            Password = request.Register.Password,
             Role = "Teacher",
         };
 
         CreatedUserDto createdUserDto = new CreatedUserDto
         {
-            Email = request.register.Email,
-            UserName = request.register.UserName,
+            Email = request.Register.Email,
+            UserName = request.Register.UserName,
             Token = _tokenService.CreateToken(userDto)
         };
         return createdUserDto;

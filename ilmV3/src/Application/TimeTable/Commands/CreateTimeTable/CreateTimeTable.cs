@@ -7,7 +7,7 @@ using ilmV3.Domain.interfaces;
 namespace ilmV3.Application.TimeTable.Commands.CreateTimeTable;
 
 [Authorize(Policy = Policies.CanUpdateAndDelete)]
-public record CreateTimeTableCommand(TimeTableDto timeTable) : IRequest<TimeTableVM>;
+public record CreateTimeTableCommand(TimeTableDto TimeTable) : IRequest<TimeTableVM>;
 
 public class CreateTimeTableCommandHandler : IRequestHandler<CreateTimeTableCommand, TimeTableVM>
 {
@@ -20,21 +20,21 @@ public class CreateTimeTableCommandHandler : IRequestHandler<CreateTimeTableComm
     {
         TimeTableEntity timeTable = new TimeTableEntity()
         {
-            Name = request.timeTable.Name,
-            StudentGroupId = request.timeTable.StudentGroupId,
-            TeacherId = request.timeTable.TeacherId,
-            SubjectId = request.timeTable.SubjectId,
-            Audience = request.timeTable.Audience,
-            Date = request.timeTable.Date,
-            Time = request.timeTable.Time,
-            WeekDay = request.timeTable.WeekDay,
+            Name = request.TimeTable.Name,
+            StudentGroupId = request.TimeTable.StudentGroupId,
+            TeacherId = request.TimeTable.TeacherId,
+            SubjectId = request.TimeTable.SubjectId,
+            Audience = request.TimeTable.Audience,
+            Date = request.TimeTable.Date,
+            Time = request.TimeTable.Time,
+            WeekDay = request.TimeTable.WeekDay,
         };
         var result = await _timeTableRepository.CreateTimeTableAsync(timeTable, cancellationToken);
 
         TimeTableVM TimeTableVM = new TimeTableVM
         {
             Id = result.Id,
-            Name = request.timeTable.Name,
+            Name = request.TimeTable.Name,
             StudentGroupId = timeTable.StudentGroupId,
             TeacherId = result.TeacherId,
             SubjectId = result.SubjectId,
