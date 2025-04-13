@@ -1363,7 +1363,7 @@ export class StudentGroupsClient implements IStudentGroupsClient {
 export interface IStudentsClient {
     getStudents(): Observable<void>;
     getExcellentStudents(): Observable<void>;
-    getStudent(studentId: number): Observable<void>;
+    getStudent(studentId: string): Observable<void>;
     deleteStudent(studentId: number): Observable<void>;
     updateStudent(studentId: string, student: StudentDto): Observable<void>;
     updateStudentGroupForStudent(studentId: number, studentGroupId: number): Observable<void>;
@@ -1470,7 +1470,7 @@ export class StudentsClient implements IStudentsClient {
         return _observableOf(null as any);
     }
 
-    getStudent(studentId: number): Observable<void> {
+    getStudent(studentId: string): Observable<void> {
         let url_ = this.baseUrl + "/api/Students/{studentId}";
         if (studentId === undefined || studentId === null)
             throw new Error("The parameter 'studentId' must be defined.");
@@ -2119,7 +2119,7 @@ export class SubjectsClient implements ISubjectsClient {
 
 export interface ITeachersClient {
     getTeachers(): Observable<void>;
-    getTeacher(teacherId: number): Observable<void>;
+    getTeacher(teacherId: string): Observable<void>;
     updateTeacher(teacherId: string, teacher: TeacherDto): Observable<void>;
     deleteTeacher(teacherId: number): Observable<void>;
 }
@@ -2181,7 +2181,7 @@ export class TeachersClient implements ITeachersClient {
         return _observableOf(null as any);
     }
 
-    getTeacher(teacherId: number): Observable<void> {
+    getTeacher(teacherId: string): Observable<void> {
         let url_ = this.baseUrl + "/api/Teachers/{teacherId}";
         if (teacherId === undefined || teacherId === null)
             throw new Error("The parameter 'teacherId' must be defined.");

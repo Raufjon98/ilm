@@ -26,7 +26,7 @@ public class Students : EndpointGroupBase
         var result = await _sender.Send(new GetStudentsQuery());
         return TypedResults.Ok(result);
     }
-    public async Task<IResult> GetStudent(ISender _sender, int studentId)
+    public async Task<IResult> GetStudent(ISender _sender, string studentId)
     {
         var result = await _sender.Send(new GetStudentQuery(studentId));
         return TypedResults.Ok(result);
