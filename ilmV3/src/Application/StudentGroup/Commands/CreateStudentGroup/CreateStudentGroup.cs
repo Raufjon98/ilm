@@ -12,7 +12,7 @@ public record CreateStudentGroupCommand(StudentGroupDto StudentGroup) : IRequest
 public class CreateStudentGroupCommandHandler : IRequestHandler<CreateStudentGroupCommand, StudentGroupVM>
 {
     private readonly IStudentGroupRepository _studentGroupRepository;
-    public CreateStudentGroupCommandHandler(IMapper mapper, IStudentGroupRepository studentGroupRepository)
+    public CreateStudentGroupCommandHandler(IStudentGroupRepository studentGroupRepository)
     {
         _studentGroupRepository = studentGroupRepository;
     }

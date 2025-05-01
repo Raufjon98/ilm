@@ -10,7 +10,7 @@ public record GetTimeTableQuery(int timeTableId) : IRequest<TimeTableVM>;
 public class GetTimeTableQueryHandler : IRequestHandler<GetTimeTableQuery, TimeTableVM>
 {
     private readonly ITimeTableRepository _timeTableRepository;
-    public GetTimeTableQueryHandler(ITimeTableRepository timeTableRepository, IMapper mapper)
+    public GetTimeTableQueryHandler(ITimeTableRepository timeTableRepository)
     {
         _timeTableRepository = timeTableRepository;
     }

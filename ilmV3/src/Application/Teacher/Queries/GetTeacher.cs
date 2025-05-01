@@ -10,7 +10,7 @@ public record GetTeacherQuery(int teacherId) : IRequest<TeacherVM>;
 public class GetTeacherQueryHandler : IRequestHandler<GetTeacherQuery, TeacherVM>
 {
     private readonly ITeacherRepository _teacherRepository;
-    public GetTeacherQueryHandler(ITeacherRepository teacherRepository, IMapper mapper)
+    public GetTeacherQueryHandler(ITeacherRepository teacherRepository)
     {
         _teacherRepository = teacherRepository;
     }

@@ -10,7 +10,7 @@ public record GetStudentGroupQuery(int studentGroupId) : IRequest<StudentGroupVM
 public class StudentGroupQueryHandler : IRequestHandler<GetStudentGroupQuery, StudentGroupVM>
 {
     private readonly IStudentGroupRepository _studentGroupRepository;
-    public StudentGroupQueryHandler(IStudentGroupRepository studentGroupRepository, IMapper mapper)
+    public StudentGroupQueryHandler(IStudentGroupRepository studentGroupRepository)
     {
         _studentGroupRepository = studentGroupRepository;
     }

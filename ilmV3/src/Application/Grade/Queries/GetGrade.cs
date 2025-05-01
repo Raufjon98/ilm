@@ -10,7 +10,7 @@ public record GetGradeQuery(int gradeId) : IRequest<GradeVM>;
 public class GetGradeQueryHandler : IRequestHandler<GetGradeQuery, GradeVM>
 {
     private readonly IGradeRepository _gradeRepository;
-    public GetGradeQueryHandler(IGradeRepository gradeRepository, IMapper mapper)
+    public GetGradeQueryHandler(IGradeRepository gradeRepository)
     {
         _gradeRepository = gradeRepository;
     }
