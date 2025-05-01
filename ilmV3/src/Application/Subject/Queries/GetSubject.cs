@@ -10,7 +10,7 @@ public record GetSubjectQuery(int subjectId) : IRequest<SubjectVM>;
 public class GetSubjectQueryHandler : IRequestHandler<GetSubjectQuery, SubjectVM>
 {
     private readonly ISubjectRepository _subjectRepository;
-    public GetSubjectQueryHandler(ISubjectRepository subjectRepository, IMapper mapper)
+    public GetSubjectQueryHandler(ISubjectRepository subjectRepository)
     {
         _subjectRepository = subjectRepository;
     }

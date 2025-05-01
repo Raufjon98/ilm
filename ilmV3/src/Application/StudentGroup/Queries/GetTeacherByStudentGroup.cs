@@ -13,8 +13,7 @@ public class GetTeacherByStudentGroupQueryHandler : IRequestHandler<GetTeacherBy
 {
     private readonly IStudentGroupRepository _studentGroupRepository;
     private readonly IApplicationDbContext _context;
-    public GetTeacherByStudentGroupQueryHandler(IMapper mapper,
-        IStudentGroupRepository studentGroupRepository, IApplicationDbContext context)
+    public GetTeacherByStudentGroupQueryHandler(IStudentGroupRepository studentGroupRepository, IApplicationDbContext context)
     {
         _studentGroupRepository = studentGroupRepository;
         _context = context;

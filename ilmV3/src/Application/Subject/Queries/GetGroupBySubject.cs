@@ -14,7 +14,7 @@ public class GetGroupBySubjectQueryHandler : IRequestHandler<GetGroupBySubjectQu
     private readonly ISubjectRepository _subjectRepository;
     private readonly IApplicationDbContext _context;
     public GetGroupBySubjectQueryHandler(ISubjectRepository subjectRepository,
-        IMapper mapper, IApplicationDbContext context)
+        IApplicationDbContext context)
     {
         _context = context;
         _subjectRepository = subjectRepository;

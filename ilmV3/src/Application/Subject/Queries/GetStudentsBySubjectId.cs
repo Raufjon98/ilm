@@ -13,8 +13,7 @@ public class GetStudentsBySubjectIdQueryHandler : IRequestHandler<GetStudentsByS
 {
     private readonly ISubjectRepository _subjectRepository;
     private readonly IApplicationDbContext _context;
-    public GetStudentsBySubjectIdQueryHandler(IMapper mapper,
-        ISubjectRepository subjectRepository, IApplicationDbContext context)
+    public GetStudentsBySubjectIdQueryHandler(ISubjectRepository subjectRepository, IApplicationDbContext context)
     {
         _subjectRepository = subjectRepository;
         _context = context;

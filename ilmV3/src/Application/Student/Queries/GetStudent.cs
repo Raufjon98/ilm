@@ -10,7 +10,7 @@ public record GetStudentQuery(int studentId) : IRequest<StudentVM>;
 public class GetStudentQueryHandler : IRequestHandler<GetStudentQuery, StudentVM>
 {
     private readonly IStudentRepository _studentRepository;
-    public GetStudentQueryHandler(IStudentRepository studentRepository, IMapper mapper)
+    public GetStudentQueryHandler(IStudentRepository studentRepository)
     {
         _studentRepository = studentRepository;
     }

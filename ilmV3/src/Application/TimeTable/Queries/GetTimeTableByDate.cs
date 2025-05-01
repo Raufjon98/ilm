@@ -13,7 +13,7 @@ public class GetTimeTableByDateQueryHandler : IRequestHandler<GetTimeTableByDate
     private readonly ITimeTableRepository _timeTableRepository;
     private readonly IApplicationDbContext _context;
     public GetTimeTableByDateQueryHandler(ITimeTableRepository timeTableRepository,
-        IMapper mapper, IApplicationDbContext context)
+        IApplicationDbContext context)
     {
         _timeTableRepository = timeTableRepository;
         _context = context;

@@ -13,7 +13,7 @@ public class GetSubjectByTeacherQueryHandler : IRequestHandler<GetSubjectByTeach
     private readonly ISubjectRepository _subjectRepository;
     private readonly IApplicationDbContext _context;
     public GetSubjectByTeacherQueryHandler(ISubjectRepository subjectRepository,
-        IMapper mapper, IApplicationDbContext context)
+        IApplicationDbContext context)
     {
         _subjectRepository = subjectRepository;
         _context = context;

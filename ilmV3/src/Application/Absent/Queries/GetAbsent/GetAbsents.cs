@@ -9,7 +9,7 @@ public record GetAbsentsQuery : IRequest<IEnumerable<AbsentVM>>;
 public class GetAbsentQueryHandler : IRequestHandler<GetAbsentsQuery, IEnumerable<AbsentVM>>
 {
     private readonly IAbsentRepository _absentRepository;
-    public GetAbsentQueryHandler(IMapper mapper, IAbsentRepository absentRepository)
+    public GetAbsentQueryHandler(IAbsentRepository absentRepository)
     {
         _absentRepository = absentRepository;
     }

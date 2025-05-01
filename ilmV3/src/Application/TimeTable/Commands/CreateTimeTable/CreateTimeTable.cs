@@ -12,7 +12,7 @@ public record CreateTimeTableCommand(TimeTableDto TimeTable) : IRequest<TimeTabl
 public class CreateTimeTableCommandHandler : IRequestHandler<CreateTimeTableCommand, TimeTableVM>
 {
     private readonly ITimeTableRepository _timeTableRepository;
-    public CreateTimeTableCommandHandler(ITimeTableRepository timeTableRepository, IMapper mapper)
+    public CreateTimeTableCommandHandler(ITimeTableRepository timeTableRepository)
     {
         _timeTableRepository = timeTableRepository;
     }
