@@ -1,7 +1,6 @@
 ﻿namespace ilmV3.Domain.interfaces;
 public interface IStudentGroupRepository
 {
-    Task<List<StudentGroupEntity>> GetStudentGroupsAsync();
     Task<StudentGroupEntity?> GetStudentGroupByIdAsync(int studenGroupId);
     Task<StudentGroupEntity> CreateStudentGroupAsync(StudentGroupEntity studentGroup, CancellationToken cancellationToken);
     Task<StudentGroupEntity> UpdateStudentGroupAsync(StudentGroupEntity studentGroup, CancellationToken cancellationToken);

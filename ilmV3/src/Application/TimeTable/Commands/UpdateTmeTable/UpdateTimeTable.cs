@@ -18,10 +18,7 @@ public class UpdateTimeTableCommandHandler : IRequestHandler<UpdateTimeTableComm
     public async Task<TimeTableVM?> Handle(UpdateTimeTableCommand request, CancellationToken cancellationToken)
     {
         var timeTable = await _timeTableRepository.GetTimeTableByIdAsync(request.timeTableId);
-        if (timeTable == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(timeTable);
 
         timeTable.Audience = request.TimeTable.Audience;
         timeTable.StudentGroupId = request.TimeTable.StudentGroupId;

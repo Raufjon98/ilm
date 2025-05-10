@@ -76,6 +76,9 @@ public static class DependencyInjection
 
             options.AddPolicy(Policies.CanRead, policy =>
                 policy.RequireRole(Roles.Student, Roles.Teacher, Roles.HOD, Roles.Administrator));
+
+            options.AddPolicy(Policies.HOD, policy =>
+               policy.RequireRole(Roles.HOD, Roles.Administrator));
         });
 
         builder.Services.AddAuthentication(options =>

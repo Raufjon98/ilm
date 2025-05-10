@@ -17,10 +17,7 @@ public class DeleteSubjectCommandHandler : IRequestHandler<DeleteSubjectCommand,
     public async Task<bool> Handle(DeleteSubjectCommand request, CancellationToken cancellationToken)
     {
         var subject = await _subjectRepository.GetSubjectByIdAsync(request.SubjectId);
-        if (subject == null)
-        {
-            throw new KeyNotFoundException($"Record with ID {request.SubjectId} not dound");
-        }
+        ArgumentNullException.ThrowIfNull(subject);
         return await _subjectRepository.DeleteSubjectAsync(subject, cancellationToken);
     }
 }

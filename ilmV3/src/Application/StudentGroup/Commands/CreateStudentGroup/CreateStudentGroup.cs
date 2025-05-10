@@ -12,7 +12,7 @@ public record CreateStudentGroupCommand(StudentGroupDto StudentGroup) : IRequest
 public class CreateStudentGroupCommandHandler : IRequestHandler<CreateStudentGroupCommand, StudentGroupVM>
 {
     private readonly IStudentGroupRepository _studentGroupRepository;
-    public CreateStudentGroupCommandHandler(IMapper mapper, IStudentGroupRepository studentGroupRepository)
+    public CreateStudentGroupCommandHandler(IStudentGroupRepository studentGroupRepository)
     {
         _studentGroupRepository = studentGroupRepository;
     }
@@ -23,6 +23,7 @@ public class CreateStudentGroupCommandHandler : IRequestHandler<CreateStudentGro
             CodeName = request.StudentGroup.CodeName,
             Name = request.StudentGroup.Name,
             SubjectId = request.StudentGroup.SubjectId,
+            TeacherId = request.StudentGroup.TeacherId
         };
         var result = await _studentGroupRepository.CreateStudentGroupAsync(studentGroup, cancellationToken);
         StudentGroupVM studentGroupVM = new StudentGroupVM

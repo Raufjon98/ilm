@@ -1,6 +1,6 @@
-﻿using ilmV3.Application.Common.Security;
+﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Domain.Constants;
-using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Grade.Queries;
 
@@ -9,14 +9,14 @@ public record GetGradesQuery : IRequest<IEnumerable<GradeVM>>;
 
 public class GetGradesQueryHandler : IRequestHandler<GetGradesQuery, IEnumerable<GradeVM>>
 {
-    private readonly IGradeRepository _gradeRepository;
-    public GetGradesQueryHandler(IGradeRepository gradeRepository, IMapper mapper)
+    private readonly IApplicationDbContext _context;
+    public GetGradesQueryHandler(IApplicationDbContext context)
     {
-        _gradeRepository = gradeRepository;
+        _context = context;
     }
     public async Task<IEnumerable<GradeVM>> Handle(GetGradesQuery request, CancellationToken cancellationToken)
     {
-        var grades = await _gradeRepository.GetGradesAsync();
+        var grades = await _context.Grades.ToListAsync();
         List<GradeVM> result = new List<GradeVM>();
         foreach (var grade in grades)
         {
@@ -30,6 +30,7 @@ public class GetGradesQueryHandler : IRequestHandler<GetGradesQuery, IEnumerable
                 Date = grade.Date,
                 Grade = grade.Grade
             };
+            result.Add(gradeVM);
         }
         return result;
     }

@@ -1,6 +1,6 @@
-﻿using ilmV3.Application.Common.Security;
+﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Domain.Constants;
-using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.TimeTable.Queries;
 
@@ -9,14 +9,14 @@ public record GetTimeTablesQuery : IRequest<IEnumerable<TimeTableVM>>;
 
 public class GetTimeTablesQueryHandler : IRequestHandler<GetTimeTablesQuery, IEnumerable<TimeTableVM>>
 {
-    private readonly ITimeTableRepository _timeTableRepository;
-    public GetTimeTablesQueryHandler(ITimeTableRepository timeTableRepository, IMapper mapper)
+    private readonly IApplicationDbContext _context;
+    public GetTimeTablesQueryHandler(IApplicationDbContext context)
     {
-        _timeTableRepository = timeTableRepository;
+        _context = context;
     }
     public async Task<IEnumerable<TimeTableVM>> Handle(GetTimeTablesQuery request, CancellationToken cancellationToken)
     {
-        var timeTables = await _timeTableRepository.GetTimeTablesAsync();
+        var timeTables = await _context.TimeTables.ToListAsync();
 
         List<TimeTableVM> result = new List<TimeTableVM>();
         foreach (var timeTable in timeTables)

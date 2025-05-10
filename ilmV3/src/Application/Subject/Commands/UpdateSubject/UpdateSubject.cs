@@ -18,10 +18,7 @@ public class UpdateSubjectCommandHandler : IRequestHandler<UpdateSubjectCommand,
     public async Task<SubjectVM?> Handle(UpdateSubjectCommand request, CancellationToken cancellationToken)
     {
         var subject = await _subjectRepository.GetSubjectByIdAsync(request.subjectId);
-        if (subject == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(subject);
         subject.Name = request.Subject.Name;
         subject.TeacherId = request.Subject.TeacherId;
 

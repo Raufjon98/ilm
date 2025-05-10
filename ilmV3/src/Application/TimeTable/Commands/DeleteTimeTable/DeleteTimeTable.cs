@@ -17,10 +17,7 @@ public class DeleteTimeTableCommandHandler : IRequestHandler<DeleteTimeTableComm
     public async Task<bool> Handle(DeleteTimeTableCommand request, CancellationToken cancellationToken)
     {
         var timetable = await _timeTableRepository.GetTimeTableByIdAsync(request.timeTableId);
-        if (timetable == null)
-        {
-            throw new KeyNotFoundException($"Record with Id {request.timeTableId} not found");
-        }
+        ArgumentNullException.ThrowIfNull(timetable);
         return await _timeTableRepository.DeleteTimeTableAsync(timetable, cancellationToken);
     }
 }

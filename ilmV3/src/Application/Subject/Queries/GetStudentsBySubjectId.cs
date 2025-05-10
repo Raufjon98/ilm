@@ -2,7 +2,6 @@
 using ilmV3.Application.Common.Security;
 using ilmV3.Application.Student.Queries;
 using ilmV3.Domain.Constants;
-using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Subject.Queries;
 
@@ -11,12 +10,9 @@ public record GetStudentsBySubjectIdQuery(int subjectId) : IRequest<IEnumerable<
 
 public class GetStudentsBySubjectIdQueryHandler : IRequestHandler<GetStudentsBySubjectIdQuery, IEnumerable<StudentVM>>
 {
-    private readonly ISubjectRepository _subjectRepository;
     private readonly IApplicationDbContext _context;
-    public GetStudentsBySubjectIdQueryHandler(IMapper mapper,
-        ISubjectRepository subjectRepository, IApplicationDbContext context)
+    public GetStudentsBySubjectIdQueryHandler(IApplicationDbContext context)
     {
-        _subjectRepository = subjectRepository;
         _context = context;
     }
     public async Task<IEnumerable<StudentVM>> Handle(GetStudentsBySubjectIdQuery request, CancellationToken cancellationToken)

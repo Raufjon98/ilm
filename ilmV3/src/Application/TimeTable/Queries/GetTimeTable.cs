@@ -1,6 +1,6 @@
-﻿using ilmV3.Application.Common.Security;
+﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Domain.Constants;
-using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.TimeTable.Queries;
 
@@ -9,18 +9,15 @@ public record GetTimeTableQuery(int timeTableId) : IRequest<TimeTableVM>;
 
 public class GetTimeTableQueryHandler : IRequestHandler<GetTimeTableQuery, TimeTableVM>
 {
-    private readonly ITimeTableRepository _timeTableRepository;
-    public GetTimeTableQueryHandler(ITimeTableRepository timeTableRepository, IMapper mapper)
+    private readonly IApplicationDbContext _context;
+    public GetTimeTableQueryHandler(IApplicationDbContext context)
     {
-        _timeTableRepository = timeTableRepository;
+        _context = context;
     }
     public async Task<TimeTableVM> Handle(GetTimeTableQuery request, CancellationToken cancellationToken)
     {
-        var timeTable = await _timeTableRepository.GetTimeTableByIdAsync(request.timeTableId);
-        if (timeTable == null)
-        {
-            throw new KeyNotFoundException($"Record with Id {request.timeTableId} not found!");
-        }
+        var timeTable = await _context.TimeTables.FirstOrDefaultAsync(x => x.Id == request.timeTableId);
+        ArgumentNullException.ThrowIfNull(timeTable);
 
         TimeTableVM timeTableVM = new TimeTableVM()
         {

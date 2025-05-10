@@ -1,4 +1,5 @@
-﻿using ilmV3.Application.Common.Security;
+﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 
@@ -9,18 +10,15 @@ public record GetStudentGroupQuery(int studentGroupId) : IRequest<StudentGroupVM
 
 public class StudentGroupQueryHandler : IRequestHandler<GetStudentGroupQuery, StudentGroupVM>
 {
-    private readonly IStudentGroupRepository _studentGroupRepository;
-    public StudentGroupQueryHandler(IStudentGroupRepository studentGroupRepository, IMapper mapper)
+    private readonly IApplicationDbContext _context;
+    public StudentGroupQueryHandler(IApplicationDbContext context)
     {
-        _studentGroupRepository = studentGroupRepository;
+        _context = context;
     }
     public async Task<StudentGroupVM> Handle(GetStudentGroupQuery request, CancellationToken cancellationToken)
     {
-        var studentGroup = await _studentGroupRepository.GetStudentGroupByIdAsync(request.studentGroupId);
-        if (studentGroup == null)
-        {
-            throw new KeyNotFoundException($"Record with ID {request.studentGroupId} not found.");
-        }
+        var studentGroup = await _context.StudentGroups.FirstOrDefaultAsync(x => x.Id == request.studentGroupId);
+        ArgumentNullException.ThrowIfNull(studentGroup);
 
         StudentGroupVM StudentGroupVM = new StudentGroupVM()
         {

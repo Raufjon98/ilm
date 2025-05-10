@@ -30,11 +30,6 @@ public class TimeTableRepository : ITimeTableRepository
         return await _context.TimeTables.FirstOrDefaultAsync(t => t.Id == id);
     }
 
-    public async Task<List<TimeTableEntity>> GetTimeTablesAsync()
-    {
-        return await _context.TimeTables.ToListAsync();
-    }
-
     public async Task<TimeTableEntity> UpdateTimeTableAsync(TimeTableEntity timeTable, CancellationToken cancellationToken)
     {
         _context.TimeTables.Update(timeTable);

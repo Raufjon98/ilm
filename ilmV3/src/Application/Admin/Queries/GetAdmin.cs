@@ -11,19 +11,19 @@ public record GetAdminQuery(string adminId) : IRequest<AdminVM>;
 public class GetAdminQueryHandler : IRequestHandler<GetAdminQuery, AdminVM>
 {
     private readonly IIdentityService _identityService;
-    private readonly IAdminRepository _adminRepository;
+    private readonly IApplicationDbContext _context;
 
-    public GetAdminQueryHandler(IIdentityService identityService, IAdminRepository adminRepository)
+    public GetAdminQueryHandler(IIdentityService identityService, IApplicationDbContext context)
     {
+        _context = context;
         _identityService = identityService;
-        _adminRepository = adminRepository;
     }
     public async Task<AdminVM> Handle(GetAdminQuery request, CancellationToken cancellationToken)
     {
         var user = await _identityService.GetUserByIdAsync(request.adminId);
         ArgumentNullException.ThrowIfNull(user);
 
-        var admin = await _adminRepository.GetAdminAsync(user.ExternalUserId);
+        var admin = await _context.Admins.FirstOrDefaultAsync(x => x.Id == user.ExternalUserId);
         ArgumentNullException.ThrowIfNull(admin);
 
         AdminVM adminVM = new AdminVM

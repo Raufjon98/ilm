@@ -18,10 +18,8 @@ public class UpdateStudentGroupCommandHandler : IRequestHandler<UpdateStudentGro
     public async Task<StudentGroupVM?> Handle(UpdateStudentGroupCommand request, CancellationToken cancellationToken)
     {
         var studentGroup = await _studentGroupRepository.GetStudentGroupByIdAsync(request.studentGroupId);
-        if (studentGroup == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(studentGroup);
+
         studentGroup.SubjectId = request.StudentGroup.SubjectId;
         studentGroup.Name = request.StudentGroup.Name;
         studentGroup.CodeName = request.StudentGroup.CodeName;

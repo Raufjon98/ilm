@@ -1,6 +1,6 @@
-﻿using ilmV3.Application.Common.Security;
+﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Domain.Constants;
-using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Teacher.Queries;
 
@@ -9,18 +9,15 @@ public record GetTeacherQuery(int teacherId) : IRequest<TeacherVM>;
 
 public class GetTeacherQueryHandler : IRequestHandler<GetTeacherQuery, TeacherVM>
 {
-    private readonly ITeacherRepository _teacherRepository;
-    public GetTeacherQueryHandler(ITeacherRepository teacherRepository, IMapper mapper)
+    private readonly IApplicationDbContext _context;
+    public GetTeacherQueryHandler(IApplicationDbContext context)
     {
-        _teacherRepository = teacherRepository;
+        _context = context;
     }
     public async Task<TeacherVM> Handle(GetTeacherQuery request, CancellationToken cancellationToken)
     {
-        var teacher = await _teacherRepository.GetTeacherByIdAsync(request.teacherId);
-        if (teacher == null)
-        {
-            throw new KeyNotFoundException($"Record with ID {request.teacherId} not found!");
-        }
+        var teacher = await _context.Teachers.FirstOrDefaultAsync(x => x.Id == request.teacherId);
+        ArgumentNullException.ThrowIfNull(teacher);
 
         TeacherVM teacherVM = new TeacherVM()
         {

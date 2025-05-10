@@ -1,6 +1,6 @@
-﻿using ilmV3.Application.Common.Security;
+﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Domain.Constants;
-using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Subject.Queries;
 
@@ -9,14 +9,14 @@ public record GetSubjectsQuery : IRequest<IEnumerable<SubjectVM>>;
 
 public class GetSubjectsQueryHandler : IRequestHandler<GetSubjectsQuery, IEnumerable<SubjectVM>>
 {
-    private readonly ISubjectRepository _subjectRepository;
-    public GetSubjectsQueryHandler(ISubjectRepository subjectRepository, IMapper mapper)
+    private readonly IApplicationDbContext _context;
+    public GetSubjectsQueryHandler(IApplicationDbContext context)
     {
-        _subjectRepository = subjectRepository;
+        _context = context;
     }
     public async Task<IEnumerable<SubjectVM>> Handle(GetSubjectsQuery request, CancellationToken cancellationToken)
     {
-        var subjects = await _subjectRepository.GetSubjectsAsync();
+        var subjects = await _context.Subjects.ToListAsync();
 
         List<SubjectVM> result = new List<SubjectVM>();
         foreach (var subject in subjects)
@@ -27,6 +27,7 @@ public class GetSubjectsQueryHandler : IRequestHandler<GetSubjectsQuery, IEnumer
                 Name = subject.Name,
                 TeacherId = subject.TeacherId,
             };
+            result.Add(subjectVM);
         }
         return result;
     }

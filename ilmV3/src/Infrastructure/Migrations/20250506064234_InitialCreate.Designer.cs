@@ -12,8 +12,8 @@ using ilmV3.Infrastructure.Data;
 namespace ilmV3.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250407065557_AddPostgre")]
-    partial class AddPostgre
+    [Migration("20250506064234_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -212,6 +212,23 @@ namespace ilmV3.Infrastructure.Migrations
                     b.HasIndex("TeacherId");
 
                     b.ToTable("Absents");
+                });
+
+            modelBuilder.Entity("ilmV3.Domain.Entities.AdminEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("ilmV3.Domain.Entities.GradeEntity", b =>
