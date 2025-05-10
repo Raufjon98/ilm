@@ -11,12 +11,10 @@ public record GetStudentGroupMembersQuery(int studentGroupId) : IRequest<IEnumer
 
 public class GetStudentGroupMembersQueryHandler : IRequestHandler<GetStudentGroupMembersQuery, IEnumerable<StudentVM>>
 {
-    private readonly IStudentGroupRepository _studentGroupRepository;
     private readonly IApplicationDbContext _context;
-    public GetStudentGroupMembersQueryHandler(IApplicationDbContext context, IMapper mapper, IStudentGroupRepository studentGroupRepository)
+    public GetStudentGroupMembersQueryHandler(IApplicationDbContext context)
     {
         _context = context;
-        _studentGroupRepository = studentGroupRepository;
     }
     public async Task<IEnumerable<StudentVM>> Handle(GetStudentGroupMembersQuery request, CancellationToken cancellationToken)
     {

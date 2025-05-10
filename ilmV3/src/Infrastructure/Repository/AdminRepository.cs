@@ -20,20 +20,10 @@ public class AdminRepository : IAdminRepository
         return admin;
     }
 
-    public async Task<AdminEntity?> GetAdminAsync(int adminId)
-    {
-        return await _context.Admins.FirstOrDefaultAsync(a => a.Id == adminId);
-    }
-
     public async Task<AdminEntity?> GetAdminByIdAsync(int adminId)
     {
         var result = await _context.Admins.FirstOrDefaultAsync(x => x.Id == adminId);
         return result;
-    }
-
-    public async Task<List<AdminEntity>> GetAdminsAsync()
-    {
-        return await _context.Admins.ToListAsync();
     }
 
     public async Task<AdminEntity> UpdateAdminAsync(AdminEntity admin, CancellationToken cancellationToken)
@@ -41,5 +31,10 @@ public class AdminRepository : IAdminRepository
         _context.Admins.Update(admin);
         await _context.SaveChangesAsync(cancellationToken);
         return admin;
+    }
+    public async Task<bool> DeleteAdminAsync(AdminEntity admin, CancellationToken cancellationToken)
+    {
+        _context.Admins.Remove(admin);
+        return await _context.SaveChangesAsync(cancellationToken) > 0;
     }
 }

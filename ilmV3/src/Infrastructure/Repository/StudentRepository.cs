@@ -1,8 +1,6 @@
 ﻿using ilmV3.Application.Common.Interfaces;
 using ilmV3.Domain.Entities;
 using ilmV3.Domain.interfaces;
-using ilmV3.Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace ilmV3.Infrastructure.Repository;
@@ -30,11 +28,6 @@ public class StudentRepository : IStudentRepository
     public async Task<StudentEntity?> GetStudentByIdAsync(int id)
     {
         return await _context.Students.FirstOrDefaultAsync(x => x.Id == id);
-    }
-
-    public async Task<List<StudentEntity>> GetStudentsAsync()
-    {
-        return await _context.Students.ToListAsync();
     }
 
     public async Task<StudentEntity> UpdateStudentAsync(StudentEntity student, CancellationToken cancellationToken)

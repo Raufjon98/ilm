@@ -21,14 +21,10 @@ public class UpdateStudentGroupCommandHandler : IRequestHandler<UpdateStudentGro
          .Include(s => s.Groups)
          .Where(s => s.Id == request.studentId)
          .FirstOrDefaultAsync();
-        if (student == null)
-        {
-            throw new Exception("Student not forund!");
-        }
+        ArgumentNullException.ThrowIfNull(student);
         student.Groups?.Clear();
         var group = await _context.StudentGroups.FindAsync(request.studentGroupId);
-        if (group == null)
-            throw new Exception("Group does not found!");
+        ArgumentNullException.ThrowIfNull(group);
 
         student.Groups?.Add(group);
         var result = await _context.SaveChangesAsync(cancellationToken);

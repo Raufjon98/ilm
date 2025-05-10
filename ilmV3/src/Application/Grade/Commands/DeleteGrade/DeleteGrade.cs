@@ -17,10 +17,7 @@ public class DeleteGradeCommandhandler : IRequestHandler<DeleteGradeCommand, boo
     public async Task<bool> Handle(DeleteGradeCommand request, CancellationToken cancellationToken)
     {
         var grade = await _gradeRepository.GetGradeByIdAsync(request.gradeId);
-        if (grade == null)
-        {
-            throw new KeyNotFoundException($"Record with ID {request.gradeId} not found.");
-        }
+        ArgumentNullException.ThrowIfNull(grade);
         return await _gradeRepository.DeleteGradeAsync(grade, cancellationToken);
     }
 }

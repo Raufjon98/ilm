@@ -1,4 +1,5 @@
-﻿using ilmV3.Application.Common.Security;
+﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Absent.Queries.GetAbsent;
@@ -8,18 +9,17 @@ public record GetAbsentByIdQuery(int absentId) : IRequest<AbsentVM>;
 
 public class GetAbsentByIdQueryHandler : IRequestHandler<GetAbsentByIdQuery, AbsentVM>
 {
-    private readonly IAbsentRepository _absentRepository;
-    public GetAbsentByIdQueryHandler(IAbsentRepository absentRepository, IMapper mapper)
+    private readonly IApplicationDbContext _context;
+
+    public GetAbsentByIdQueryHandler(IApplicationDbContext context)
     {
-        _absentRepository = absentRepository;
+        _context = context;
     }
+
     public async Task<AbsentVM> Handle(GetAbsentByIdQuery request, CancellationToken cancellationToken)
     {
-        var absent = await _absentRepository.GetAbsentByIdAsync(request.absentId);
-        if (absent == null)
-        {
-            throw new KeyNotFoundException($"Absent record with ID {request.absentId} not found.");
-        }
+        var absent = await _context.Absents.FirstOrDefaultAsync(x => x.Id == request.absentId);
+        ArgumentNullException.ThrowIfNull(absent);
         var result = new AbsentVM
         {
             Id = absent.Id,

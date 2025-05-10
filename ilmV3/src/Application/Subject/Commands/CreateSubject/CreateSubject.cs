@@ -12,7 +12,7 @@ public record CreateSubjectCommand(SubjectDto Subject) : IRequest<SubjectVM>;
 public class CreateSubjectCommandHandler : IRequestHandler<CreateSubjectCommand, SubjectVM>
 {
     private readonly ISubjectRepository _subjectRepository;
-    public CreateSubjectCommandHandler(IMapper mapper, ISubjectRepository subjectRepository)
+    public CreateSubjectCommandHandler(ISubjectRepository subjectRepository)
     {
         _subjectRepository = subjectRepository;
     }

@@ -26,21 +26,16 @@ public class AbsentRepository : IAbsentRepository
 
     }
 
-    public async Task<AbsentEntity?> GetAbsentByIdAsync(int id)
-    {
-        return await _context.Absents.FirstOrDefaultAsync(a => a.Id == id);
-    }
-
-    public async Task<List<AbsentEntity>> GetAbsentsAsync()
-    {
-        return await _context.Absents.ToListAsync();
-    }
-
     public async Task<AbsentEntity> UpdateAbsentAsync(AbsentEntity absent, CancellationToken cancellationToken)
     {
         _context.Absents.Update(absent);
         await _context.SaveChangesAsync(cancellationToken);
         return absent;
+    }
+
+    public async Task<AbsentEntity?> GetAbsentByIdAsync(int absentId)
+    {
+        return await _context.Absents.FirstOrDefaultAsync(x => x.Id == absentId);
     }
 
 }
