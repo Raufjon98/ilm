@@ -1,4 +1,5 @@
-﻿using ilmV3.Application.Common.Security;
+﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 
@@ -9,18 +10,15 @@ public record GetGradeQuery(int gradeId) : IRequest<GradeVM>;
 
 public class GetGradeQueryHandler : IRequestHandler<GetGradeQuery, GradeVM>
 {
-    private readonly IGradeRepository _gradeRepository;
-    public GetGradeQueryHandler(IGradeRepository gradeRepository, IMapper mapper)
+    private readonly IApplicationDbContext _context;
+    public GetGradeQueryHandler( IApplicationDbContext context)
     {
-        _gradeRepository = gradeRepository;
+        _context = context;
     }
     public async Task<GradeVM> Handle(GetGradeQuery request, CancellationToken cancellationToken)
     {
-        var grade = await _gradeRepository.GetGradeByIdAsync(request.gradeId);
-        if (grade == null)
-        {
-            throw new KeyNotFoundException($"Record with ID {request.gradeId} not found.");
-        }
+        var grade = await _context.Grades.FirstOrDefaultAsync(x => x.Id == request.gradeId);
+        ArgumentNullException.ThrowIfNull(grade);
         var gradeVM = new GradeVM()
         {
             Id = grade.Id,

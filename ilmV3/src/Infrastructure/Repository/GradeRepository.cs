@@ -30,11 +30,6 @@ public class GradeRepository : IGradeRepository
         return await _context.Grades.FirstOrDefaultAsync(g => g.Id == id);
     }
 
-    public async Task<List<GradeEntity>> GetGradesAsync()
-    {
-        return await _context.Grades.ToListAsync();
-    }
-
     public async Task<GradeEntity> UpdateGradeAsync(GradeEntity grade, CancellationToken cancellationToken)
     {
         _context.Grades.Update(grade);

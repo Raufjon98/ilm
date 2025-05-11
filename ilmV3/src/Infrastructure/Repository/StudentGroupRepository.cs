@@ -30,11 +30,6 @@ public class StudentGroupRepository : IStudentGroupRepository
         return await _context.StudentGroups.FirstOrDefaultAsync(sg => sg.Id == id);
     }
 
-    public async Task<List<StudentGroupEntity>> GetStudentGroupsAsync()
-    {
-        return await _context.StudentGroups.ToListAsync();
-    }
-
     public async Task<StudentGroupEntity> UpdateStudentGroupAsync(StudentGroupEntity studentGroup, CancellationToken cancellationToken)
     {
         _context.StudentGroups.Update(studentGroup);

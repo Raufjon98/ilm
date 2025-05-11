@@ -1,6 +1,6 @@
-﻿using ilmV3.Application.Common.Security;
+﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Domain.Constants;
-using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Subject.Queries;
 
@@ -9,18 +9,15 @@ public record GetSubjectQuery(int subjectId) : IRequest<SubjectVM>;
 
 public class GetSubjectQueryHandler : IRequestHandler<GetSubjectQuery, SubjectVM>
 {
-    private readonly ISubjectRepository _subjectRepository;
-    public GetSubjectQueryHandler(ISubjectRepository subjectRepository, IMapper mapper)
+    private readonly IApplicationDbContext _context;
+    public GetSubjectQueryHandler(IApplicationDbContext context)
     {
-        _subjectRepository = subjectRepository;
+        _context = context;
     }
     public async Task<SubjectVM> Handle(GetSubjectQuery request, CancellationToken cancellationToken)
     {
-        var subject = await _subjectRepository.GetSubjectByIdAsync(request.subjectId);
-        if (subject == null)
-        {
-            throw new KeyNotFoundException($"Record with ID {request.subjectId} not found");
-        }
+        var subject = await _context.Subjects.FirstOrDefaultAsync(x => x.Id == request.subjectId);
+        ArgumentNullException.ThrowIfNull(subject);
 
         SubjectVM subjectVM = new SubjectVM()
         {

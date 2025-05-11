@@ -18,10 +18,7 @@ public class UpdateGradeCommandHandler : IRequestHandler<UpdateGradeCommand, Gra
     public async Task<GradeVM?> Handle(UpdateGradeCommand request, CancellationToken cancellationToken)
     {
         var grade = await _gradeRepository.GetGradeByIdAsync(request.gradeId);
-        if (grade == null)
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNull(grade);
         grade.StudentId = request.Grade.StudentId;
         grade.SubjectId = request.Grade.SubjectId;
         grade.TeacherId = request.Grade.TeacherId;

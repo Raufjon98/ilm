@@ -1,6 +1,6 @@
-﻿using ilmV3.Application.Common.Security;
+﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Domain.Constants;
-using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.StudentGroup.Queries;
 
@@ -9,14 +9,14 @@ public record GetStudentGroupsQuery : IRequest<IEnumerable<StudentGroupVM>>;
 
 public class GetStudentGroupsQueryHandler : IRequestHandler<GetStudentGroupsQuery, IEnumerable<StudentGroupVM>>
 {
-    private readonly IStudentGroupRepository _studentGroupRepository;
-    public GetStudentGroupsQueryHandler(IStudentGroupRepository studentGroupRepository, IMapper mapper)
+    private readonly IApplicationDbContext _context;
+    public GetStudentGroupsQueryHandler(IApplicationDbContext context)
     {
-        _studentGroupRepository = studentGroupRepository;
+        _context = context;
     }
     public async Task<IEnumerable<StudentGroupVM>> Handle(GetStudentGroupsQuery request, CancellationToken cancellationToken)
     {
-        var studentGroups = await _studentGroupRepository.GetStudentGroupsAsync();
+        var studentGroups = await _context.StudentGroups.ToListAsync();
         List<StudentGroupVM> result = new List<StudentGroupVM>();
         foreach (var studentGroup in studentGroups)
         {

@@ -18,10 +18,7 @@ public class DeleteStudentCommandHandler : IRequestHandler<DeleteStudentGroupCom
     public async Task<bool> Handle(DeleteStudentGroupCommand request, CancellationToken cancellationToken)
     {
         var studentGroup = await _studentGroupRepository.GetStudentGroupByIdAsync(request.studentGroupId);
-        if (studentGroup == null)
-        {
-            throw new KeyNotFoundException($"Record with ID {request.studentGroupId} not found.");
-        }
+        ArgumentNullException.ThrowIfNull(studentGroup);
         return await _studentGroupRepository.DeleteStudentGroupAsync(studentGroup, cancellationToken);
     }
 }

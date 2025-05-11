@@ -17,10 +17,7 @@ public class DeleteTeacherCommandHandler : IRequestHandler<DeleteTeacherCommand,
     public async Task<bool> Handle(DeleteTeacherCommand request, CancellationToken cancellationToken)
     {
         var teacher = await _teacherRepository.GetTeacherByIdAsync(request.teacherId);
-        if (teacher == null)
-        {
-            throw new KeyNotFoundException($"Record with id {request.teacherId} not found");
-        }
+        ArgumentNullException.ThrowIfNull(teacher);
         return await _teacherRepository.DeleteTeacherAsync(teacher, cancellationToken);
     }
 }

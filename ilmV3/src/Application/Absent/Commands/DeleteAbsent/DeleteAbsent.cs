@@ -1,4 +1,5 @@
-﻿using ilmV3.Application.Common.Security;
+﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Domain.Constants;
 using ilmV3.Domain.interfaces;
 
@@ -17,10 +18,7 @@ public class DeleteAbsentCommandHandler : IRequestHandler<DeleteAbsentCommand, b
     public async Task<bool> Handle(DeleteAbsentCommand request, CancellationToken cancellationToken)
     {
         var absent = await _absentRepository.GetAbsentByIdAsync(request.absentId);
-        if (absent == null)
-        {
-            throw new KeyNotFoundException($"Absent record with ID {request.absentId} not found.");
-        }
+        ArgumentNullException.ThrowIfNull(absent);
         return await _absentRepository.DeleteAbsentAsync(absent, cancellationToken);
     }
 

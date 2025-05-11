@@ -19,10 +19,7 @@ public class GetTecherBySubjectQueryHandler : IRequestHandler<GetTeacherBySubjec
     {
         var teacher = await _context.Teachers.Include(t => t.Subject)
             .FirstOrDefaultAsync(s => s.Subject != null && s.Subject.Id == request.subjectId);
-        if (teacher == null)
-        {
-            throw new KeyNotFoundException($"Record with ID {request.subjectId} not found");
-        }
+        ArgumentNullException.ThrowIfNull(teacher);
 
         TeacherVM teacherVM = new TeacherVM()
         {

@@ -1,6 +1,6 @@
-﻿using ilmV3.Application.Common.Security;
+﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Domain.Constants;
-using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Teacher.Queries;
 
@@ -9,14 +9,14 @@ public record GetTeachersQuery : IRequest<IEnumerable<TeacherVM>>;
 
 public class GetTeachersQueryHandler : IRequestHandler<GetTeachersQuery, IEnumerable<TeacherVM>>
 {
-    private readonly ITeacherRepository _teacherRepository;
-    public GetTeachersQueryHandler(ITeacherRepository teacherRepository, IMapper mapper)
+    private readonly IApplicationDbContext _context;
+    public GetTeachersQueryHandler(IApplicationDbContext context)
     {
-        _teacherRepository = teacherRepository;
+        _context = context;
     }
     public async Task<IEnumerable<TeacherVM>> Handle(GetTeachersQuery request, CancellationToken cancellationToken)
     {
-        var teachers = await _teacherRepository.GetTeachersAsync();
+        var teachers = await _context.Teachers.ToListAsync();
         List<TeacherVM> result = new List<TeacherVM>();
 
         foreach (var teacher in teachers)

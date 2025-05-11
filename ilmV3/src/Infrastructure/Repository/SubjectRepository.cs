@@ -30,11 +30,6 @@ public class SubjectRepository : ISubjectRepository
         return await _context.Subjects.FirstOrDefaultAsync(s => s.Id == id);
     }
 
-    public async Task<List<SubjectEntity>> GetSubjectsAsync()
-    {
-        return await _context.Subjects.ToListAsync();
-    }
-
     public async Task<SubjectEntity> UpdateSubjectAsync(SubjectEntity subject, CancellationToken cancellationToken)
     {
         _context.Subjects.Update(subject);

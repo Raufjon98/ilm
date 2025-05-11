@@ -1,4 +1,5 @@
-﻿using ilmV3.Application.Common.Security;
+﻿using ilmV3.Application.Common.Interfaces;
+using ilmV3.Application.Common.Security;
 using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Absent.Queries.GetAbsent;
@@ -8,14 +9,14 @@ public record GetAbsentsQuery : IRequest<IEnumerable<AbsentVM>>;
 
 public class GetAbsentQueryHandler : IRequestHandler<GetAbsentsQuery, IEnumerable<AbsentVM>>
 {
-    private readonly IAbsentRepository _absentRepository;
-    public GetAbsentQueryHandler(IMapper mapper, IAbsentRepository absentRepository)
+    private readonly IApplicationDbContext _context;
+    public GetAbsentQueryHandler(IApplicationDbContext context)
     {
-        _absentRepository = absentRepository;
+        _context = context;
     }
     public async Task<IEnumerable<AbsentVM>> Handle(GetAbsentsQuery request, CancellationToken cancellationToken)
     {
-        var absents = await _absentRepository.GetAbsentsAsync();
+        var absents = await _context.Absents.ToListAsync();
         List<AbsentVM> result = new List<AbsentVM>();
         foreach (var absent in absents)
         {
