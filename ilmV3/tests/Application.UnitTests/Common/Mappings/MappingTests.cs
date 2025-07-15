@@ -16,7 +16,7 @@ public class MappingTests
     public MappingTests()
     {
         _configuration = new MapperConfiguration(config => 
-            config.AddMaps(Assembly.GetAssembly(typeof(IApplicationDbContext))));
+            config.AddMaps(Assembly.GetAssembly(typeof(IAplicationDbContext))));
 
         _mapper = _configuration.CreateMapper();
     }

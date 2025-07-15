@@ -9,8 +9,8 @@ public record GetGradesQuery : IRequest<IEnumerable<GradeVM>>;
 
 public class GetGradesQueryHandler : IRequestHandler<GetGradesQuery, IEnumerable<GradeVM>>
 {
-    private readonly IApplicationDbContext _context;
-    public GetGradesQueryHandler(IApplicationDbContext context)
+    private readonly IAplicationDbContext _context;
+    public GetGradesQueryHandler(IAplicationDbContext context)
     {
         _context = context;
     }

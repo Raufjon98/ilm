@@ -13,7 +13,7 @@ public class UpdateAbsentCommandHandler : IRequestHandler<UpdateAbsentCommand, A
 {
     private readonly IAbsentRepository _absentRepository;
 
-    public UpdateAbsentCommandHandler(IAbsentRepository absentRepository, IApplicationDbContext context)
+    public UpdateAbsentCommandHandler(IAbsentRepository absentRepository, IAplicationDbContext context)
     {
         _absentRepository = absentRepository;
     }

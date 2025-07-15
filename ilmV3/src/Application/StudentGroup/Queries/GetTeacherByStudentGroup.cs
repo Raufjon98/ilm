@@ -10,8 +10,8 @@ public record GetTeacherByStudentGroupQuery(int studentGroupId) : IRequest<Teach
 
 public class GetTeacherByStudentGroupQueryHandler : IRequestHandler<GetTeacherByStudentGroupQuery, TeacherVM>
 {
-    private readonly IApplicationDbContext _context;
-    public GetTeacherByStudentGroupQueryHandler(IApplicationDbContext context)
+    private readonly IAplicationDbContext _context;
+    public GetTeacherByStudentGroupQueryHandler(IAplicationDbContext context)
     {
         _context = context;
     }

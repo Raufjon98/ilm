@@ -2,7 +2,7 @@
 
 namespace ilmV3.Application.Common.Interfaces;
 
-public interface IApplicationDbContext
+public interface IAplicationDbContext
 {
     DbSet<AbsentEntity> Absents { get; }
     DbSet<GradeEntity> Grades { get; }

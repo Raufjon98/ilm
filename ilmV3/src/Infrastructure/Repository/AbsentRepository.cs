@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 namespace ilmV3.Infrastructure.Repository;
 public class AbsentRepository : IAbsentRepository
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IAplicationDbContext _context;
 
-    public AbsentRepository(IApplicationDbContext context)
+    public AbsentRepository(IAplicationDbContext context)
     {
         _context = context;
     }

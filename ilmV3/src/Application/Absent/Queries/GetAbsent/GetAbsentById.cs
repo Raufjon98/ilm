@@ -1,6 +1,5 @@
 ﻿using ilmV3.Application.Common.Interfaces;
 using ilmV3.Application.Common.Security;
-using ilmV3.Domain.interfaces;
 
 namespace ilmV3.Application.Absent.Queries.GetAbsent;
 
@@ -9,9 +8,9 @@ public record GetAbsentByIdQuery(int absentId) : IRequest<AbsentVM>;
 
 public class GetAbsentByIdQueryHandler : IRequestHandler<GetAbsentByIdQuery, AbsentVM>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IAplicationDbContext _context;
 
-    public GetAbsentByIdQueryHandler(IApplicationDbContext context)
+    public GetAbsentByIdQueryHandler(IAplicationDbContext context)
     {
         _context = context;
     }

@@ -9,8 +9,8 @@ public record GetExcellentStudentsQuery() : IRequest<IEnumerable<StudentWithGrad
 
 public class GetExcellentStudentsQueryHandler : IRequestHandler<GetExcellentStudentsQuery, IEnumerable<StudentWithGradeVM>>
 {
-    private readonly IApplicationDbContext _context;
-    public GetExcellentStudentsQueryHandler(IApplicationDbContext context)
+    private readonly IAplicationDbContext _context;
+    public GetExcellentStudentsQueryHandler(IAplicationDbContext context)
     {
         _context = context;
     }

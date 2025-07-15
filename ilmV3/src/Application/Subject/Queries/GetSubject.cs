@@ -9,8 +9,8 @@ public record GetSubjectQuery(int subjectId) : IRequest<SubjectVM>;
 
 public class GetSubjectQueryHandler : IRequestHandler<GetSubjectQuery, SubjectVM>
 {
-    private readonly IApplicationDbContext _context;
-    public GetSubjectQueryHandler(IApplicationDbContext context)
+    private readonly IAplicationDbContext _context;
+    public GetSubjectQueryHandler(IAplicationDbContext context)
     {
         _context = context;
     }

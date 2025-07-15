@@ -11,9 +11,9 @@ public record GetAdminQuery(string adminId) : IRequest<AdminVM>;
 public class GetAdminQueryHandler : IRequestHandler<GetAdminQuery, AdminVM>
 {
     private readonly IIdentityService _identityService;
-    private readonly IApplicationDbContext _context;
+    private readonly IAplicationDbContext _context;
 
-    public GetAdminQueryHandler(IIdentityService identityService, IApplicationDbContext context)
+    public GetAdminQueryHandler(IIdentityService identityService, IAplicationDbContext context)
     {
         _context = context;
         _identityService = identityService;

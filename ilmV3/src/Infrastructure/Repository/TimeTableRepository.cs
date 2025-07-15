@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 namespace ilmV3.Infrastructure.Repository;
 public class TimeTableRepository : ITimeTableRepository
 {
-    private readonly IApplicationDbContext _context;
-    public TimeTableRepository(IApplicationDbContext context)
+    private readonly IAplicationDbContext _context;
+    public TimeTableRepository(IAplicationDbContext context)
     {
         _context = context;
     }

@@ -9,8 +9,8 @@ public record GetStudentGroupsQuery : IRequest<IEnumerable<StudentGroupVM>>;
 
 public class GetStudentGroupsQueryHandler : IRequestHandler<GetStudentGroupsQuery, IEnumerable<StudentGroupVM>>
 {
-    private readonly IApplicationDbContext _context;
-    public GetStudentGroupsQueryHandler(IApplicationDbContext context)
+    private readonly IAplicationDbContext _context;
+    public GetStudentGroupsQueryHandler(IAplicationDbContext context)
     {
         _context = context;
     }

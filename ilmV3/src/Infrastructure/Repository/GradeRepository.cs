@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 namespace ilmV3.Infrastructure.Repository;
 public class GradeRepository : IGradeRepository
 {
-    private readonly IApplicationDbContext _context;
-    public GradeRepository(IApplicationDbContext context)
+    private readonly IAplicationDbContext _context;
+    public GradeRepository(IAplicationDbContext context)
     {
         _context = context;
     }

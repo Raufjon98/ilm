@@ -10,8 +10,8 @@ public record GetStudentsBySubjectIdQuery(int subjectId) : IRequest<IEnumerable<
 
 public class GetStudentsBySubjectIdQueryHandler : IRequestHandler<GetStudentsBySubjectIdQuery, IEnumerable<StudentVM>>
 {
-    private readonly IApplicationDbContext _context;
-    public GetStudentsBySubjectIdQueryHandler(IApplicationDbContext context)
+    private readonly IAplicationDbContext _context;
+    public GetStudentsBySubjectIdQueryHandler(IAplicationDbContext context)
     {
         _context = context;
     }

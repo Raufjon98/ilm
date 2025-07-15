@@ -6,9 +6,9 @@ using ilmV3.Application.Common.Interfaces;
 namespace ilmV3.Infrastructure.Repository;
 public class AdminRepository : IAdminRepository
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IAplicationDbContext _context;
 
-    public AdminRepository(IApplicationDbContext context)
+    public AdminRepository(IAplicationDbContext context)
     {
         _context = context;
     }

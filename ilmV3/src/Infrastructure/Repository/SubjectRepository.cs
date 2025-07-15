@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 namespace ilmV3.Infrastructure.Repository;
 public class SubjectRepository : ISubjectRepository
 {
-    private readonly IApplicationDbContext _context;
-    public SubjectRepository(IApplicationDbContext context)
+    private readonly IAplicationDbContext _context;
+    public SubjectRepository(IAplicationDbContext context)
     {
         _context = context;
     }

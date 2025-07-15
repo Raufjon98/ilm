@@ -10,9 +10,9 @@ public record GetGroupBySubjectQuery(int subjectId) : IRequest<StudentGroupVM>;
 
 public class GetGroupBySubjectQueryHandler : IRequestHandler<GetGroupBySubjectQuery, StudentGroupVM>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IAplicationDbContext _context;
     public GetGroupBySubjectQueryHandler(
-        IApplicationDbContext context)
+        IAplicationDbContext context)
     {
         _context = context;
     }

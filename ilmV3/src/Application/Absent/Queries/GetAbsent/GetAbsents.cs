@@ -7,10 +7,10 @@ namespace ilmV3.Application.Absent.Queries.GetAbsent;
 [Authorize]
 public record GetAbsentsQuery : IRequest<IEnumerable<AbsentVM>>;
 
-public class GetAbsentQueryHandler : IRequestHandler<GetAbsentsQuery, IEnumerable<AbsentVM>>
+public class GetAbsentsQueryHandler : IRequestHandler<GetAbsentsQuery, IEnumerable<AbsentVM>>
 {
-    private readonly IApplicationDbContext _context;
-    public GetAbsentQueryHandler(IApplicationDbContext context)
+    private readonly IAplicationDbContext _context;
+    public GetAbsentsQueryHandler(IAplicationDbContext context)
     {
         _context = context;
     }

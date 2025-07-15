@@ -21,6 +21,4 @@ public class DeleteAbsentCommandHandler : IRequestHandler<DeleteAbsentCommand, b
         ArgumentNullException.ThrowIfNull(absent);
         return await _absentRepository.DeleteAbsentAsync(absent, cancellationToken);
     }
-
-
 }

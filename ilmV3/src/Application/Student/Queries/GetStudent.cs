@@ -9,8 +9,8 @@ public record GetStudentQuery(int studentId) : IRequest<StudentVM>;
 
 public class GetStudentQueryHandler : IRequestHandler<GetStudentQuery, StudentVM>
 {
-    private readonly IApplicationDbContext _context;
-    public GetStudentQueryHandler(IApplicationDbContext context)
+    private readonly IAplicationDbContext _context;
+    public GetStudentQueryHandler(IAplicationDbContext context)
     {
         _context = context;
     }

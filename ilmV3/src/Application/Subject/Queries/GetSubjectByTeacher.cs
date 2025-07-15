@@ -9,8 +9,8 @@ public record GetSubjectByTeacherQuery(int teacherId) : IRequest<SubjectVM>;
 
 public class GetSubjectByTeacherQueryHandler : IRequestHandler<GetSubjectByTeacherQuery, SubjectVM>
 {
-    private readonly IApplicationDbContext _context;
-    public GetSubjectByTeacherQueryHandler(IApplicationDbContext context)
+    private readonly IAplicationDbContext _context;
+    public GetSubjectByTeacherQueryHandler(IAplicationDbContext context)
     {
         _context = context;
     }

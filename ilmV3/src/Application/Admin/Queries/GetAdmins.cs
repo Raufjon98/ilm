@@ -10,9 +10,9 @@ public class GetAdminsQuery : IRequest<IEnumerable<AdminVM>>;
 
 public class GetAdminsQueryHandler : IRequestHandler<GetAdminsQuery, IEnumerable<AdminVM>>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IAplicationDbContext _context;
 
-    public GetAdminsQueryHandler(IApplicationDbContext context)
+    public GetAdminsQueryHandler(IAplicationDbContext context)
     {
         _context = context;
     }

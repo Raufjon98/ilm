@@ -9,8 +9,8 @@ public record GetTimeTableQuery(int timeTableId) : IRequest<TimeTableVM>;
 
 public class GetTimeTableQueryHandler : IRequestHandler<GetTimeTableQuery, TimeTableVM>
 {
-    private readonly IApplicationDbContext _context;
-    public GetTimeTableQueryHandler(IApplicationDbContext context)
+    private readonly IAplicationDbContext _context;
+    public GetTimeTableQueryHandler(IAplicationDbContext context)
     {
         _context = context;
     }

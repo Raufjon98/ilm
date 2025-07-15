@@ -10,8 +10,8 @@ public record UpdateStudentGroupCommand(int studentId, int studentGroupId) : IRe
 
 public class UpdateStudentGroupCommandHandler : IRequestHandler<UpdateStudentGroupCommand, StudentGroupVM>
 {
-    private readonly IApplicationDbContext _context;
-    public UpdateStudentGroupCommandHandler(IApplicationDbContext context)
+    private readonly IAplicationDbContext _context;
+    public UpdateStudentGroupCommandHandler(IAplicationDbContext context)
     {
         _context = context;
     }

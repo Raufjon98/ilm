@@ -11,7 +11,7 @@ public record CreateAbsentCommand(AbsentDto Absent) : IRequest<AbsentVM>;
 public class CreateAbsentCommandHandle : IRequestHandler<CreateAbsentCommand, AbsentVM>
 {
     private readonly IAbsentRepository _absentRepository;
-    public CreateAbsentCommandHandle(IMapper mapper, IAbsentRepository absentRepository)
+    public CreateAbsentCommandHandle(IAbsentRepository absentRepository)
     {
         _absentRepository = absentRepository;
     }
