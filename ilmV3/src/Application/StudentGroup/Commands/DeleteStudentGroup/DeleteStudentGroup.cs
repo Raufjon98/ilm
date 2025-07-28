@@ -7,10 +7,10 @@ namespace ilmV3.Application.StudentGroup.Commands.DeleteStudentGroup;
 [Authorize(Policy = Policies.CanUpdateAndDelete)]
 public record DeleteStudentGroupCommand(int studentGroupId) : IRequest<bool>;
 
-public class DeleteStudentCommandHandler : IRequestHandler<DeleteStudentGroupCommand, bool>
+public class DeleteStudentGroupCommandHandler : IRequestHandler<DeleteStudentGroupCommand, bool>
 {
     private readonly IStudentGroupRepository _studentGroupRepository;
-    public DeleteStudentCommandHandler(IStudentGroupRepository studentGroupRepository)
+    public DeleteStudentGroupCommandHandler(IStudentGroupRepository studentGroupRepository)
     {
         _studentGroupRepository = studentGroupRepository;
     }
