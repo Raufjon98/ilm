@@ -19,8 +19,6 @@ public class CreateAbsentTests
     {
         var services = new ServiceCollection();
         _absentRepository = A.Fake<IAbsentRepository>();
-        var context = A.Fake<IAplicationDbContext>();
-        services.AddSingleton(context);
         services.AddSingleton(_absentRepository);
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateAbsentCommandHandle).Assembly));
         _provider = services.BuildServiceProvider();

@@ -49,7 +49,7 @@ public class Students : EndpointGroupBase
     }
     public async Task<IResult> UpdateStudentGroupForStudent(ISender _sender, int studentId, int StudentGroupId)
     {
-        var result = await _sender.Send(new UpdateStudentGroupCommand(studentId, StudentGroupId));
+        var result = await _sender.Send(new UpdateStudentsGroupCommand(studentId, StudentGroupId));
         return TypedResults.Ok(result);
     }
 }
