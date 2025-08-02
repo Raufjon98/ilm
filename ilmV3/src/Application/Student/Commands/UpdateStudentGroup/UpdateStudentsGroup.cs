@@ -6,16 +6,16 @@ using ilmV3.Domain.Constants;
 namespace ilmV3.Application.Student.Commands.UpdateStudentGroup;
 
 [Authorize(Policy = Policies.CanUpdateAndDelete)]
-public record UpdateStudentGroupCommand(int studentId, int studentGroupId) : IRequest<StudentGroupVM>;
+public record UpdateStudentsGroupCommand(int studentId, int studentGroupId) : IRequest<StudentGroupVM>;
 
-public class UpdateStudentGroupCommandHandler : IRequestHandler<UpdateStudentGroupCommand, StudentGroupVM>
+public class UpdateStudentGroupCommandHandler : IRequestHandler<UpdateStudentsGroupCommand, StudentGroupVM>
 {
     private readonly IAplicationDbContext _context;
     public UpdateStudentGroupCommandHandler(IAplicationDbContext context)
     {
         _context = context;
     }
-    public async Task<StudentGroupVM> Handle(UpdateStudentGroupCommand request, CancellationToken cancellationToken)
+    public async Task<StudentGroupVM> Handle(UpdateStudentsGroupCommand request, CancellationToken cancellationToken)
     {
         var student = await _context.Students
          .Include(s => s.Groups)

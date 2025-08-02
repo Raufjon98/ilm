@@ -11,7 +11,7 @@ public record UpdateGradeCommand(GradeDto Grade, int gradeId) : IRequest<GradeVM
 public class UpdateGradeCommandHandler : IRequestHandler<UpdateGradeCommand, GradeVM?>
 {
     private readonly IGradeRepository _gradeRepository;
-    public UpdateGradeCommandHandler(IMapper mapper, IGradeRepository gradeRepository)
+    public UpdateGradeCommandHandler(IGradeRepository gradeRepository)
     {
         _gradeRepository = gradeRepository;
     }

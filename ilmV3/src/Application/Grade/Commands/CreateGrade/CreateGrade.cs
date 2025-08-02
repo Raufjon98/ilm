@@ -12,7 +12,7 @@ public record CreateGradeCommand(GradeDto Grade) : IRequest<GradeVM>;
 public class CreateGradeCommandHandler : IRequestHandler<CreateGradeCommand, GradeVM>
 {
     private readonly IGradeRepository _gradeRepository;
-    public CreateGradeCommandHandler(IMapper mapper, IGradeRepository gradeRepository)
+    public CreateGradeCommandHandler(IGradeRepository gradeRepository)
     {
         _gradeRepository = gradeRepository;
     }

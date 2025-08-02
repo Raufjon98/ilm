@@ -17,14 +17,13 @@ public class GetTeacherByStudentGroupQueryHandler : IRequestHandler<GetTeacherBy
     }
     public async Task<TeacherVM> Handle(GetTeacherByStudentGroupQuery request, CancellationToken cancellationToken)
     {
+        
         var studentGroup = await _context.StudentGroups
-             .Include(s => s.Subject)
-             .FirstOrDefaultAsync(sg => sg.Id == request.studentGroupId);
+            .FirstOrDefaultAsync(sg => sg.Id == request.studentGroupId);
         ArgumentNullException.ThrowIfNull(studentGroup);
 
-        var teacher = await _context.Teachers.
-            Include(t => t.Subject)
-            .FirstOrDefaultAsync(t => t.Subject != null && t.Subject.Id == studentGroup.SubjectId);
+        var teacher = await _context.Teachers
+            .FirstOrDefaultAsync(t => t.Id == studentGroup.TeacherId);
         ArgumentNullException.ThrowIfNull(teacher);
         TeacherVM teacherVM = new TeacherVM()
         {
